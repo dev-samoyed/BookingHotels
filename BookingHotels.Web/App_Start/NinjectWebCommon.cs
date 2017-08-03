@@ -1,4 +1,4 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(BookingHotels.Web.App_Start.NinjectWebCommon), "Start")]
+﻿[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(BookingHotels.Web.App_Start.NinjectWebCommon), "Start")]
 [assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(BookingHotels.Web.App_Start.NinjectWebCommon), "Stop")]
 
 namespace BookingHotels.Web.App_Start
@@ -10,6 +10,8 @@ namespace BookingHotels.Web.App_Start
 
     using Ninject;
     using Ninject.Web.Common;
+    using Ninject.Modules;
+    using NLayerApp.BLL.Infrastructure;
 
     public static class NinjectWebCommon 
     {
@@ -32,14 +34,16 @@ namespace BookingHotels.Web.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
         /// <returns>The created kernel.</returns>
         private static IKernel CreateKernel()
         {
-            var kernel = new StandardKernel();
+            // Устанавливаем строку подключения
+            var modules = new INinjectModule[] { new ServiceModule("DefaultConnection") };
+            var kernel = new StandardKernel(modules);
             try
             {
                 kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
@@ -59,8 +63,13 @@ namespace BookingHotels.Web.App_Start
         /// Load your modules or register your services here!
         /// </summary>
         /// <param name="kernel">The kernel.</param>
+        /// 
+
+        // Регистрируем свой сопоставитель зависимостей
         private static void RegisterServices(IKernel kernel)
         {
-        }        
+            System.Web.Mvc.DependencyResolver.SetResolver(new BookingHotels.WEB.Util.NinjectDependencyResolver(kernel));
+        }
+       
     }
 }
