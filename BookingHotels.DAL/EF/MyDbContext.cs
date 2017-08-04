@@ -33,6 +33,7 @@ namespace BookingHotels.DAL.EF
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
             // Hotel Config
             modelBuilder.Configurations.Add(new HotelConfig<Hotel>());
         }

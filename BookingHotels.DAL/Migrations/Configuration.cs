@@ -17,12 +17,12 @@ namespace BookingHotels.DAL.Migrations
 
         protected override void Seed(MyDbContext db)
         {
-            //Hotel hotel1 = new Hotel { HotelName = "Hotel 1", HotelStars = HotelStars.OneStarHotel };
-            //Room room1 = new Room { RoomNumber = 1, RoomType = RoomType.DeluxeRoom, Hotel = hotel1 };
+            Hotel hotel1 = new Hotel { HotelName = "Hotel 1", HotelStars = HotelStars.OneStarHotel };
+            Room room1 = new Room { RoomNumber = 1, RoomType = RoomType.DeluxeRoom, Hotel = hotel1 };
 
-            //db.Rooms.Add(room1);
-            //db.Rooms.Add(room1);
-            //db.SaveChanges();
+            db.Rooms.Add(room1);
+            db.Hotels.Add(hotel1);
+            db.SaveChanges();
         }
     }
 }
