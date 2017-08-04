@@ -22,7 +22,7 @@ namespace BookingHotels.DAL.Repositories
             return db.Hotels;
         }
 
-        public Hotel Get(int id)
+        public Hotel Get(Guid id)
         {
             return db.Hotels.Find(id);
         }
@@ -42,7 +42,7 @@ namespace BookingHotels.DAL.Repositories
             return db.Hotels.Where(predicate).ToList();
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             Hotel hotel = db.Hotels.Find(id);
             if (hotel != null)

@@ -10,7 +10,7 @@ namespace BookingHotels.BLL.DTO
 {
     public class HotelDTO
     {
-        public int ID { get; set; }
+        public Guid ID { get; set; }
         public string HotelName { get; set; }
         public HotelStars HotelStars { get; set; }
         // Link to rooms collection

@@ -1,4 +1,6 @@
 ﻿using System;
+
+using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +11,7 @@ namespace BookingHotels.Domain.Entities
 {
     public class Room
     {
-        public int ID { get; set; }
+        public Guid ID { get; set; }
         public Guid HotelID { get; set; }
         public int RoomNumber { get; set; }
         public RoomType RoomType { get; set; }

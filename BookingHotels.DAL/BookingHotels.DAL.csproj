@@ -54,10 +54,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\HotelConfig.cs" />
-    <Compile Include="Migrations\201708030540501_first_migration.cs" />
-    <Compile Include="Migrations\201708030540501_first_migration.Designer.cs">
-      <DependentUpon>201708030540501_first_migration.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="EF\MyDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,12 +73,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708030540501_first_migration.resx">
-      <DependentUpon>201708030540501_first_migration.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
