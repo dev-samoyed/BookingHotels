@@ -17,9 +17,12 @@ namespace BookingHotels.BLL
             // RoomDTO -> RoomViewModel
             // BookingHotels.BLL.DTO.RoomDTO->BookingHotels.Web.Models.RoomViewModel
 
-            // Crea te map (source is Hotel entity, destination is Hotel DTO)
+            // Create map (source is entity of Hotel -> destination is HotelDataTransferObj)
             CreateMap<Hotel, HotelDTO>(MemberList.None);
             CreateMap<Room, RoomDTO>(MemberList.None);
+            CreateMap<Feedback, FeedbackDTO>(MemberList.None);
+            CreateMap<Booking, BookingDTO>(MemberList.None);
+
 
             //CreateMap<RoomDTO, BookingHotels.Web.Models.RoomViewModel>(MemberList.None);
         }
