@@ -16,6 +16,5 @@ namespace BookingHotels.Domain.Entities
         public HotelStars HotelStars { get; set; }
         // Link to rooms collection
         public virtual List<Room> Rooms { get; set; }
-
     }
 }
