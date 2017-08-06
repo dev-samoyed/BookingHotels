@@ -13,6 +13,7 @@ namespace BookingHotels.Web
             // Add Automapper profile
             Mapper.Initialize(cfg => {
                 cfg.AddProfile<BLLMappingProfile>();
+                cfg.AddProfile<WebMappingProfile>();
             });
             // Dry run (прогон) all configured type maps
             Mapper.AssertConfigurationIsValid();

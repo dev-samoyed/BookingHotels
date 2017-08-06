@@ -13,12 +13,11 @@ namespace BookingHotels.Web
     {
         public WebMappingProfile()
         {
-
-            //RoomDTO -> RoomViewModel
-            Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, RoomViewModel>());
-            Mapper.Initialize(cfg => cfg.CreateMap<HotelDTO, HotelViewModel>());
-            Mapper.Initialize(cfg => cfg.CreateMap<FeedbackDTO, FeedbackViewModel>());
-            Mapper.Initialize(cfg => cfg.CreateMap<BookingDTO, BookingViewModel>());
+            //DTO (BLL) -> ViewModel (WEB)
+            CreateMap<RoomDTO, RoomViewModel>(MemberList.None);
+            CreateMap<HotelDTO, HotelViewModel>(MemberList.None);
+            CreateMap<FeedbackDTO, FeedbackViewModel>(MemberList.None);
+            CreateMap<BookingDTO, BookingViewModel>(MemberList.None);
         }
     }
 

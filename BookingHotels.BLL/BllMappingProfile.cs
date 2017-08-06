@@ -13,18 +13,11 @@ namespace BookingHotels.BLL
     {
         public BLLMappingProfile()
         {
-
-            // RoomDTO -> RoomViewModel
-            // BookingHotels.BLL.DTO.RoomDTO->BookingHotels.Web.Models.RoomViewModel
-
-            // Create map (source is entity of Hotel -> destination is HotelDataTransferObj)
+            // Entity (DAL) -> DTO (BLL)
             CreateMap<Hotel, HotelDTO>(MemberList.None);
             CreateMap<Room, RoomDTO>(MemberList.None);
             CreateMap<Feedback, FeedbackDTO>(MemberList.None);
             CreateMap<Booking, BookingDTO>(MemberList.None);
-
-
-            //CreateMap<RoomDTO, BookingHotels.Web.Models.RoomViewModel>(MemberList.None);
         }
     }
 }

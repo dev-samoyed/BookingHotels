@@ -17,6 +17,7 @@ namespace BookingHotels.DAL.EF
         { }
         public MyDbContext(string connectionString) : base(connectionString)
         { }
+
         public DbSet<Hotel> Hotels { get; set; }
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
@@ -37,6 +38,8 @@ namespace BookingHotels.DAL.EF
             // Hotel Config
             modelBuilder.Configurations.Add(new HotelConfig<Hotel>());
         }
+
+
     }
     
 

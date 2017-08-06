@@ -27,6 +27,11 @@ namespace BookingHotels.DAL.Repositories
             return db.Hotels.Find(id);
         }
 
+        public IEnumerable<Hotel> Find(Func<Hotel, Boolean> predicate)
+        {
+            return db.Hotels.Where(predicate).ToList();
+        }
+
         public void Create(Hotel hotel)
         {
             db.Hotels.Add(hotel);
@@ -36,12 +41,7 @@ namespace BookingHotels.DAL.Repositories
         {
             db.Entry(hotel).State = EntityState.Modified;
         }
-
-        public IEnumerable<Hotel> Find(Func<Hotel, Boolean> predicate)
-        {
-            return db.Hotels.Where(predicate).ToList();
-        }
-
+        
         public void Delete(Guid id)
         {
             Hotel hotel = db.Hotels.Find(id);

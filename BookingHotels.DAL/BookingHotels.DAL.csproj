@@ -66,6 +66,10 @@
     <Compile Include="Migrations\201708040826587_init4.Designer.cs">
       <DependentUpon>201708040826587_init4.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708061514343_dropped_db.cs" />
+    <Compile Include="Migrations\201708061514343_dropped_db.Designer.cs">
+      <DependentUpon>201708061514343_dropped_db.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="EF\MyDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -94,6 +98,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708040826587_init4.resx">
       <DependentUpon>201708040826587_init4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708061514343_dropped_db.resx">
+      <DependentUpon>201708061514343_dropped_db.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

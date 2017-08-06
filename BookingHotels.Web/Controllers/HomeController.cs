@@ -20,11 +20,10 @@ namespace BookingHotels.WEB.Controllers
         }
         public ActionResult Index()
         {
-            // Create instance of all rooms
+            // Create instance of all rooms (DTO)
             IEnumerable<RoomDTO> roomDtos = bookingService.GetRooms();
 
-
-
+            // Map DTO to ViewModel using roomDtos data
             var rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
 
             return View(rooms);
