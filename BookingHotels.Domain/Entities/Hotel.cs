@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BookingHotels.Domain.Enums;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingHotels.Domain.Entities
 {

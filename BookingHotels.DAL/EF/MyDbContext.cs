@@ -13,7 +13,7 @@ namespace BookingHotels.DAL.EF
 {
     public class MyDbContext : DbContext
     {
-        public MyDbContext() : base("MyDB")
+        public MyDbContext() : base("DefaultConnection")
         { }
         public MyDbContext(string connectionString) : base(connectionString)
         { }
