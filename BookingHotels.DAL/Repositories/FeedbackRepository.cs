@@ -22,7 +22,7 @@ namespace BookingHotels.DAL.Repositories
             return db.Feedbacks;
         }
 
-        public Feedback Get(int id)
+        public Feedback Get(Guid id)
         {
             return db.Feedbacks.Find(id);
         }
@@ -42,7 +42,7 @@ namespace BookingHotels.DAL.Repositories
             return db.Feedbacks.Where(predicate).ToList();
         }
 
-        public void Delete(int id)
+        public void Delete(Guid id)
         {
             Feedback feedback = db.Feedbacks.Find(id);
             if (feedback != null)

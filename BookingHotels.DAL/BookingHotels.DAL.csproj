@@ -54,9 +54,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\HotelConfig.cs" />
-    <Compile Include="Migrations\201708030540501_first_migration.cs" />
-    <Compile Include="Migrations\201708030540501_first_migration.Designer.cs">
-      <DependentUpon>201708030540501_first_migration.cs</DependentUpon>
+    <Compile Include="Migrations\201708040822029_init2.cs" />
+    <Compile Include="Migrations\201708040822029_init2.Designer.cs">
+      <DependentUpon>201708040822029_init2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708040825120_init3.cs" />
+    <Compile Include="Migrations\201708040825120_init3.Designer.cs">
+      <DependentUpon>201708040825120_init3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708040826587_init4.cs" />
+    <Compile Include="Migrations\201708040826587_init4.Designer.cs">
+      <DependentUpon>201708040826587_init4.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="EF\MyDbContext.cs" />
@@ -78,11 +86,16 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708030540501_first_migration.resx">
-      <DependentUpon>201708030540501_first_migration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708040822029_init2.resx">
+      <DependentUpon>201708040822029_init2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708040825120_init3.resx">
+      <DependentUpon>201708040825120_init3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708040826587_init4.resx">
+      <DependentUpon>201708040826587_init4.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

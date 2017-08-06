@@ -4,28 +4,25 @@ namespace BookingHotels.DAL.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
+    using BookingHotels.Domain.Entities;
+    using BookingHotels.Domain.Enums;
+    using EF;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<BookingHotels.DAL.EF.MyDbContext>
+    public sealed class MyDbContextConfiguration : DbMigrationsConfiguration<BookingHotels.DAL.EF.MyDbContext>
     {
-        public Configuration()
+        public MyDbContextConfiguration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(BookingHotels.DAL.EF.MyDbContext context)
+        protected override void Seed(MyDbContext db)
         {
-            //  This method will be called after migrating to the latest version.
+            Hotel hotel1 = new Hotel { HotelName = "Hotel 1", HotelStars = HotelStars.OneStarHotel };
+            Room room1 = new Room { RoomNumber = 1, RoomType = RoomType.DeluxeRoom, Hotel = hotel1 };
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data. E.g.
-            //
-            //    context.People.AddOrUpdate(
-            //      p => p.FullName,
-            //      new Person { FullName = "Andrew Peters" },
-            //      new Person { FullName = "Brice Lambson" },
-            //      new Person { FullName = "Rowan Miller" }
-            //    );
-            //
+            db.Rooms.Add(room1);
+            db.Hotels.Add(hotel1);
+            db.SaveChanges();
         }
     }
 }

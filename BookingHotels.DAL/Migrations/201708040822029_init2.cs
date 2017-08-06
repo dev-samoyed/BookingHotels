@@ -3,7 +3,7 @@ namespace BookingHotels.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class first_migration : DbMigration
+    public partial class init2 : DbMigration
     {
         public override void Up()
         {
@@ -11,9 +11,9 @@ namespace BookingHotels.DAL.Migrations
                 "dbo.Bookings",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(nullable: false),
-                        RoomID = c.Int(nullable: false),
+                        ID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
+                        RoomID = c.Guid(nullable: false),
                         BookingStartDate = c.DateTime(nullable: false),
                         BookingEndDate = c.DateTime(nullable: false),
                     })
@@ -23,10 +23,10 @@ namespace BookingHotels.DAL.Migrations
                 "dbo.Feedbacks",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
-                        UserID = c.Int(nullable: false),
+                        ID = c.Guid(nullable: false),
+                        UserID = c.Guid(nullable: false),
                         FeedbackText = c.String(),
-                        Hotel_ID = c.Int(),
+                        Hotel_ID = c.Guid(),
                     })
                 .PrimaryKey(t => t.ID)
                 .ForeignKey("dbo.Hotels", t => t.Hotel_ID)
@@ -36,7 +36,7 @@ namespace BookingHotels.DAL.Migrations
                 "dbo.Hotels",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        ID = c.Guid(nullable: false),
                         HotelName = c.String(),
                         HotelStars = c.Int(nullable: false),
                     })
@@ -46,23 +46,21 @@ namespace BookingHotels.DAL.Migrations
                 "dbo.Rooms",
                 c => new
                     {
-                        ID = c.Int(nullable: false, identity: true),
+                        ID = c.Guid(nullable: false),
                         HotelID = c.Guid(nullable: false),
                         RoomNumber = c.Int(nullable: false),
                         RoomType = c.Int(nullable: false),
-                        Hotel_ID = c.Int(),
                     })
                 .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Hotels", t => t.Hotel_ID)
-                .Index(t => t.Hotel_ID);
-            
+                .ForeignKey("dbo.Hotels", t => t.HotelID, cascadeDelete: true)
+                .Index(t => t.HotelID);
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.Feedbacks", "Hotel_ID", "dbo.Hotels");
-            DropForeignKey("dbo.Rooms", "Hotel_ID", "dbo.Hotels");
-            DropIndex("dbo.Rooms", new[] { "Hotel_ID" });
+            DropForeignKey("dbo.Rooms", "HotelID", "dbo.Hotels");
+            DropIndex("dbo.Rooms", new[] { "HotelID" });
             DropIndex("dbo.Feedbacks", new[] { "Hotel_ID" });
             DropTable("dbo.Rooms");
             DropTable("dbo.Hotels");

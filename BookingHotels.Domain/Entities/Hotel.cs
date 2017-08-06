@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace BookingHotels.Domain.Entities
 {
     public class Hotel
     {
-        public int ID { get; set; }
+        public Guid ID { get; set; }
         public string HotelName { get; set; }
         public HotelStars HotelStars { get; set; }
         // Link to rooms collection

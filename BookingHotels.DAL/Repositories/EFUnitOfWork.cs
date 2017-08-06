@@ -19,6 +19,7 @@ namespace BookingHotels.DAL.Repositories
         {
             db = new MyDbContext(connectionString);
         }
+
         public IRepository<Hotel> Hotels
         {
             get
@@ -28,7 +29,6 @@ namespace BookingHotels.DAL.Repositories
                 return hotelRepository;
             }
         }
-
         public IRepository<Room> Rooms
         {
             get
@@ -38,7 +38,6 @@ namespace BookingHotels.DAL.Repositories
                 return roomRepository;
             }
         }
-
         public IRepository<Feedback> Feedbacks
         {
             get
@@ -57,14 +56,13 @@ namespace BookingHotels.DAL.Repositories
                 return bookingRepository;
             }
         }
-
+        // Save
         public void Save()
         {
             db.SaveChanges();
         }
-
+        // Dispose
         private bool disposed = false;
-
         public virtual void Dispose(bool disposing)
         {
             if (!this.disposed)
@@ -76,7 +74,6 @@ namespace BookingHotels.DAL.Repositories
                 this.disposed = true;
             }
         }
-
         public void Dispose()
         {
             Dispose(true);

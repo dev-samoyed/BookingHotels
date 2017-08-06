@@ -7,7 +7,7 @@ using BookingHotels.BLL.Interfaces;
  
 namespace BookingHotels.WEB.Util
 {
-    // Интерфейс IOrderService сопоставляется с классом OrderService.
+    // Интерфейс IBookingService сопоставляется с классом BookingService
     public class NinjectDependencyResolver : IDependencyResolver
     {
         private IKernel kernel;

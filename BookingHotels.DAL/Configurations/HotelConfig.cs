@@ -11,17 +11,18 @@ namespace BookingHotels.DAL.Configurations
 {
     public class HotelConfig<T> : EntityTypeConfiguration<T> where T : Hotel
     {
+        // Configure models with FLUENT API
         public HotelConfig()
         {
-            //configure model with fluent API
+            // Set primary key
+            // HasKey(t => t.ID);
 
-            //HasMany(p => p.Rooms)
+            // Specify table
+            // ToTable("Hotels");
+
+            // Specify constraints
+            // HasMany(p => p.Rooms)
             //    .WithRequired(p => (Hotel)p.Hotel);
-
-            //set primary key
-            HasKey(t => t.ID);
-
-            
         }
     }
 }
