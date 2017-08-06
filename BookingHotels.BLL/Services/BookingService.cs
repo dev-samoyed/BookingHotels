@@ -13,7 +13,7 @@ namespace BookingHotels.BLL.Services
     public class BookingService : IBookingService
     {
         IUnitOfWork Database { get; set; }
-        // OrderService в конструкторе принимает объект IUnitOfWork, через который идет взаимодействие с уровнем DAL.
+        // BookingService в конструкторе принимает объект IUnitOfWork, через который идет взаимодействие с уровнем DAL.
         public BookingService(IUnitOfWork uow)
         {
             Database = uow;
