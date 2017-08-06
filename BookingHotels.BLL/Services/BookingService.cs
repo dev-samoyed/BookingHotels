@@ -59,8 +59,8 @@ namespace BookingHotels.BLL.Services
             var room = Database.Rooms.Get(id.Value);
             if (room == null)
                 throw new ValidationException("Room was not found", "");
-            // Using automapper for projection of Room to RoomDTO
-            Mapper.Initialize(cfg => cfg.CreateMap<Room, RoomDTO>());
+            // Using automapper for projection of Room to RoomDTO usind data of room object
+            //Mapper.Initialize(cfg => cfg.CreateMap<Room, RoomDTO>());
             return Mapper.Map<Room, RoomDTO>(room);
         }
 

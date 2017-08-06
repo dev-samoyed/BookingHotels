@@ -10,9 +10,11 @@ namespace BookingHotels.Web
     {
         public void Configuration(IAppBuilder app)
         {
+            // Add Automapper profile
             Mapper.Initialize(cfg => {
                 cfg.AddProfile<BLLMappingProfile>();
             });
+            // Dry run (прогон) all configured type maps
             Mapper.AssertConfigurationIsValid();
             
             ConfigureAuth(app);

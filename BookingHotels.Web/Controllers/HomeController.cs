@@ -20,9 +20,11 @@ namespace BookingHotels.WEB.Controllers
         }
         public ActionResult Index()
         {
+            // Create instance of all rooms
             IEnumerable<RoomDTO> roomDtos = bookingService.GetRooms();
 
-            //Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, RoomViewModel>());
+            //RoomDTO -> RoomViewModel
+            Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, RoomViewModel>());
 
             var rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
 

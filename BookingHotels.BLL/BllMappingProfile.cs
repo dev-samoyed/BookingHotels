@@ -13,8 +13,15 @@ namespace BookingHotels.BLL
     {
         public BLLMappingProfile()
         {
+
+            // RoomDTO -> RoomViewModel
+            // BookingHotels.BLL.DTO.RoomDTO->BookingHotels.Web.Models.RoomViewModel
+
+            // Crea te map (source is Hotel entity, destination is Hotel DTO)
             CreateMap<Hotel, HotelDTO>(MemberList.None);
             CreateMap<Room, RoomDTO>(MemberList.None);
+
+            //CreateMap<RoomDTO, BookingHotels.Web.Models.RoomViewModel>(MemberList.None);
         }
     }
 }
