@@ -30,8 +30,10 @@ namespace BookingHotels.Web.Models
             return new ApplicationDbContext();
         }
 
-        public System.Data.Entity.DbSet<BookingHotels.BLL.DTO.RoomDTO> RoomDTOes { get; set; }
+        public System.Data.Entity.DbSet<BookingHotels.BLL.DTO.RoomDTO> RoomDTOs { get; set; }
 
         public System.Data.Entity.DbSet<BookingHotels.Web.Models.RoomViewModel> RoomViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<BookingHotels.Web.Models.HotelViewModel> HotelViewModels { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BookingHotels.Web.Models.RoomViewModel>
+﻿@model IEnumerable<BookingHotels.Web.Models.HotelViewModel>
 
 @{
     ViewBag.Title = "Index";
@@ -12,10 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.HotelID)
+            @Html.DisplayNameFor(model => model.HotelName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RoomNumber)
+            @Html.DisplayNameFor(model => model.HotelStars)
         </th>
         <th></th>
     </tr>
@@ -23,10 +23,10 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.HotelID)
+            @Html.DisplayFor(modelItem => item.HotelName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.RoomNumber)
+            @Html.DisplayFor(modelItem => item.HotelStars)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |

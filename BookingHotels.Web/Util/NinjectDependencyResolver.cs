@@ -27,6 +27,8 @@ namespace BookingHotels.WEB.Util
         private void AddBindings()
         {
             kernel.Bind<IBookingService>().To<BookingService>();
+            kernel.Bind<IHotelService>().To<HotelService>();
+            kernel.Bind<IRoomService>().To<RoomService>();
         }
     }
 }

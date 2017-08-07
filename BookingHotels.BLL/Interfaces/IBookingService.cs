@@ -7,6 +7,8 @@ namespace BookingHotels.BLL.Interfaces
     {
         void MakeBooking(BookingDTO bookingDto);
         RoomDTO GetRoom(Guid? id);
+        // Get hotel, where room is
+        HotelDTO GetHotel(Guid id);
         IEnumerable<RoomDTO> GetRooms();
         void Dispose();
     }

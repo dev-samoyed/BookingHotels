@@ -22,7 +22,7 @@ namespace BookingHotels.DAL.Repositories
             return db.Bookings;
         }
 
-        public Booking Get(Guid id)
+        public Booking Get(Guid? id)
         {
             return db.Bookings.Find(id);
         }

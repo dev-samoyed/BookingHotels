@@ -12,19 +12,21 @@ namespace BookingHotels.BLL.Services
 {
     public class BookingService : IBookingService
     {
-        IUnitOfWork Database { get; set; }
-        // BookingService в конструкторе принимает объект IUnitOfWork, через который идет взаимодействие с уровнем DAL.
+        private  IUnitOfWork _unitOfWork { get; set; }
+        // BookingService в конструкторе принимает объект IUnitOfWork
+        // через который идет взаимодействие с уровнем DAL.
         public BookingService(IUnitOfWork uow)
         {
-            Database = uow;
+            _unitOfWork = uow;
         }
-        // Мы не задаем в конструкторе явно объект IUnitOfWork, нам надо использовать внедрение зависимостей
+        // Мы не задаем в конструкторе явно объект IUnitOfWork, используем внедрение зависимостей
         // для передачи конкретной реализации данного интерфейса в BookingService (ninject)
 
-        // Получает объект для сохранения с уровня представления и создает по нему объект Booking и сохраняет его в базу данных.
+        // Получает объект бронирования для сохранения с уровня представления
+        // и создает по нему объект Booking и сохраняет его в базу данных.
         public void MakeBooking(BookingDTO bookingDto)
         {
-            Room room = Database.Rooms.Get(bookingDto.RoomID);
+            Room room = _unitOfWork.Rooms.Get(bookingDto.RoomID);
 
             // Validatioin
             if (room == null)
@@ -35,18 +37,19 @@ namespace BookingHotels.BLL.Services
                 BookingEndDate = DateTime.Now,
                 BookingStartDate = DateTime.Now
             };
-            Database.Bookings.Create(booking);
-            Database.Save();
+            _unitOfWork.Bookings.Create(booking);
+            _unitOfWork.Save();
         }
 
-        // Получает все комнаты и с помощью автомаппера, преобразует их и передает на уровень представления
+        // Получает все комнаты и с помощью автомаппера
+        // преобразует их и передает на уровень представления
         public IEnumerable<RoomDTO> GetRooms()
         {
             // Using automapper for projection of one collection to another
 
            // Mapper.Initialize(cfg => cfg.CreateMap<Room, RoomDTO>());
 
-            var rooms = Database.Rooms.GetAll().ToList();
+            var rooms = _unitOfWork.Rooms.GetAll().ToList();
 
             return Mapper.Map<List<Room>, List<RoomDTO>>(rooms);
         }
@@ -56,7 +59,18 @@ namespace BookingHotels.BLL.Services
         {
             if (id == null)
                 throw new ValidationException("Room ID was not set", "");
-            var room = Database.Rooms.Get(id.Value);
+            var room = _unitOfWork.Rooms.Get(id.Value);
+            if (room == null)
+                throw new ValidationException("Room was not found", "");
+            // Using automapper for projection of Room to RoomDTO usind data of room object
+            //Mapper.Initialize(cfg => cfg.CreateMap<Room, RoomDTO>());
+            return Mapper.Map<Room, RoomDTO>(room);
+        }
+        public RoomDTO GetRoomsIn(Guid? id)
+        {
+            if (id == null)
+                throw new ValidationException("Room ID was not set", "");
+            var room = _unitOfWork.Rooms.Get(id.Value);
             if (room == null)
                 throw new ValidationException("Room was not found", "");
             // Using automapper for projection of Room to RoomDTO usind data of room object
@@ -64,9 +78,24 @@ namespace BookingHotels.BLL.Services
             return Mapper.Map<Room, RoomDTO>(room);
         }
 
+        // Gets HotelDTO by ID and sends it to view
+        public HotelDTO GetHotel(Guid id)
+        {
+            Hotel hotel = _unitOfWork.Hotels.Get(id);
+
+            return Mapper.Map<Hotel, HotelDTO>(hotel);
+
+        }
+
+        public IEnumerable<HotelDTO> GetHotels()
+        {
+            var hotels = _unitOfWork.Hotels.GetAll().ToList();
+            return Mapper.Map<List<Hotel>, List<HotelDTO>>(hotels);
+        }
+
         public void Dispose()
         {
-            Database.Dispose();
+            _unitOfWork.Dispose();
         }
 
         public IEnumerable<RoomDTO> GetRoom()
