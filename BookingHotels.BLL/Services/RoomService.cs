@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.DTO;
-using BookingHotels.Domain.DALInterfaces;
+using BookingHotels.DAL.DALInterfaces;
 using AutoMapper;
-using BookingHotels.Domain.Entities;
+using BookingHotels.DAL.Entities;
 
 namespace BookingHotels.BLL.Services
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingHotels.Domain.Entities
+namespace BookingHotels.DAL.Entities
 {
     public class Feedback
     {

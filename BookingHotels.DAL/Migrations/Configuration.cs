@@ -4,8 +4,8 @@ namespace BookingHotels.DAL.Migrations
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using BookingHotels.Domain.Entities;
-    using BookingHotels.Domain.Enums;
+    using BookingHotels.DAL.Entities;
+    using BookingHotels.DAL.Enums;
     using EF;
 
     public sealed class MyDbContextConfiguration : DbMigrationsConfiguration<BookingHotels.DAL.EF.MyDbContext>

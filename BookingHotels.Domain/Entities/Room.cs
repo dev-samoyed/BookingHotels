@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BookingHotels.Domain.Enums;
+using BookingHotels.DAL.Enums;
 
-namespace BookingHotels.Domain.Entities
+namespace BookingHotels.DAL.Entities
 {
     public class Room
     {

@@ -1,5 +1,4 @@
-﻿using BookingHotels.DAL.Entities;
-using Microsoft.AspNet.Identity.EntityFramework;
+﻿using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace BookingHotels.DAL.Repositories
 {

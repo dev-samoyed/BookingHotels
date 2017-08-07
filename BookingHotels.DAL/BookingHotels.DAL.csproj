@@ -62,8 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\HotelConfig.cs" />
-    <Compile Include="Identity\ApplicationRoleManager.cs" />
-    <Compile Include="Identity\ApplicationUserManager.cs" />
+    <Compile Include="EF\MyIdentityDbContext.cs" />
     <Compile Include="Migrations\201708040822029_init2.cs" />
     <Compile Include="Migrations\201708040822029_init2.Designer.cs">
       <DependentUpon>201708040822029_init2.cs</DependentUpon>
@@ -83,14 +82,13 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="EF\MyDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ApplicationRole.cs" />
-    <Compile Include="Repositories\ApplicationUser.cs" />
+    <Compile Include="Repositories\ClientManager.cs" />
     <Compile Include="Repositories\EFUnitOfWork.cs" />
     <Compile Include="Repositories\BookingRepository.cs" />
     <Compile Include="Repositories\FeedbackRepository.cs" />
     <Compile Include="Repositories\HotelRepository.cs" />
+    <Compile Include="Repositories\IdentityUnitOfWork.cs" />
     <Compile Include="Repositories\RoomRepository.cs" />
-    <Compile Include="Repositories\ClientProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BookingHotels.Domain\BookingHotels.Domain.csproj">

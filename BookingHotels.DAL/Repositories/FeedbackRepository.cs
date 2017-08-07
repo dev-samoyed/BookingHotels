@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using BookingHotels.Domain.Entities;
+using BookingHotels.DAL.Entities;
 using BookingHotels.DAL.EF;
-using BookingHotels.Domain.DALInterfaces;
+using BookingHotels.DAL.DALInterfaces;
 using System.Data.Entity;
  
 namespace BookingHotels.DAL.Repositories

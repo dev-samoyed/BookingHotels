@@ -1,5 +1,5 @@
 ﻿using BookingHotels.BLL.DTO;
-using BookingHotels.Domain.Enums;
+using BookingHotels.DAL.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;

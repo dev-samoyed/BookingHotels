@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookingHotels.Domain.Enums
+namespace BookingHotels.DAL.Enums
 {
     public enum RoomType { SingleRoom, DoubleRoom, DeluxeRoom, DuplexRoom, Studio, Penthouse };
 }

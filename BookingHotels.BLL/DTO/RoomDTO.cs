@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BookingHotels.Domain.Enums;
-using BookingHotels.Domain.Entities;
+using BookingHotels.DAL.Enums;
+using BookingHotels.DAL.Entities;
 
 namespace BookingHotels.BLL.DTO
 {

@@ -1,5 +1,5 @@
 ﻿using Ninject.Modules;
-using BookingHotels.Domain.DALInterfaces;
+using BookingHotels.DAL.DALInterfaces;
 using BookingHotels.DAL.Repositories;
  
 namespace NLayerApp.BLL.Infrastructure

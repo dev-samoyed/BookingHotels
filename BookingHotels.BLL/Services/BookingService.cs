@@ -1,7 +1,7 @@
 ﻿using System;
 using BookingHotels.BLL.DTO;
-using BookingHotels.Domain.Entities;
-using BookingHotels.Domain.DALInterfaces;
+using BookingHotels.DAL.Entities;
+using BookingHotels.DAL.DALInterfaces;
 using BookingHotels.BLL.Infrastructure;
 using BookingHotels.BLL.Interfaces;
 using System.Collections.Generic;
