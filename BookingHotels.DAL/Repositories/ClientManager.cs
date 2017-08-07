@@ -1,9 +1,8 @@
 ﻿using BookingHotels.DAL.EF;
-using BookingHotels.DAL.Entities;
-using BookingHotels.DAL.Interfaces;
-using BookingHotels.DAL.Repositories;
+using BookingHotels.Domain.Interfaces;
+using BookingHotels.Domain.Repositories;
 
-namespace UserStore.DAL.Repositories
+namespace BookingHotels.DAL.Repositories
 {
     public class ClientManager : IClientManager
     {

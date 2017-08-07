@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.DTO;
-using BookingHotels.DAL.DALInterfaces;
+using BookingHotels.Domain.Interfaces;
 using AutoMapper;
 using BookingHotels.DAL.Entities;
 

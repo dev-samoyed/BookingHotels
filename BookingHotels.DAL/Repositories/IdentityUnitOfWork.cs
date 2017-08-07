@@ -1,14 +1,12 @@
 ﻿using BookingHotels.DAL.EF;
-using BookingHotels.DAL.Entities;
-using BookingHotels.DAL.Interfaces;
+using BookingHotels.Domain.Interfaces;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Threading.Tasks;
 using BookingHotels.Domain.Identity;
-using BookingHotels.Domain.Interfaces;
-using BookingHotels.DAL.Repositories;
+using BookingHotels.Domain.Repositories;
 
-namespace UserStore.DAL.Repositories
+namespace BookingHotels.DAL.Repositories
 {
     public class IdentityUnitOfWork : IUnitOfWorkIdentity
     {

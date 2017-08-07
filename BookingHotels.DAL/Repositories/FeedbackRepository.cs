@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using BookingHotels.DAL.Entities;
 using BookingHotels.DAL.EF;
-using BookingHotels.DAL.DALInterfaces;
+using BookingHotels.Domain.Interfaces;
 using System.Data.Entity;
  
 namespace BookingHotels.DAL.Repositories

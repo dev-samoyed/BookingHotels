@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 
-namespace BookingHotels.DAL.Repositories
+namespace BookingHotels.Domain.Repositories
 {
     public class ApplicationRole : IdentityRole
     {

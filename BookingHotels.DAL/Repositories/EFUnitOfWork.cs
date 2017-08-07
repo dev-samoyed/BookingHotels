@@ -1,6 +1,6 @@
 ﻿using System;
 using BookingHotels.DAL.EF;
-using BookingHotels.DAL.DALInterfaces;
+using BookingHotels.Domain.Interfaces;
 using BookingHotels.DAL.Entities;
 
 namespace BookingHotels.DAL.Repositories

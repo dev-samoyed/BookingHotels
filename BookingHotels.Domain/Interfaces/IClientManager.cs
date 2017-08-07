@@ -1,7 +1,7 @@
-﻿using BookingHotels.DAL.Repositories;
+﻿using BookingHotels.Domain.Repositories;
 using System;
 
-namespace BookingHotels.DAL.Interfaces
+namespace BookingHotels.Domain.Interfaces
 {
     // User profiles manager interface
     public interface IClientManager : IDisposable
