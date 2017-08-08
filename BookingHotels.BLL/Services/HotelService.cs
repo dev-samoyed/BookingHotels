@@ -6,6 +6,7 @@ using BookingHotels.BLL.DTO;
 using BookingHotels.Domain.Interfaces;
 using AutoMapper;
 using BookingHotels.DAL.Entities;
+using BookingHotels.BLL.Infrastructure;
 
 namespace BookingHotels.BLL.Services
 {
@@ -36,6 +37,14 @@ namespace BookingHotels.BLL.Services
             return Mapper.Map<List<Hotel>, List<HotelDTO>>(hotels);
         }
 
+        public void AddHotel(HotelDTO hotelDto)
+        {
+            Hotel hotel = Mapper.Map<HotelDTO, Hotel>(hotelDto);
+
+            _unitOfWork.Hotels.Create(hotel);
+            _unitOfWork.Save();
+        }
+        
         public void Dispose()
         {
             _unitOfWork.Dispose();

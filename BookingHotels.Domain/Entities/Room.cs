@@ -15,3 +15,5 @@ namespace BookingHotels.DAL.Entities
 
     }
 }
+
+

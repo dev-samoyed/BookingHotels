@@ -6,6 +6,7 @@ using BookingHotels.Web.Models;
 using BookingHotels.BLL.Interfaces;
 using AutoMapper;
 using BookingHotels.BLL.DTO;
+using BookingHotels.DAL.Entities;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -45,31 +46,64 @@ namespace BookingHotels.Web.Controllers
             return View(hotel);
         }
 
-        [Authorize(Roles = "Admin")]
-        // GET: HotelViewModels/Create
+        // GET: Hotel/Create
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
         }
-        /*
-
-        // POST: HotelViewModels/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,HotelName,HotelStars")] HotelViewModel hotelViewModel)
+        public ActionResult Create(HotelViewModel hotelViewModel)
         {
             if (ModelState.IsValid)
             {
-                hotelViewModel.ID = Guid.NewGuid();
-                hotelSrvice.HotelViewModels.Add(hotelViewModel);
-                hotelSrvice.SaveChanges();
+                HotelDTO hotelDto = Mapper.Map<HotelViewModel, HotelDTO>(hotelViewModel);
+
+                hotelSrvice.AddHotel(hotelDto);
                 return RedirectToAction("Index");
             }
-
             return View(hotelViewModel);
         }
+
+        /*/
+         * 
+        public ActionResult MakeBoking(int? id)
+{
+    try
+    {
+        RoomDTO room = bookingService.GetRoom(id);
+        Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, OrderViewModel>()
+        .ForMember("PhoneId", opt => opt.MapFrom(src => src.Id)));
+
+        var order = Mapper.Map<RoomDTO, OrderViewModel>(phone);
+        return View(order);
+    }
+    catch (ValidationException ex)
+    {
+        return Content(ex.Message);
+    }
+}
+[HttpPost]
+public ActionResult MakeBooking(BookingViewModel booking)
+{
+    try
+    {
+        Mapper.Initialize(cfg => cfg.CreateMap<OrderViewModel, OrderDTO>());
+        var bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(order);
+        bookingService.MakeBooking(orderDto);
+        return Content("<h2>Ваш заказ успешно оформлен</h2>");
+    }
+    catch (ValidationException ex)
+    {
+        ModelState.AddModelError(ex.Property, ex.Message);
+    }
+    return View(order);
+}
+
+
+========================
 
         // GET: HotelViewModels/Edit/5
         public ActionResult Edit(Guid? id)
@@ -138,29 +172,6 @@ namespace BookingHotels.Web.Controllers
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//public ActionResult AllRooms()
-//{
-// Create instance of all rooms (DTO)
-// IEnumerable<RoomDTO> roomDtos = roomSrvice.GetRooms();
-// Map DTO to ViewModel using roomDtos data
-// var rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
-//return View(rooms);
-//}
 /*
 public ActionResult MakeBoking(int? id)
 {

@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\UserConfig.cs" />
     <Compile Include="Configurations\HotelConfig.cs" />
     <Compile Include="EF\MyIdentityDbContext.cs" />
     <Compile Include="Migrations\201708040822029_init2.cs" />

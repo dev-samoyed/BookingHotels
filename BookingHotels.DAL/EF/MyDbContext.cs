@@ -28,9 +28,7 @@ namespace BookingHotels.DAL.EF
         {
             Database.SetInitializer<MyDbContext>(new MyContextInitializer());
         }
-
-
-
+        
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -38,6 +36,7 @@ namespace BookingHotels.DAL.EF
             // Hotel Configuarations via Fluent api
             modelBuilder.Configurations.Add(new HotelConfig<Hotel>());
         }
+
         public sealed class MyContextInitializer : MigrateDatabaseToLatestVersion<MyDbContext, MyDbContextConfiguration>
         { }
 

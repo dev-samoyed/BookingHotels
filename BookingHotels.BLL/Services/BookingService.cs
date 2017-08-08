@@ -26,6 +26,7 @@ namespace BookingHotels.BLL.Services
         // и создает по нему объект Booking и сохраняет его в базу данных.
         public void MakeBooking(BookingDTO bookingDto)
         {
+
             Room room = _unitOfWork.Rooms.Get(bookingDto.RoomID);
 
             // Validatioin

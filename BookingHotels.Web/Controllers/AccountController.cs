@@ -104,10 +104,10 @@ namespace BookingHotels.Controllers
         {
             await UserService.SetInitialData(new UserDTO
             {
-                Email = "ww@ww.ww",
+                Email = "ad@ad.ad",
                 UserName = "admin",
                 Password = "123123",
-                Name = "WW WW WW",
+                Name = "I AM ADMIN",
                 Role = "admin",
             }, new List<string> { "user", "admin" });
         }
