@@ -79,6 +79,10 @@
     <Compile Include="Migrations\201708061514343_dropped_db.Designer.cs">
       <DependentUpon>201708061514343_dropped_db.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708080616594_users.cs" />
+    <Compile Include="Migrations\201708080616594_users.Designer.cs">
+      <DependentUpon>201708080616594_users.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="EF\MyDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -112,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708061514343_dropped_db.resx">
       <DependentUpon>201708061514343_dropped_db.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708080616594_users.resx">
+      <DependentUpon>201708080616594_users.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

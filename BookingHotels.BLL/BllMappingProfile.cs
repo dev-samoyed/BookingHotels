@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BookingHotels.BLL.DTO;
 using BookingHotels.DAL.Entities;
+using BookingHotels.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace BookingHotels.BLL
             CreateMap<Room, RoomDTO>(MemberList.None);
             CreateMap<Feedback, FeedbackDTO>(MemberList.None);
             CreateMap<Booking, BookingDTO>(MemberList.None);
+            CreateMap<Register, UserDTO>(MemberList.None);
+            CreateMap<UserDTO, Register>(MemberList.None);
         }
     }
 }

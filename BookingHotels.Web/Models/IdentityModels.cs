@@ -35,5 +35,11 @@ namespace BookingHotels.Web.Models
         public System.Data.Entity.DbSet<BookingHotels.Web.Models.RoomViewModel> RoomViewModels { get; set; }
 
         public System.Data.Entity.DbSet<BookingHotels.Web.Models.HotelViewModel> HotelViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<BookingHotels.Domain.Entities.Register> RegisterModels { get; set; }
+
+        public System.Data.Entity.DbSet<BookingHotels.Domain.Entities.Register> LoginModels { get; set; }
+
+        public System.Data.Entity.DbSet<BookingHotels.BLL.DTO.UserDTO> UserDTOes { get; set; }
     }
 }

@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingHotels.Domain.Entities
 { 
-    public class RegisterModel
+    public class Register
     {
+        [Key]
+        public int ID { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]
@@ -13,8 +16,6 @@ namespace BookingHotels.Domain.Entities
         [DataType(DataType.Password)]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
-        [Required]
-        public string Address { get; set; }
         [Required]
         public string Name { get; set; }
     }

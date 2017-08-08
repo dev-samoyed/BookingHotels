@@ -9,7 +9,7 @@ namespace BookingHotels.Domain.Repositories
         [ForeignKey("ApplicationUser")]
         public string ID { get; set; }
         public string Name { get; set; }
-        public string Address { get; set; }
+        public string Role { get; set; }
         public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

@@ -8,8 +8,9 @@ using BookingHotels.BLL.DTO;
 using System.Security.Claims;
 using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.Infrastructure;
-using BookingHotels.Domain.Models;
 using BookingHotels.Domain.Entities;
+using AutoMapper;
+using Microsoft.AspNet.Identity;
 
 namespace BookingHotels.Controllers
 {
@@ -19,7 +20,8 @@ namespace BookingHotels.Controllers
         {
             get
             {
-                // Поскольку ранее мы зарегитрировали сервис пользователей через контекст OWIN, то теперь мы можем получить этот сервис с помощью метода
+                // Поскольку ранее мы зарегистрировали сервис пользователей через контекст OWIN,
+                // получаем этот сервис с помощью метода
                 return HttpContext.GetOwinContext().GetUserManager<IUserService>();
             }
         }
@@ -36,10 +38,14 @@ namespace BookingHotels.Controllers
         {
             return View();
         }
+        public ActionResult Manage()
+        {
+            return View();
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginModel model)
+        public async Task<ActionResult> Login(Login model)
         {
             await SetInitialDataAsync();
             if (ModelState.IsValid)
@@ -57,7 +63,7 @@ namespace BookingHotels.Controllers
                     {
                         IsPersistent = true
                     }, claim);
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Hotel");
                 }
             }
             return View(model);
@@ -66,7 +72,7 @@ namespace BookingHotels.Controllers
         public ActionResult Logout()
         {
             AuthenticationManager.SignOut();
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Hotel");
         }
 
         public ActionResult Register()
@@ -76,22 +82,19 @@ namespace BookingHotels.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterModel model)
+        public async Task<ActionResult> Register(Register model)
         {
             await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
-                UserDTO userDto = new UserDTO
-                {
-                    Email = model.Email,
-                    Password = model.Password,
-                    Address = model.Address,
-                    Name = model.Name,
-                    Role = "user"
-                };
+                // Map recieved data
+                var userDto = Mapper.Map<Register, UserDTO>(model);
+                userDto.Role = "user";
+
                 OperationDetails operationDetails = await UserService.Create(userDto);
-                if (operationDetails.Succedeed)
+                if (operationDetails.Succedeed) {
                     return View("SuccessRegister");
+                }
                 else
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
@@ -101,11 +104,10 @@ namespace BookingHotels.Controllers
         {
             await UserService.SetInitialData(new UserDTO
             {
-                Email = "somemail@mail.ru",
-                UserName = "somemail@mail.ru",
-                Password = "ad46D_ewr3",
-                Name = "Семен Семенович Горбунков",
-                Address = "ул. Спортивная, д.30, кв.75",
+                Email = "ww@ww.ww",
+                UserName = "admin",
+                Password = "123123",
+                Name = "WW WW WW",
                 Role = "admin",
             }, new List<string> { "user", "admin" });
         }
