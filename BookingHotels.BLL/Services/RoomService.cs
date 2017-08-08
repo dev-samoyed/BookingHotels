@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.DTO;
 using BookingHotels.Domain.Interfaces;
@@ -18,7 +16,6 @@ namespace BookingHotels.BLL.Services
         {
             _unitOfWork = uow;
         }
-
         // Gets room by ID
         public RoomDTO GetRoom(Guid ID)
         {

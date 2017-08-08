@@ -1,115 +1,59 @@
 ﻿using BookingHotels.DAL.EF;
-using BookingHotels.DAL.Entities;
 using BookingHotels.Domain.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookingHotels.DAL.Repositories
 {
     class BaseRepository<T> : IRepository<T> where T : class
     {
         private MyDbContext Context;
+        // Declare generic DbSet<T> (which may be Hotels, Rooms or other DbSet from MyDbContext)
         private DbSet<T> DbSet;
-
-
 
         public BaseRepository(MyDbContext context)
         {
-            // context.Register(this);
             Context = context;
-            DbSet = context.Set<T>;
+            DbSet = context.Set<T>();
         }
 
-        public virtual IQueryable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
             return DbSet;
         }
 
-        public IEnumerable<T> GetAll()
+        public T Get(Guid? id)
         {
-           
-            return db.;
+            return DbSet.Find(id);
         }
 
-        public Booking Get(Guid? id)
+        public void Create(T entity)
         {
-            return db.Bookings.Find(id);
+            DbSet.Add(entity);
         }
 
-        public void Create(Booking booking)
+        public void Update(T entity)
         {
-            db.Bookings.Add(booking);
+            var entityEntry = Context.Entry(entity);
+            if (entityEntry.State == EntityState.Detached)
+            {
+                DbSet.Attach(entity);
+            }
+                entityEntry.State = EntityState.Modified;
         }
 
-        public void Update(Booking booking)
+        public IEnumerable<T> SearchFor(Func<T, Boolean> predicate)
         {
-            db.Entry(booking).State = EntityState.Modified;
-        }
-
-        public IEnumerable<Booking> Find(Func<Booking, Boolean> predicate)
-        {
-            return db.Bookings.Where(predicate).ToList();
+            return GetAll().Where(predicate);
         }
 
         public void Delete(Guid id)
         {
-            Hotel hotel = db.Hotels.Find(id);
-            if (hotel != null)
-                db.Hotels.Remove(hotel);
+            T entity = DbSet.Find(id);
+            if (entity != null)
+                DbSet.Remove(entity);
         }
-    }
-}
-
-
-
-
-public abstract class GenericRepository<C, T> :
-    IGenericRepository<T> where T : class where C : DbContext, new()
-{
-
-    private C _entities = new C();
-    public C Context
-    {
-
-        get { return _entities; }
-        set { _entities = value; }
-    }
-
-    public virtual IQueryable<T> GetAll()
-    {
-
-        IQueryable<T> query = _entities.Set<T>();
-        return query;
-    }
-
-    public IQueryable<T> FindBy(System.Linq.Expressions.Expression<Func<T, bool>> predicate)
-    {
-
-        IQueryable<T> query = _entities.Set<T>().Where(predicate);
-        return query;
-    }
-
-    public virtual void Add(T entity)
-    {
-        _entities.Set<T>().Add(entity);
-    }
-
-    public virtual void Delete(T entity)
-    {
-        _entities.Set<T>().Remove(entity);
-    }
-
-    public virtual void Edit(T entity)
-    {
-        _entities.Entry(entity).State = System.Data.EntityState.Modified;
-    }
-
-    public virtual void Save()
-    {
-        _entities.SaveChanges();
     }
 }

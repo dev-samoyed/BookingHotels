@@ -22,7 +22,7 @@ namespace BookingHotels.DAL.Configurations
 
             // Specify constraints
             HasMany(p => p.Rooms);
-                //.WithRequired(p => (Hotel)p.Hotel);
+            //.WithRequired(p => (Hotel)p.Hotel);
         }
     }
 }

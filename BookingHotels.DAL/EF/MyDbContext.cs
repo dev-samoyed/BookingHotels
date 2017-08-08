@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using BookingHotels.DAL.Entities;
 using BookingHotels.DAL.Configurations;
-using System.Data.Entity.Migrations;
 using BookingHotels.DAL.Migrations;
-using Microsoft.AspNet.Identity.EntityFramework;
-using BookingHotels.DAL.Repositories;
 
 namespace BookingHotels.DAL.EF
 {

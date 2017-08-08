@@ -5,27 +5,24 @@ using BookingHotels.DAL.Entities;
 
 namespace BookingHotels.DAL.Repositories
 {
-    // Using Unit of Work in Repository Pattern
-    // todo: переделать в Generic repository
     public class EFUnitOfWork : IUnitOfWork
     {
-        private MyDbContext db;
-        private HotelRepository hotelRepository;
-        private RoomRepository roomRepository;
-        private FeedbackRepository feedbackRepository;
-        private BookingRepository bookingRepository;
+        private BaseRepository<Hotel> hotelRepository;
+        private BaseRepository<Room> roomRepository;
+        private BaseRepository<Feedback> feedbackRepository;
+        private BaseRepository<Booking> bookingRepository;
 
+        private MyDbContext context;
         public EFUnitOfWork(string connectionString)
         {
-            db = new MyDbContext(connectionString);
+            context = new MyDbContext(connectionString);
         }
-
         public IRepository<Hotel> Hotels
         {
             get
             {
                 if (hotelRepository == null)
-                    hotelRepository = new HotelRepository(db);
+                    hotelRepository = new BaseRepository<Hotel>(context);
                 return hotelRepository;
             }
         }
@@ -34,7 +31,7 @@ namespace BookingHotels.DAL.Repositories
             get
             {
                 if (roomRepository == null)
-                    roomRepository = new RoomRepository(db);
+                    roomRepository = new BaseRepository<Room>(context);
                 return roomRepository;
             }
         }
@@ -43,7 +40,7 @@ namespace BookingHotels.DAL.Repositories
             get
             {
                 if (feedbackRepository == null)
-                    feedbackRepository = new FeedbackRepository(db);
+                    feedbackRepository = new BaseRepository<Feedback>(context);
                 return feedbackRepository;
             }
         }
@@ -52,14 +49,14 @@ namespace BookingHotels.DAL.Repositories
             get
             {
                 if (bookingRepository == null)
-                    bookingRepository = new BookingRepository(db);
+                    bookingRepository = new BaseRepository<Booking>(context);
                 return bookingRepository;
             }
         }
         // Save
         public void Save()
         {
-            db.SaveChanges();
+            context.SaveChanges();
         }
         // Dispose
         private bool disposed = false;
@@ -69,7 +66,7 @@ namespace BookingHotels.DAL.Repositories
             {
                 if (disposing)
                 {
-                    db.Dispose();
+                    context.Dispose();
                 }
                 this.disposed = true;
             }

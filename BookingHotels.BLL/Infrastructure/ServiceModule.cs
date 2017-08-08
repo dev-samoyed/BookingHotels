@@ -6,7 +6,6 @@ namespace NLayerApp.BLL.Infrastructure
 {
     public class ServiceModule : NinjectModule
     {
-
         // Специальный модуль Ninject для организации сопоставления зависимостей.
         private string connectionString;
         // Через конструктор передается название подключения

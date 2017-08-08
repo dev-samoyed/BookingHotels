@@ -6,24 +6,22 @@ using BookingHotels.Web.Models;
 using BookingHotels.BLL.Interfaces;
 using AutoMapper;
 using BookingHotels.BLL.DTO;
-using BookingHotels.DAL.Entities;
 
 namespace BookingHotels.Web.Controllers
 {
     public class HotelController : Controller
     {
-        IHotelService hotelSrvice;
-        //IRoomService roomSrvice;
+        IHotelService hotelService;
         public HotelController(IHotelService serv)
         {
-            hotelSrvice = serv;
+            hotelService = serv;
         }
         
 
         // GET: HotelViewModels
         public ActionResult Index()
         {
-            IEnumerable<HotelDTO> hotelDtos = hotelSrvice.GetHotels();
+            IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();
             // Map DTO to ViewModel using roomDtos data
             var hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
             return View(hotels);
@@ -36,7 +34,7 @@ namespace BookingHotels.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HotelDTO hotelDto = hotelSrvice.GetHotel(id);
+            HotelDTO hotelDto = hotelService.GetHotel(id);
             var hotel = Mapper.Map<HotelDTO, HotelViewModel>(hotelDto);
 
             if (hotel == null)
@@ -61,7 +59,7 @@ namespace BookingHotels.Web.Controllers
             {
                 HotelDTO hotelDto = Mapper.Map<HotelViewModel, HotelDTO>(hotelViewModel);
                 hotelDto.ID = Guid.NewGuid();
-                hotelSrvice.AddHotel(hotelDto);
+                hotelService.AddHotel(hotelDto);
                 return RedirectToAction("Index");
             }
             return View(hotelViewModel);
@@ -74,7 +72,7 @@ namespace BookingHotels.Web.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HotelDTO hotel = hotelSrvice.GetHotel(id);
+            HotelDTO hotel = hotelService.GetHotel(id);
             if (hotel == null)
             {
                 return HttpNotFound();
@@ -192,7 +190,7 @@ public ActionResult MakeBooking(BookingViewModel booking)
         {
             if (disposing)
             {
-                hotelSrvice.Dispose();
+                hotelService.Dispose();
             }
             base.Dispose(disposing);
         }
