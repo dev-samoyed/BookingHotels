@@ -93,6 +93,7 @@
     <Compile Include="Repositories\FeedbackRepository.cs" />
     <Compile Include="Repositories\HotelRepository.cs" />
     <Compile Include="Repositories\IdentityUnitOfWork.cs" />
+    <Compile Include="Repositories\BaseRepository.cs" />
     <Compile Include="Repositories\RoomRepository.cs" />
   </ItemGroup>
   <ItemGroup>
