@@ -11,9 +11,11 @@ namespace BookingHotels.App_Start
 {
     public class Startup
     {
+        // С помощью фабрики сервисов здесь создается сервис для работы с сервисами:
         IServiceCreator serviceCreator = new ServiceCreator();
         public void Configuration(IAppBuilder app)
         {
+            // Потом сервис региструется контекстом OWIN:
             app.CreatePerOwinContext<IUserService>(CreateUserService);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
