@@ -6,21 +6,21 @@ namespace BookingHotels.DAL.Repositories
 {
     public class ClientManager : IClientManager
     {
-        public MyIdentityDbContext Database { get; set; }
-        public ClientManager(MyIdentityDbContext db)
+        public MyDbContext context { get; set; }
+        public ClientManager(MyDbContext db)
         {
-            Database = db;
+            context = db;
         }
 
         public void Create(ClientProfile item)
         {
-            Database.ClientProfiles.Add(item);
-            Database.SaveChanges();
+            context.ClientProfiles.Add(item);
+            context.SaveChanges();
         }
 
         public void Dispose()
         {
-            Database.Dispose();
+            context.Dispose();
         }
     }
 }

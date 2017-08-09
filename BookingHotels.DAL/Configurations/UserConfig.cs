@@ -11,6 +11,7 @@ using BookingHotels.Domain.Repositories;
 
 namespace BookingHotels.DAL.Configurations
 {
+    //public class UserConfig : EntityTypeConfiguration<ClientProfile>
     public class UserConfig<T> : EntityTypeConfiguration<T> where T : ClientProfile
     {
         // Configure models with FLUENT API

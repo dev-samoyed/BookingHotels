@@ -54,7 +54,7 @@ namespace BookingHotels.Controllers
                 ClaimsIdentity claim = await UserService.Authenticate(userDto);
                 if (claim == null)
                 {
-                    ModelState.AddModelError("", "Неверный логин или пароль.");
+                    ModelState.AddModelError("", "Incorrect login or password");
                 }
                 else
                 {
@@ -107,7 +107,7 @@ namespace BookingHotels.Controllers
                 Email = "ad@ad.ad",
                 UserName = "admin",
                 Password = "123123",
-                Name = "I AM ADMIN",
+                Name = "ADMIN",
                 Role = "admin",
             }, new List<string> { "user", "admin" });
         }

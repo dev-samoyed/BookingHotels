@@ -35,11 +35,11 @@ namespace BookingHotels.BLL.Services
                 ClientProfile clientProfile = new ClientProfile { ID = user.Id, Name = userDto.Name  };
                 _unitOfWork.ClientManager.Create(clientProfile);
                 await _unitOfWork.SaveAsync();
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                return new OperationDetails(true, "Registration succesfull", "");
             }
             else
             {
-                return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
+                return new OperationDetails(false, "User with this name already exists", "Email");
             }
         }
 

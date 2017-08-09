@@ -73,18 +73,6 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.3.2.0.0\lib\net45-full\Ninject.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -210,7 +198,6 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
@@ -226,7 +213,6 @@
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Util\NinjectDependencyResolver.cs" />
     <Compile Include="WebMappingProfile.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -288,6 +274,10 @@
     <ProjectReference Include="..\BookingHotels.BLL\BookingHotels.BLL.csproj">
       <Project>{5ec27748-bcb9-41e1-ab92-c1576f8b29ca}</Project>
       <Name>BookingHotels.BLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BookingHotels.DAL\BookingHotels.DAL.csproj">
+      <Project>{f4c8626c-8769-418a-8715-5e92103d675d}</Project>
+      <Name>BookingHotels.DAL</Name>
     </ProjectReference>
     <ProjectReference Include="..\BookingHotels.Domain\BookingHotels.Domain.csproj">
       <Project>{5feb38c8-46b7-4c6b-87a6-c5bfcba1d5f5}</Project>

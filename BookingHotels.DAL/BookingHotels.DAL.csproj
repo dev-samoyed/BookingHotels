@@ -63,26 +63,9 @@
   <ItemGroup>
     <Compile Include="Configurations\UserConfig.cs" />
     <Compile Include="Configurations\HotelConfig.cs" />
-    <Compile Include="EF\MyIdentityDbContext.cs" />
-    <Compile Include="Migrations\201708040822029_init2.cs" />
-    <Compile Include="Migrations\201708040822029_init2.Designer.cs">
-      <DependentUpon>201708040822029_init2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708040825120_init3.cs" />
-    <Compile Include="Migrations\201708040825120_init3.Designer.cs">
-      <DependentUpon>201708040825120_init3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708040826587_init4.cs" />
-    <Compile Include="Migrations\201708040826587_init4.Designer.cs">
-      <DependentUpon>201708040826587_init4.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708061514343_dropped_db.cs" />
-    <Compile Include="Migrations\201708061514343_dropped_db.Designer.cs">
-      <DependentUpon>201708061514343_dropped_db.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708080616594_users.cs" />
-    <Compile Include="Migrations\201708080616594_users.Designer.cs">
-      <DependentUpon>201708080616594_users.cs</DependentUpon>
+    <Compile Include="Migrations\201708090652311_dropped_database.cs" />
+    <Compile Include="Migrations\201708090652311_dropped_database.Designer.cs">
+      <DependentUpon>201708090652311_dropped_database.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="EF\MyDbContext.cs" />
@@ -103,23 +86,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708040822029_init2.resx">
-      <DependentUpon>201708040822029_init2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708040825120_init3.resx">
-      <DependentUpon>201708040825120_init3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708040826587_init4.resx">
-      <DependentUpon>201708040826587_init4.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708061514343_dropped_db.resx">
-      <DependentUpon>201708061514343_dropped_db.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708080616594_users.resx">
-      <DependentUpon>201708080616594_users.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708090652311_dropped_database.resx">
+      <DependentUpon>201708090652311_dropped_database.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -12,7 +12,7 @@ namespace BookingHotels.DAL.Migrations
     {
         public MyDbContextConfiguration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
         }
 
         protected override void Seed(MyDbContext db)
