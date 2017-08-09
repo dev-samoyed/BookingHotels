@@ -1,7 +1,7 @@
 ﻿using System;
 using BookingHotels.DAL.EF;
 using BookingHotels.Domain.Interfaces;
-using BookingHotels.DAL.Entities;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.DAL.Repositories
 {

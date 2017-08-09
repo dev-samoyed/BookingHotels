@@ -63,14 +63,17 @@
   <ItemGroup>
     <Compile Include="Configurations\UserConfig.cs" />
     <Compile Include="Configurations\HotelConfig.cs" />
-    <Compile Include="Migrations\201708090652311_dropped_database.cs" />
-    <Compile Include="Migrations\201708090652311_dropped_database.Designer.cs">
-      <DependentUpon>201708090652311_dropped_database.cs</DependentUpon>
+    <Compile Include="Migrations\201708091118374_users_and_roles_altering.cs" />
+    <Compile Include="Migrations\201708091118374_users_and_roles_altering.Designer.cs">
+      <DependentUpon>201708091118374_users_and_roles_altering.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708091127511_users_and_roles_altering_2.cs" />
+    <Compile Include="Migrations\201708091127511_users_and_roles_altering_2.Designer.cs">
+      <DependentUpon>201708091127511_users_and_roles_altering_2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="EF\MyDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ClientManager.cs" />
     <Compile Include="Repositories\EFUnitOfWork.cs" />
     <Compile Include="Repositories\IdentityUnitOfWork.cs" />
     <Compile Include="Repositories\BaseRepository.cs" />
@@ -86,8 +89,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708090652311_dropped_database.resx">
-      <DependentUpon>201708090652311_dropped_database.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708091118374_users_and_roles_altering.resx">
+      <DependentUpon>201708091118374_users_and_roles_altering.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708091127511_users_and_roles_altering_2.resx">
+      <DependentUpon>201708091127511_users_and_roles_altering_2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

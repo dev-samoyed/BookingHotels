@@ -10,8 +10,8 @@ namespace BookingHotels.Web.Models
 {
     public class RoomViewModel
     {
-        public Guid ID { get; set; }
-        public Guid HotelID { get; set; }
+        public Guid Id { get; set; }
+        public Guid HotelId { get; set; }
         public int RoomNumber { get; set; }
         public RoomType RoomType { get; set; }
     }

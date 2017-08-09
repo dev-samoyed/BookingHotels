@@ -26,7 +26,7 @@
             {
                 <div>Room number: @room.RoomNumber</div>
                 <div>Room type: @room.RoomType</div>
-                <div>Book this room placeholder</div>
+                @Html.ActionLink("Book", "Index")
                 <hr>
             }
         </dd>
@@ -34,6 +34,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

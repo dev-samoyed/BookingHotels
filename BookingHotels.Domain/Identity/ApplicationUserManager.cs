@@ -1,4 +1,4 @@
-﻿using BookingHotels.Domain.Repositories;
+﻿using BookingHotels.Domain.Entities;
 using Microsoft.AspNet.Identity;
 
 namespace BookingHotels.Domain.Identity

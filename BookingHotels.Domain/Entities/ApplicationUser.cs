@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace BookingHotels.Domain.Repositories
+namespace BookingHotels.Domain.Entities
 {
     public class ApplicationUser : IdentityUser
     {
-        // todo: Make This Primary User Entity
-        // public Guid Id { get; set; }
-        public virtual ClientProfile ClientProfile { get; set; }
-
-
-
+        // These properties will be converted to columns in table “ApplicationUsers”
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public new Guid Id { get; set; }
     }
 }

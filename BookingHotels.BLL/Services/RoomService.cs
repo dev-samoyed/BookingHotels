@@ -5,7 +5,7 @@ using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.DTO;
 using BookingHotels.Domain.Interfaces;
 using AutoMapper;
-using BookingHotels.DAL.Entities;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.BLL.Services
 {

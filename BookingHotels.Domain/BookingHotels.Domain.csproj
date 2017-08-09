@@ -57,18 +57,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\ApplicationUserRoles.cs" />
     <Compile Include="Entities\Login.cs" />
     <Compile Include="Entities\Register.cs" />
     <Compile Include="Identity\ApplicationRoleManager.cs" />
     <Compile Include="Identity\ApplicationUserManager.cs" />
-    <Compile Include="Interfaces\IClientManager.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWorkIdentity.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Entities\ApplicationRole.cs" />
     <Compile Include="Entities\ApplicationUser.cs" />
     <Compile Include="Entities\Booking.cs" />
-    <Compile Include="Entities\ClientProfile.cs" />
     <Compile Include="Entities\Feedback.cs" />
     <Compile Include="Entities\Hotel.cs" />
     <Compile Include="Entities\Room.cs" />

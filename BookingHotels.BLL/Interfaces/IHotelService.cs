@@ -12,6 +12,7 @@ namespace BookingHotels.BLL.Interfaces
         HotelDTO GetHotelByRoom(Guid id);
         IEnumerable<HotelDTO> GetHotels();
         void AddHotel(HotelDTO hotel);
+        void DeleteHotel(HotelDTO hotel);
         void Dispose();
         
     }

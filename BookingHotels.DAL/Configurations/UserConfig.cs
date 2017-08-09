@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BookingHotels.DAL.Entities;
-using System.Data.Entity.ModelConfiguration;
-using System.Data.Entity;
+﻿using System.Data.Entity.ModelConfiguration;
 using BookingHotels.Domain.Entities;
-using BookingHotels.Domain.Repositories;
 
 namespace BookingHotels.DAL.Configurations
 {
     //public class UserConfig : EntityTypeConfiguration<ClientProfile>
-    public class UserConfig<T> : EntityTypeConfiguration<T> where T : ClientProfile
+    public class UserConfig : EntityTypeConfiguration<ApplicationUser>
     {
         // Configure models with FLUENT API
         public UserConfig()

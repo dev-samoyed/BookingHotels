@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using BookingHotels.DAL.Enums;
 
-namespace BookingHotels.DAL.Entities
+namespace BookingHotels.Domain.Entities
 {
     public class Hotel
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string HotelName { get; set; }
         public HotelStars HotelStars { get; set; }
         // Link to rooms collection

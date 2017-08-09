@@ -6,7 +6,7 @@ namespace BookingHotels.Domain.Entities
     public class Register
     {
         [Key]
-        public int ID { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string Email { get; set; }
         [Required]

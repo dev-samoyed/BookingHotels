@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BookingHotels.BLL.DTO;
-using BookingHotels.DAL.Entities;
 using BookingHotels.Domain.Entities;
 using System;
 using System.Collections.Generic;

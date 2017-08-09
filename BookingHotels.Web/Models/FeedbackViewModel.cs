@@ -7,8 +7,8 @@ namespace BookingHotels.Web.Models
 {
     public class FeedbackViewModel
     {
-        public Guid ID { get; set; }
-        public Guid UserID { get; set; }
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
         public string FeedbackText { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using BookingHotels.DAL.Entities;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.Domain.Interfaces
 {

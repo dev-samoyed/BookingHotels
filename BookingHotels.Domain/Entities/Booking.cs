@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace BookingHotels.DAL.Entities
+namespace BookingHotels.Domain.Entities
 {
     public class Booking
     {
-        public Guid ID { get; set; }
-        public Guid UserID { get; set; }
-        public Guid RoomID { get; set; }
+        public Guid Id { get; set; }
+        public Guid UserId { get; set; }
+        public Guid RoomId { get; set; }
         public DateTime BookingStartDate { get; set; }
         public DateTime BookingEndDate { get; set; }
     }

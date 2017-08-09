@@ -1,6 +1,6 @@
 ﻿using System;
 using BookingHotels.BLL.DTO;
-using BookingHotels.DAL.Entities;
+using BookingHotels.Domain.Entities;
 using BookingHotels.Domain.Interfaces;
 using BookingHotels.BLL.Infrastructure;
 using BookingHotels.BLL.Interfaces;
@@ -34,7 +34,7 @@ namespace BookingHotels.BLL.Services
                 throw new ValidationException("Room was not found", "");
             Booking booking = new Booking
             {
-                RoomID = room.ID,
+                RoomId = room.Id,
                 BookingEndDate = DateTime.Now,
                 BookingStartDate = DateTime.Now
             };
@@ -59,7 +59,7 @@ namespace BookingHotels.BLL.Services
         public RoomDTO GetRoom(Guid? id)
         {
             if (id == null)
-                throw new ValidationException("Room ID was not set", "");
+                throw new ValidationException("Room Id was not set", "");
             var room = _unitOfWork.Rooms.Get(id.Value);
             if (room == null)
                 throw new ValidationException("Room was not found", "");
@@ -70,7 +70,7 @@ namespace BookingHotels.BLL.Services
         public RoomDTO GetRoomsIn(Guid? id)
         {
             if (id == null)
-                throw new ValidationException("Room ID was not set", "");
+                throw new ValidationException("Room Id was not set", "");
             var room = _unitOfWork.Rooms.Get(id.Value);
             if (room == null)
                 throw new ValidationException("Room was not found", "");
@@ -79,7 +79,7 @@ namespace BookingHotels.BLL.Services
             return Mapper.Map<Room, RoomDTO>(room);
         }
 
-        // Gets HotelDTO by ID and sends it to view
+        // Gets HotelDTO by Id and sends it to view
         public HotelDTO GetHotel(Guid id)
         {
             Hotel hotel = _unitOfWork.Hotels.Get(id);

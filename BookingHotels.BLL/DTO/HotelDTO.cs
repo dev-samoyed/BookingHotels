@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using BookingHotels.DAL.Enums;
-using BookingHotels.DAL.Entities;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.BLL.DTO
 {
     public class HotelDTO
     {
-        public Guid ID { get; set; }
+        public Guid Id { get; set; }
         public string HotelName { get; set; }
         public HotelStars HotelStars { get; set; }
         // Link to rooms collection

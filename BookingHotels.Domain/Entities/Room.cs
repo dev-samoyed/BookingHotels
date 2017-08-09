@@ -1,12 +1,12 @@
 ﻿using System;
 using BookingHotels.DAL.Enums;
 
-namespace BookingHotels.DAL.Entities
+namespace BookingHotels.Domain.Entities
 {
     public class Room
     {
-        public Guid ID { get; set; }
-        public Guid HotelID { get; set; }
+        public Guid Id { get; set; }
+        public Guid HotelId { get; set; }
         public int RoomNumber { get; set; }
         public RoomType RoomType { get; set; }
 

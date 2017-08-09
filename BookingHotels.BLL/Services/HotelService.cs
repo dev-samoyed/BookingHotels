@@ -5,7 +5,7 @@ using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.DTO;
 using BookingHotels.Domain.Interfaces;
 using AutoMapper;
-using BookingHotels.DAL.Entities;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.BLL.Services
 {
@@ -43,7 +43,15 @@ namespace BookingHotels.BLL.Services
             _unitOfWork.Hotels.Create(hotel);
             _unitOfWork.Save();
         }
-        
+
+        public void DeleteHotel(HotelDTO hotelDto)
+        {
+            Hotel hotel = Mapper.Map<HotelDTO, Hotel>(hotelDto);
+
+            _unitOfWork.Hotels.Delete(hotel.Id);
+            _unitOfWork.Save();
+        }
+
         public void Dispose()
         {
             _unitOfWork.Dispose();

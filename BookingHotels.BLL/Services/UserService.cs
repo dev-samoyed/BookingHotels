@@ -7,7 +7,8 @@ using BookingHotels.BLL.Interfaces;
 using BookingHotels.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using BookingHotels.Domain.Repositories;
+using System;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.BLL.Services
 {
@@ -30,10 +31,8 @@ namespace BookingHotels.BLL.Services
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
                 // добавляем роль
-                await _unitOfWork.UserManager.AddToRoleAsync(user.Id, userDto.Role);
-                // создаем профиль клиента
-                ClientProfile clientProfile = new ClientProfile { ID = user.Id, Name = userDto.Name  };
-                _unitOfWork.ClientManager.Create(clientProfile);
+                //await _unitOfWork.UserManager.AddToRoleAsync(user.Id.ToString(), userDto.Role);
+                await _unitOfWork.UserManager.AddToRoleAsync(user.Id.ToString(), userDto.Role);
                 await _unitOfWork.SaveAsync();
                 return new OperationDetails(true, "Registration succesfull", "");
             }
@@ -46,9 +45,9 @@ namespace BookingHotels.BLL.Services
         public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
         {
             ClaimsIdentity claim = null;
-            // находим пользователя
+            // Find user
             ApplicationUser user = await _unitOfWork.UserManager.FindAsync(userDto.Email, userDto.Password);
-            // авторизуем его и возвращаем объект ClaimsIdentity
+            // Authorize him and return ClaimsIdentity obj
             if (user != null)
                 claim = await _unitOfWork.UserManager.CreateIdentityAsync(user,
                                             DefaultAuthenticationTypes.ApplicationCookie);

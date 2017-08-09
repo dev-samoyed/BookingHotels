@@ -10,7 +10,6 @@ using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.Infrastructure;
 using BookingHotels.Domain.Entities;
 using AutoMapper;
-using Microsoft.AspNet.Identity;
 
 namespace BookingHotels.Controllers
 {
@@ -105,9 +104,7 @@ namespace BookingHotels.Controllers
             await UserService.SetInitialData(new UserDTO
             {
                 Email = "ad@ad.ad",
-                UserName = "admin",
                 Password = "123123",
-                Name = "ADMIN",
                 Role = "admin",
             }, new List<string> { "user", "admin" });
         }

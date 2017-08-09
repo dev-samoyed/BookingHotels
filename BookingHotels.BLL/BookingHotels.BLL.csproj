@@ -87,6 +87,7 @@
     <Compile Include="Interfaces\IServiceCreator.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ApplicationAddToRoleAsync.cs" />
     <Compile Include="Services\BookingService.cs" />
     <Compile Include="Services\RoomService.cs" />
     <Compile Include="Services\HotelService.cs" />

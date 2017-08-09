@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BookingHotels.DAL.Enums;
-using BookingHotels.DAL.Entities;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.BLL.DTO
 {
     public class RoomDTO
     {
-        public Guid ID { get; set; }
-        public Guid HotelID { get; set; }
+        public Guid Id { get; set; }
+        public Guid HotelId { get; set; }
         public int RoomNumber { get; set; }
         public RoomType RoomType { get; set; }
 

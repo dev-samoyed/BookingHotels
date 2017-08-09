@@ -58,37 +58,38 @@ namespace BookingHotels.Web.Controllers
             if (ModelState.IsValid)
             {
                 HotelDTO hotelDto = Mapper.Map<HotelViewModel, HotelDTO>(hotelViewModel);
-                hotelDto.ID = Guid.NewGuid();
+                hotelDto.Id = Guid.NewGuid();
                 hotelService.AddHotel(hotelDto);
                 return RedirectToAction("Index");
             }
             return View(hotelViewModel);
         }
 
-        // GET: Projects/Delete/5
+        // GET: Hotel/Delete/{Guid}
         public ActionResult Delete(Guid? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HotelDTO hotel = hotelService.GetHotel(id);
-            if (hotel == null)
+            HotelDTO hotelDto = hotelService.GetHotel(id);
+            var hotelViewModel = Mapper.Map<HotelDTO, HotelViewModel>(hotelDto);
+            if (hotelViewModel == null)
             {
                 return HttpNotFound();
             }
-            return View(hotel);
+            return View(hotelViewModel);
         }
 
-        //// POST: Projects/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(Guid id)
-        //{
-        //    HotelDTO hotel = hotelSrvice.GetHotel(id);
-        //    hotelSrvice.RemoveHotel(project);
-        //    return RedirectToAction("Index");
-        //}
+        // POST: Hotel/Delete/{Guid}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(Guid id)
+        {
+            HotelDTO hotelDto = hotelService.GetHotel(id);
+            hotelService.DeleteHotel(hotelDto);
+            return RedirectToAction("Index");
+        }
 
 
         /*/

@@ -4,7 +4,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Threading.Tasks;
 using BookingHotels.Domain.Identity;
-using BookingHotels.Domain.Repositories;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.DAL.Repositories
 {
@@ -14,14 +14,12 @@ namespace BookingHotels.DAL.Repositories
 
         private ApplicationUserManager userManager;
         private ApplicationRoleManager roleManager;
-        private IClientManager clientManager;
 
         public IdentityUnitOfWork(string connectionString)
         {
             context = new MyDbContext(connectionString);
             userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(context));
             roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(context));
-            clientManager = new ClientManager(context);
         }
 
         public ApplicationUserManager UserManager
@@ -29,10 +27,6 @@ namespace BookingHotels.DAL.Repositories
             get { return userManager; }
         }
 
-        public IClientManager ClientManager
-        {
-            get { return clientManager; }
-        }
 
         public ApplicationRoleManager RoleManager
         {
@@ -59,7 +53,6 @@ namespace BookingHotels.DAL.Repositories
                 {
                     userManager.Dispose();
                     roleManager.Dispose();
-                    clientManager.Dispose();
                 }
                 this.disposed = true;
             }
