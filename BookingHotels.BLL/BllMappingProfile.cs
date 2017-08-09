@@ -15,8 +15,8 @@ namespace BookingHotels.BLL
             CreateMap<Room, RoomDTO>(MemberList.None);
             CreateMap<Feedback, FeedbackDTO>(MemberList.None);
             CreateMap<Booking, BookingDTO>(MemberList.None);
-            CreateMap<Register, UserDTO>(MemberList.None);
-            CreateMap<UserDTO, Register>(MemberList.None);
+            CreateMap<CustomUserRegister, UserDTO>(MemberList.None);
+            CreateMap<UserDTO, CustomUserRegister>(MemberList.None);
         }
     }
 }

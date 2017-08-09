@@ -7,8 +7,54 @@ namespace BookingHotels.DAL.Migrations
     {
         public override void Up()
         {
-            DropIndex("dbo.Feedbacks", new[] { "Hotel_ID" });
-            DropIndex("dbo.Rooms", new[] { "HotelID" });
+            CreateTable(
+                "dbo.Bookings",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        UserId = c.Guid(nullable: false),
+                        RoomId = c.Guid(nullable: false),
+                        BookingStartDate = c.DateTime(nullable: false),
+                        BookingEndDate = c.DateTime(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Feedbacks",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        UserId = c.Guid(nullable: false),
+                        FeedbackText = c.String(),
+                        Hotel_Id = c.Guid(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Hotels", t => t.Hotel_Id)
+                .Index(t => t.Hotel_Id);
+            
+            CreateTable(
+                "dbo.Hotels",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        HotelName = c.String(),
+                        HotelStars = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Rooms",
+                c => new
+                    {
+                        Id = c.Guid(nullable: false),
+                        HotelId = c.Guid(nullable: false),
+                        RoomNumber = c.Int(nullable: false),
+                        RoomType = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Hotels", t => t.HotelId, cascadeDelete: true)
+                .Index(t => t.HotelId);
+            
             CreateTable(
                 "dbo.AspNetRoles",
                 c => new
@@ -81,8 +127,6 @@ namespace BookingHotels.DAL.Migrations
                 .ForeignKey("dbo.ApplicationUsers", t => t.Id, cascadeDelete: true)
                 .Index(t => t.Id);
             
-            CreateIndex("dbo.Feedbacks", "Hotel_Id");
-            CreateIndex("dbo.Rooms", "HotelId");
         }
         
         public override void Down()
@@ -91,6 +135,8 @@ namespace BookingHotels.DAL.Migrations
             DropForeignKey("dbo.AspNetUserLogins", "Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.AspNetUserClaims", "ApplicationUser_Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Feedbacks", "Hotel_Id", "dbo.Hotels");
+            DropForeignKey("dbo.Rooms", "HotelId", "dbo.Hotels");
             DropIndex("dbo.AspNetUserLogins", new[] { "Id" });
             DropIndex("dbo.AspNetUserClaims", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.AspNetUserRoles", new[] { "ApplicationUser_Id" });
@@ -103,8 +149,10 @@ namespace BookingHotels.DAL.Migrations
             DropTable("dbo.ApplicationUsers");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetRoles");
-            CreateIndex("dbo.Rooms", "HotelID");
-            CreateIndex("dbo.Feedbacks", "Hotel_ID");
+            DropTable("dbo.Rooms");
+            DropTable("dbo.Hotels");
+            DropTable("dbo.Feedbacks");
+            DropTable("dbo.Bookings");
         }
     }
 }

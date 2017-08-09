@@ -23,7 +23,7 @@ namespace BookingHotels.Domain.Identity
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
-    public class Register
+    public class CustomUserRegister
     {
         [Key]
         public Guid Id { get; set; }

@@ -10,6 +10,7 @@ using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.Infrastructure;
 using AutoMapper;
 using BookingHotels.Domain.Identity;
+using System;
 
 namespace BookingHotels.Controllers
 {
@@ -81,13 +82,13 @@ namespace BookingHotels.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(Register model)
+        public async Task<ActionResult> Register(CustomUserRegister model)
         {
             await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 // Map recieved data
-                var userDto = Mapper.Map<Register, UserDTO>(model);
+                var userDto = Mapper.Map<CustomUserRegister, UserDTO>(model);
                 userDto.Role = "user";
 
                 OperationDetails operationDetails = await UserService.Create(userDto);
@@ -103,6 +104,7 @@ namespace BookingHotels.Controllers
         {
             await UserService.SetInitialData(new UserDTO
             {
+                Id= Guid.Parse("1d759e1a-b865-4b57-8845-2c7a4cb08777"),
                 Email = "ad@ad.ad",
                 Password = "123123",
                 Role = "admin",

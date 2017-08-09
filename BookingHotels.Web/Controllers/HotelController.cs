@@ -17,7 +17,6 @@ namespace BookingHotels.Web.Controllers
             hotelService = serv;
         }
         
-
         // GET: HotelViewModels
         public ActionResult Index()
         {
@@ -94,6 +93,7 @@ namespace BookingHotels.Web.Controllers
 
         /*/
          * 
+         * Бронирование
         public ActionResult MakeBoking(int? id)
 {
     try
