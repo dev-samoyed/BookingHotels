@@ -7,13 +7,13 @@ namespace BookingHotels.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class users_and_roles_altering : IMigrationMetadata
+    public sealed partial class id_to_Guid : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(users_and_roles_altering));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(id_to_Guid));
         
         string IMigrationMetadata.Id
         {
-            get { return "201708091118374_users_and_roles_altering"; }
+            get { return "201708091636420_id_to_Guid"; }
         }
         
         string IMigrationMetadata.Source

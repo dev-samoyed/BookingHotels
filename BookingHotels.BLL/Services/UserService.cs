@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using BookingHotels.Domain.Entities;
+using BookingHotels.Domain.Identity;
 
 namespace BookingHotels.BLL.Services
 {
@@ -32,7 +33,7 @@ namespace BookingHotels.BLL.Services
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
                 // добавляем роль
                 //await _unitOfWork.UserManager.AddToRoleAsync(user.Id.ToString(), userDto.Role);
-                await _unitOfWork.UserManager.AddToRoleAsync(user.Id.ToString(), userDto.Role);
+                await _unitOfWork.UserManager.AddToRoleAsync(user.Id, userDto.Role);
                 await _unitOfWork.SaveAsync();
                 return new OperationDetails(true, "Registration succesfull", "");
             }
@@ -49,8 +50,7 @@ namespace BookingHotels.BLL.Services
             ApplicationUser user = await _unitOfWork.UserManager.FindAsync(userDto.Email, userDto.Password);
             // Authorize him and return ClaimsIdentity obj
             if (user != null)
-                claim = await _unitOfWork.UserManager.CreateIdentityAsync(user,
-                                            DefaultAuthenticationTypes.ApplicationCookie);
+                claim = await _unitOfWork.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
         }
 
@@ -62,7 +62,7 @@ namespace BookingHotels.BLL.Services
                 var role = await _unitOfWork.RoleManager.FindByNameAsync(roleName);
                 if (role == null)
                 {
-                    role = new ApplicationRole { Name = roleName };
+                    role = new CustomRole { Name = roleName };
                     await _unitOfWork.RoleManager.CreateAsync(role);
                 }
             }

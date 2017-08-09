@@ -8,8 +8,8 @@ using BookingHotels.BLL.DTO;
 using System.Security.Claims;
 using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.Infrastructure;
-using BookingHotels.Domain.Entities;
 using AutoMapper;
+using BookingHotels.Domain.Identity;
 
 namespace BookingHotels.Controllers
 {
@@ -44,7 +44,7 @@ namespace BookingHotels.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(Login model)
+        public async Task<ActionResult> Login(CustomUserLogin model)
         {
             await SetInitialDataAsync();
             if (ModelState.IsValid)

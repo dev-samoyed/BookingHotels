@@ -8,10 +8,12 @@ using System.Threading.Tasks;
 
 namespace BookingHotels.BLL.Services
 {
+    /*
     class ApplicationAddToRoleAsync<ApplicationUser, Guid> : UserManager<ApplicationUser, Guid>
     {
         public ApplicationAddToRoleAsync(IUserStore<ApplicationUser, Guid> store) : base(store)
         {
         }
     }
+    */
 }
