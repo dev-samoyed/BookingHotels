@@ -65,9 +65,9 @@
     <Compile Include="Configurations\HotelConfig.cs" />
     <Compile Include="Identity\CustomRoleStore.cs" />
     <Compile Include="Identity\CustomUserStore.cs" />
-    <Compile Include="Migrations\201708091641163_id_to_Guid.cs" />
-    <Compile Include="Migrations\201708091641163_id_to_Guid.Designer.cs">
-      <DependentUpon>201708091641163_id_to_Guid.cs</DependentUpon>
+    <Compile Include="Migrations\201708100958293_init.cs" />
+    <Compile Include="Migrations\201708100958293_init.Designer.cs">
+      <DependentUpon>201708100958293_init.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="EF\MyDbContext.cs" />
@@ -87,8 +87,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708091641163_id_to_Guid.resx">
-      <DependentUpon>201708091641163_id_to_Guid.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708100958293_init.resx">
+      <DependentUpon>201708100958293_init.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

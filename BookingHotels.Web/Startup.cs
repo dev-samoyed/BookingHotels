@@ -12,11 +12,9 @@ namespace BookingHotels.Web
 {
     public partial class Startup
     {
-        // С помощью фабрики сервисов здесь создается сервис для работы с сервисами:
+        // Through service factory create service for work with services:
         IServiceCreator serviceCreator = new ServiceCreator();
-
-
-
+        
         public void Configuration(IAppBuilder app)
         {
             // Add Automapper profile
@@ -27,7 +25,7 @@ namespace BookingHotels.Web
 
 
 
-            // Потом сервис региструется контекстом OWIN:
+            // Register service with Owin context
             app.CreatePerOwinContext<IUserService>(CreateUserService);
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
@@ -42,11 +40,6 @@ namespace BookingHotels.Web
         {
             return serviceCreator.CreateUserService("DefaultConnection");
         }
-
-
-
-
-            //ConfigureAuth(app);
     }
 }
  

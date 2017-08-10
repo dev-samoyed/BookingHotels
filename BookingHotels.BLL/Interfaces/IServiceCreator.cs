@@ -2,7 +2,6 @@
 {
     public interface IServiceCreator
     {
-        // абстрактная фабрика
         IUserService CreateUserService(string connection);
     }
 }

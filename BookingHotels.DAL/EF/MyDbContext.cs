@@ -5,6 +5,7 @@ using BookingHotels.DAL.Migrations;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using BookingHotels.Domain.Identity;
+using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace BookingHotels.DAL.EF
 {
@@ -34,15 +35,21 @@ namespace BookingHotels.DAL.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             base.OnModelCreating(modelBuilder);
-
+            
             // Hotel Configuarations via Fluent api
             modelBuilder.Configurations.Add(new HotelConfig());
 
             // User Configuarations via Fluent api
-            modelBuilder.Configurations.Add(new UserConfig());
+            modelBuilder.Configurations.Add(new ApplicationUserConfig());
+
+            modelBuilder.Entity<ApplicationUser>().HasMany(p => p.Roles).WithRequired().HasForeignKey(p => p.UserId);
+            modelBuilder.Entity<CustomRole>().HasMany(p => p.Users).WithRequired().HasForeignKey(p => p.RoleId);
 
             // Roles and Users
+            //modelBuilder.Entity<CustomUserRole>().Ignore(t => t.ApplicationUser_Id);
+
             //modelBuilder.Entity<IdentityRole>().ToTable("Roles").HasKey(k => k.Id);
             //modelBuilder.Entity<IdentityUser>().ToTable("Users").HasKey(k => k.Id);
             // Bridge table

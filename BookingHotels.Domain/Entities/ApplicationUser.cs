@@ -9,9 +9,12 @@ namespace BookingHotels.Domain.Entities
     public class ApplicationUser : IdentityUser<Guid, CustomUserLogin, CustomUserRole, 
     CustomUserClaim> 
     {
-
+        public ApplicationUser() {
+            Id = Guid.NewGuid();
+        }
         // These properties will be converted to columns in table “ApplicationUsers”
+        [Key]
         //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        //public new Guid Id { get; set; }
+        public override Guid Id { get; set; }
     }
 }

@@ -7,8 +7,7 @@ using BookingHotels.BLL.Infrastructure;
  
 namespace BookingHotels.BLL.Interfaces
 {
-    // Через объекты данного интерфейса web будет 
-    // взаимодействовать с уровнем доступа к данным. 
+    // Through this interface objects from Web will communicate with DAL
     public interface IUserService : IDisposable
     {
         Task<OperationDetails> Create(UserDTO userDto);

@@ -12,7 +12,7 @@ namespace BookingHotels.Web.Models
     {
         public Guid Id { get; set; }
         public Guid HotelId { get; set; }
-        public int RoomNumber { get; set; }
+        public int Price { get; set; }
         public RoomType RoomType { get; set; }
     }
 }

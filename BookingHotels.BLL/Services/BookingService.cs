@@ -13,14 +13,13 @@ namespace BookingHotels.BLL.Services
     public class BookingService : IBookingService
     {
         private  IUnitOfWork _unitOfWork { get; set; }
-        // BookingService в конструкторе принимает объект IUnitOfWork
-        // через который идет взаимодействие с уровнем DAL.
+        // Accepts object IUnitOfWork which through communicates with DAL
         public BookingService(IUnitOfWork uow)
         {
             _unitOfWork = uow;
         }
         // Мы не задаем в конструкторе явно объект IUnitOfWork, используем внедрение зависимостей
-        // для передачи конкретной реализации данного интерфейса в BookingService (ninject)
+        // для передачи конкретной реализации данного интерфейса)
 
         // Получает объект бронирования для сохранения с уровня представления
         // и создает по нему объект Booking и сохраняет его в базу данных.
@@ -34,9 +33,10 @@ namespace BookingHotels.BLL.Services
                 throw new ValidationException("Room was not found", "");
             Booking booking = new Booking
             {
-                RoomId = room.Id,
                 BookingEndDate = DateTime.Now,
                 BookingStartDate = DateTime.Now
+                // applicationUser = ,
+                // room = ,
             };
             _unitOfWork.Bookings.Create(booking);
             _unitOfWork.Save();

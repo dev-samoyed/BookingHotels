@@ -3,16 +3,28 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingHotels.Domain.Identity
 {
-    public class CustomUserRole : IdentityUserRole<Guid> { }
-    public class CustomRole : IdentityRole<Guid, CustomUserRole>
+    // Extend Identity classes to specify a Guid for the key
+    public class CustomUserRole : IdentityUserRole<Guid> 
     {
-        public CustomRole() { }
-        public CustomRole(string name) { Name = name; }
+        //public Guid ApplicationUser_Id { get; set; }
     }
     public class CustomUserClaim : IdentityUserClaim<Guid> { }
+    public class CustomRole : IdentityRole<Guid, CustomUserRole>
+    {
+        public CustomRole()
+        {
+            Id = Guid.NewGuid();
+        }
+        public CustomRole(string name) 
+            { 
+                Id = Guid.NewGuid();
+                Name = name; 
+            }
+    }
     public class CustomUserLogin : IdentityUserLogin<Guid>
     {
         [Key]
@@ -39,22 +51,19 @@ namespace BookingHotels.Domain.Identity
         [Required]
         public string Name { get; set; }
     }
-
+    //  responsible to manage instances of the roles
     public class ApplicationRoleManager : RoleManager<CustomRole, Guid>
     {
         public ApplicationRoleManager(IRoleStore<CustomRole, Guid> roleStore)
             : base(roleStore)
-        {
-        }
+        { }
     }
+
     //  responsible to manage instances of the user class
     public class ApplicationUserManager : UserManager<ApplicationUser, Guid>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser, Guid> store)
             : base(store)
-        {
-        }
+        { }
     }
-
-
 }

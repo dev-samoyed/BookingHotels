@@ -11,4 +11,3 @@ namespace BookingHotels.Domain.Interfaces
         Task SaveAsync();
     }
 }
-

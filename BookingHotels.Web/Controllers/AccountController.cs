@@ -47,10 +47,11 @@ namespace BookingHotels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(CustomUserLogin model)
         {
-            await SetInitialDataAsync();
+            //await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
-                UserDTO userDto = new UserDTO { Email = model.Email, Password = model.Password };
+                // UserDTO userDto = new UserDTO { Id = model.Id, Email = model.Email, Password = model.Password };
+                UserDTO userDto = new UserDTO { Id = model.Id, Email = model.Email, Password = model.Password };
                 ClaimsIdentity claim = await UserService.Authenticate(userDto);
                 if (claim == null)
                 {
@@ -84,7 +85,7 @@ namespace BookingHotels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(CustomUserRegister model)
         {
-            await SetInitialDataAsync();
+            //await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 // Map recieved data
@@ -100,15 +101,18 @@ namespace BookingHotels.Controllers
             }
             return View(model);
         }
+        /*
         private async Task SetInitialDataAsync()
         {
             await UserService.SetInitialData(new UserDTO
             {
-                Id= Guid.Parse("1d759e1a-b865-4b57-8845-2c7a4cb08777"),
+                //Id = Guid.Parse("1d759e1a-b865-4b57-8845-2c7a4cb08777"),
+                // Id = Guid.NewGuid(),
                 Email = "ad@ad.ad",
                 Password = "123123",
                 Role = "admin",
             }, new List<string> { "user", "admin" });
         }
+        */
     }
 }

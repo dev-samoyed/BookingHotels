@@ -31,7 +31,7 @@ namespace BookingHotels.BLL.Services
                 var result = await _unitOfWork.UserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
-                // добавляем роль
+                // Fill UserRoles table
                 //await _unitOfWork.UserManager.AddToRoleAsync(user.Id.ToString(), userDto.Role);
                 await _unitOfWork.UserManager.AddToRoleAsync(user.Id, userDto.Role);
                 await _unitOfWork.SaveAsync();
@@ -57,15 +57,17 @@ namespace BookingHotels.BLL.Services
         // Initialize DB
         public async Task SetInitialData(UserDTO adminDto, List<string> roles)
         {
+            // Create roles
             foreach (string roleName in roles)
             {
                 var role = await _unitOfWork.RoleManager.FindByNameAsync(roleName);
                 if (role == null)
                 {
-                    role = new CustomRole { Name = roleName };
+                    role = new CustomRole(roleName);
                     await _unitOfWork.RoleManager.CreateAsync(role);
                 }
             }
+            // Create admin
             await Create(adminDto);
         }
 
