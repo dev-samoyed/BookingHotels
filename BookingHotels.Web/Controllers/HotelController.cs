@@ -44,7 +44,8 @@ namespace BookingHotels.Web.Controllers
         }
 
         // GET: Hotel/Create
-        // [Authorize(Roles = "admin")]
+     
+        [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();

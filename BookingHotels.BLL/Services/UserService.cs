@@ -53,7 +53,7 @@ namespace BookingHotels.BLL.Services
                 claim = await _unitOfWork.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
         }
-
+        /*
         // Initialize DB
         public async Task SetInitialData(UserDTO adminDto, List<string> roles)
         {
@@ -70,7 +70,7 @@ namespace BookingHotels.BLL.Services
             // Create admin
             await Create(adminDto);
         }
-
+        */
         public void Dispose()
         {
             _unitOfWork.Dispose();
