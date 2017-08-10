@@ -9,7 +9,7 @@ namespace BookingHotels.Domain.Entities
         public Guid Id { get; set; }
         public string HotelName { get; set; }
         public HotelStars HotelStars { get; set; }
-        // Link to rooms collection
+        // Link to hotel rooms collection
         public virtual List<Room> Rooms { get; set; }
     }
 }

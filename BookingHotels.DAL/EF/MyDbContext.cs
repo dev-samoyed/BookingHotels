@@ -15,7 +15,6 @@ namespace BookingHotels.DAL.EF
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
-        //public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
  
         public MyDbContext() : base("DefaultConnection")
@@ -35,17 +34,18 @@ namespace BookingHotels.DAL.EF
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+            // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             base.OnModelCreating(modelBuilder);
             
-            // Hotel Configuarations via Fluent api
+            // Hotel Configuarations
             modelBuilder.Configurations.Add(new HotelConfig());
 
-            // User Configuarations via Fluent api
+            // Users Configuarations
             modelBuilder.Configurations.Add(new ApplicationUserConfig());
 
-            modelBuilder.Entity<ApplicationUser>().HasMany(p => p.Roles).WithRequired().HasForeignKey(p => p.UserId);
-            modelBuilder.Entity<CustomRole>().HasMany(p => p.Users).WithRequired().HasForeignKey(p => p.RoleId);
+            // Roles Configuarations
+            modelBuilder.Configurations.Add(new CustomRoleConfig());
+
 
             // Roles and Users
             //modelBuilder.Entity<CustomUserRole>().Ignore(t => t.ApplicationUser_Id);
@@ -54,9 +54,7 @@ namespace BookingHotels.DAL.EF
             //modelBuilder.Entity<IdentityUser>().ToTable("Users").HasKey(k => k.Id);
             // Bridge table
             //modelBuilder.Entity<CustomUserRole>().ToTable("UserRoles");
-
-
-            //HasKey("ApplicationUser_Id");
+            
         }
     }
 }

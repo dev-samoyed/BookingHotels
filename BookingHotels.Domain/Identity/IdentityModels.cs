@@ -7,24 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BookingHotels.Domain.Identity
 {
-    // Extend Identity classes to specify a Guid for the key
-    public class CustomUserRole : IdentityUserRole<Guid> 
-    {
-        //public Guid ApplicationUser_Id { get; set; }
-    }
-    public class CustomUserClaim : IdentityUserClaim<Guid> { }
-    public class CustomRole : IdentityRole<Guid, CustomUserRole>
-    {
-        public CustomRole()
-        {
-            Id = Guid.NewGuid();
-        }
-        public CustomRole(string name) 
-            { 
-                Id = Guid.NewGuid();
-                Name = name; 
-            }
-    }
+    // Login model
     public class CustomUserLogin : IdentityUserLogin<Guid>
     {
         [Key]
@@ -35,6 +18,7 @@ namespace BookingHotels.Domain.Identity
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
+    // Register model
     public class CustomUserRegister
     {
         [Key]
@@ -51,7 +35,22 @@ namespace BookingHotels.Domain.Identity
         [Required]
         public string Name { get; set; }
     }
-    //  responsible to manage instances of the roles
+    // Extend Identity classes to specify a Guid for the key
+    public class CustomUserRole : IdentityUserRole<Guid> { }
+    public class CustomUserClaim : IdentityUserClaim<Guid> { }
+    public class CustomRole : IdentityRole<Guid, CustomUserRole>
+    {
+        public CustomRole()
+        {
+            Id = Guid.NewGuid();
+        }
+        public CustomRole(string name) 
+            { 
+                Id = Guid.NewGuid();
+                Name = name; 
+            }
+    }
+    // Responsible to manage instances of the roles
     public class ApplicationRoleManager : RoleManager<CustomRole, Guid>
     {
         public ApplicationRoleManager(IRoleStore<CustomRole, Guid> roleStore)
@@ -59,7 +58,7 @@ namespace BookingHotels.Domain.Identity
         { }
     }
 
-    //  responsible to manage instances of the user class
+    //  Responsible to manage instances of the user class
     public class ApplicationUserManager : UserManager<ApplicationUser, Guid>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser, Guid> store)

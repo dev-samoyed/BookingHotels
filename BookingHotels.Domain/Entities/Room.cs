@@ -10,7 +10,7 @@ namespace BookingHotels.Domain.Entities
         public int Price { get; set; }
         public RoomType RoomType { get; set; }
         // Link to the hotel where room is
-        public Hotel Hotel { get; set; }
+        public virtual Hotel Hotel { get; set; }
 
     }
 }
