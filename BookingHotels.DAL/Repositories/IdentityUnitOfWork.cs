@@ -1,10 +1,8 @@
 ﻿using BookingHotels.DAL.EF;
 using BookingHotels.Domain.Interfaces;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Threading.Tasks;
 using BookingHotels.Domain.Identity;
-using BookingHotels.Domain.Entities;
 using BookingHotels.DAL.Identity;
 
 namespace BookingHotels.DAL.Repositories

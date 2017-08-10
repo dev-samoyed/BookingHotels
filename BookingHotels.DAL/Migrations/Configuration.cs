@@ -19,7 +19,7 @@ namespace BookingHotels.DAL.Migrations
 
         protected override void Seed(MyDbContext db)
         {
-            // seed roles
+            // Seed roles
             if (!db.Roles.Any(r => r.Name == "admin"))
             {
                 var store = new CustomRoleStore(db);
@@ -34,13 +34,13 @@ namespace BookingHotels.DAL.Migrations
                 var role = new CustomRole("user");
                 manager.Create(role);
             }
-            // seed admin
+            // Seed admin (password is admin)
             if (!db.Users.Any(u => u.UserName == "admin"))
             {
                 var store = new CustomUserStore(db);
                 var manager = new ApplicationUserManager(store);
                 var user = new ApplicationUser { UserName = "admin" };
-                manager.Create(user, "123123");
+                manager.Create(user, "admin");
                 manager.AddToRole(user.Id, "admin");
             }
             // Seed 2 hotels
