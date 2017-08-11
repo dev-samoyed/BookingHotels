@@ -21,7 +21,7 @@ namespace BookingHotels.Web.Controllers
         public ActionResult Index()
         {
             IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();
-            // Map DTO to ViewModel using roomDtos data
+            // Map DTO to ViewModel using Dtos data
             var hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
             return View(hotels);
         }
@@ -44,13 +44,11 @@ namespace BookingHotels.Web.Controllers
         }
 
         // GET: Hotel/Create
-     
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
         }
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(HotelViewModel hotelViewModel)

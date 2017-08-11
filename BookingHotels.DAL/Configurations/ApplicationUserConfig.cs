@@ -3,7 +3,6 @@ using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.DAL.Configurations
 {
-    //public class UserConfig : EntityTypeConfiguration<ClientProfile>
     public class ApplicationUserConfig : EntityTypeConfiguration<ApplicationUser>
     {
         // Configure with FLUENT API

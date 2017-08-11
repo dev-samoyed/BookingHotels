@@ -5,18 +5,7 @@
 }
 
 <h2>Hotels</h2>
-@*
-    @{ if (Roles.GetRolesForUser().Contains("admin"))
-        {
-            <p>You are admin</p>
-        }
-    }
-    @{ if (UserManager.IsInRole(User.Identity.GetUserId(), "admin"))
-        {
-            <p>You are admin</p>
-        }
-    }
-*@
+
 
 @{
     if (User.IsInRole("admin")){

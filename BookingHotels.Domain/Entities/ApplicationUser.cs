@@ -14,7 +14,7 @@ namespace BookingHotels.Domain.Entities
         }
         // These properties will be converted to columns in table “ApplicationUsers”
         [Key]
-        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        // Id is generated in the constructor above 
         public override Guid Id { get; set; }
     }
 }

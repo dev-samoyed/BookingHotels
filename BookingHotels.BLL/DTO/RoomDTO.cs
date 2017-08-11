@@ -11,6 +11,6 @@ namespace BookingHotels.BLL.DTO
         public int Price { get; set; }
         public RoomType RoomType { get; set; }
         // Link to the hotel
-        public Hotel Hotel { get; set; }
+        public virtual Hotel Hotel { get; set; }
     }
 }

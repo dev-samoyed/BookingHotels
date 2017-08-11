@@ -22,6 +22,14 @@ namespace BookingHotels.BLL.Services
             var room = _unitOfWork.Rooms.Get(ID);
             return Mapper.Map<Room, RoomDTO>(room);
         }
+        // Add new room
+        public void AddRoom(RoomDTO roomDto)
+        {
+            Room room = Mapper.Map<RoomDTO, Room>(roomDto);
+
+            _unitOfWork.Rooms.Create(room);
+            _unitOfWork.Save();
+        }
         // Get rooms
         public IEnumerable<RoomDTO> GetRooms()
         {

@@ -34,13 +34,13 @@ namespace BookingHotels.DAL.Migrations
                 var role = new CustomRole("user");
                 manager.Create(role);
             }
-            // Seed admin (password is admin)
+            // Seed admin
             if (!db.Users.Any(u => u.UserName == "admin"))
             {
                 var store = new CustomUserStore(db);
                 var manager = new ApplicationUserManager(store);
-                var user = new ApplicationUser { UserName = "admin" };
-                manager.Create(user, "admin");
+                var user = new ApplicationUser() { UserName = "admin" };
+                manager.Create(user, "123123");
                 manager.AddToRole(user.Id, "admin");
             }
             // Seed 2 hotels

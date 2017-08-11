@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using BookingHotels.BLL.DTO;
 using BookingHotels.DAL.Enums;
-
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.Web.Models
 {
@@ -14,5 +10,7 @@ namespace BookingHotels.Web.Models
         public Guid HotelId { get; set; }
         public int Price { get; set; }
         public RoomType RoomType { get; set; }
+        // Link to the hotel
+        public virtual Hotel Hotel { get; set; }
     }
 }

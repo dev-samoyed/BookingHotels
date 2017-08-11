@@ -5,7 +5,6 @@ using BookingHotels.DAL.Migrations;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using BookingHotels.Domain.Identity;
-using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace BookingHotels.DAL.EF
 {
@@ -15,28 +14,24 @@ namespace BookingHotels.DAL.EF
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
-
  
         public MyDbContext() : base("DefaultConnection")
         {
             Configuration.ProxyCreationEnabled = false;
             Configuration.LazyLoadingEnabled = false;
         }
-        public MyDbContext(string connectionString) : base(connectionString)
-        { }
+        public MyDbContext(string connectionString) : base(connectionString) { }
         static MyDbContext()
         {
             Database.SetInitializer<MyDbContext>(new MyContextInitializer());
         }
-        public sealed class MyContextInitializer : MigrateDatabaseToLatestVersion<MyDbContext, MyDbContextConfiguration>
-        { 
-        }
+        public sealed class MyContextInitializer : MigrateDatabaseToLatestVersion<MyDbContext, MyDbContextConfiguration> { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             base.OnModelCreating(modelBuilder);
-            
+
             // Hotel Configuarations
             modelBuilder.Configurations.Add(new HotelConfig());
 
@@ -46,15 +41,9 @@ namespace BookingHotels.DAL.EF
             // Roles Configuarations
             modelBuilder.Configurations.Add(new CustomRoleConfig());
 
-
-            // Roles and Users
+            // User Configuarations
             //modelBuilder.Entity<CustomUserRole>().Ignore(t => t.ApplicationUser_Id);
 
-            //modelBuilder.Entity<IdentityRole>().ToTable("Roles").HasKey(k => k.Id);
-            //modelBuilder.Entity<IdentityUser>().ToTable("Users").HasKey(k => k.Id);
-            // Bridge table
-            //modelBuilder.Entity<CustomUserRole>().ToTable("UserRoles");
-            
         }
     }
 }
