@@ -22,6 +22,7 @@ namespace BookingHotels.Web.Controllers
         // GET: Room/Index
         public ActionResult Index()
         {
+            // Get all rooms
             IEnumerable<RoomDTO> roomDtos = roomService.GetRooms();
             // Map DTO to ViewModel using Dtos data
             var rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
@@ -57,6 +58,7 @@ namespace BookingHotels.Web.Controllers
 
             return View();
         }
+        // Post: Room/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(RoomViewModel roomViewModel)
@@ -72,68 +74,66 @@ namespace BookingHotels.Web.Controllers
             IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();
             // Map DTO to ViewModel using Dtos data
             List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
+            // Sent hotels SelectList to viewBag
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
             
             return View(roomViewModel);
         }
 
+        // GET: Room/Delete/{Guid}
+        [Authorize(Roles = "admin")]
+        public ActionResult Delete(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            RoomDTO roomDto = roomService.GetRoom(id);
+            var roomViewModel = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
+            if (roomViewModel == null)
+            {
+                return HttpNotFound();
+            }
+            return View(roomViewModel);
+        }
+
+        // POST: Room/Delete/{Guid}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(Guid id)
+        {
+            RoomDTO roomDto = roomService.GetRoom(id);
+            roomService.DeleteRoom(roomDto);
+            return RedirectToAction("Index");
+        }
         
-        //// GET: RoomViewModels/Edit/5
-        //public ActionResult Edit(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    RoomViewModel roomViewModel = db.RoomViewModels.Find(id);
-        //    if (roomViewModel == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(roomViewModel);
-        //}
+        // ======Booking in progress============================== 
+        // Get: Room/Book/{Guid}
+        public ActionResult Book(Guid? id)
+        {
+                // Get room which we want to book
+                RoomDTO room = roomService.GetRoom(id);
+                Mapper.Map<RoomDTO, RoomViewModel>(room);
 
-        //// POST: RoomViewModels/Edit/5
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,HotelId,Price,RoomType")] RoomViewModel roomViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(roomViewModel).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(roomViewModel);
-        //}
+                //Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, RoomViewModel>()
+                //.ForMember("RoomId", opt => opt.MapFrom(src => src.Id)));
 
-        //// GET: RoomViewModels/Delete/5
-        //public ActionResult Delete(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    RoomViewModel roomViewModel = db.RoomViewModels.Find(id);
-        //    if (roomViewModel == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(roomViewModel);
-        //}
+            return View(room);
+        }
 
-        //// POST: RoomViewModels/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(Guid id)
-        //{
-        //    RoomViewModel roomViewModel = db.RoomViewModels.Find(id);
-        //    db.RoomViewModels.Remove(roomViewModel);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
+        // Post: Room/Book/{Guid}
+        [HttpPost]
+        public ActionResult Book(BookingViewModel booking)
+        {
+                //Mapper.Initialize(cfg => cfg.CreateMap<OrderViewModel, OrderDTO>());
+                //var bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(booking);
+                //bookingService.MakeBooking(orderDto);
+                //return Content("<h2>Ваш заказ успешно оформлен</h2>");
+            
+            return View(booking);
+        }
+        // ==================================== 
+        // Dispose
         protected override void Dispose(bool disposing)
         {
             if (disposing)

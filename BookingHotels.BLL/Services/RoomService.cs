@@ -42,6 +42,17 @@ namespace BookingHotels.BLL.Services
             var rooms = _unitOfWork.Rooms.GetAll().ToList();
             return Mapper.Map<List<Room>, List<RoomDTO>>(rooms);
         }
+
+        // Delete room
+        public void DeleteRoom(RoomDTO roomDto)
+        {
+            Room room = Mapper.Map<RoomDTO, Room>(roomDto);
+
+            _unitOfWork.Rooms.Delete(room.Id);
+            _unitOfWork.
+            Save();
+        }
+
         public void Dispose()
         {
             _unitOfWork.Dispose();

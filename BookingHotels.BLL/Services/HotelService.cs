@@ -35,12 +35,11 @@ namespace BookingHotels.BLL.Services
         public void AddHotel(HotelDTO hotelDto)
         {
             Hotel hotel = Mapper.Map<HotelDTO, Hotel>(hotelDto);
-
             _unitOfWork.Hotels.Create(hotel);
             _unitOfWork.Save();
         }
 
-        // Delete hotels
+        // Delete hotel
         public void DeleteHotel(HotelDTO hotelDto)
         {
             Hotel hotel = Mapper.Map<HotelDTO, Hotel>(hotelDto);
@@ -54,11 +53,6 @@ namespace BookingHotels.BLL.Services
         public void Dispose()
         {
             _unitOfWork.Dispose();
-        }
-
-        public IEnumerable<HotelDTO> GetHotel()
-        {
-            throw new NotImplementedException();
         }
     }
 }

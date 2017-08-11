@@ -24,7 +24,7 @@
             {
                 <div>Room number: @room.Price</div>
                 <div>Room type: @room.RoomType</div>
-                @Html.ActionLink("Details", "Details", "Room", new { id = room.Id }, htmlAttributes: null);
+                @Html.ActionLink("Book this room", "Details", "Room", new { id = room.Id }, htmlAttributes: null);
                 <hr>
             }
         </dd>

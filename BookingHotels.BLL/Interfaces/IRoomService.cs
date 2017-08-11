@@ -1,9 +1,6 @@
 ﻿using BookingHotels.BLL.DTO;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookingHotels.BLL.Interfaces
 {
@@ -16,6 +13,7 @@ namespace BookingHotels.BLL.Interfaces
         IEnumerable<RoomDTO> GetRooms();
         // Get rooms in specific hotel
         IEnumerable<RoomDTO> GetRooms(Guid Id);
+        void DeleteRoom(RoomDTO roomDto);
         void Dispose();
     }
 }

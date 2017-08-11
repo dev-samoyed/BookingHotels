@@ -1,20 +1,13 @@
 ﻿@model IEnumerable<BookingHotels.Web.Models.RoomViewModel>
 @{
     ViewBag.Title = "Rooms";
-
     <h2>@ViewBag.Title</h2>
-
-    if (User.IsInRole("admin"))
-    {
-        <p>You are admin!</p>
-        @Html.ActionLink("+ Create New Room +", "Create");
-    }
 }
 <br>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.HotelId)
+            @Html.DisplayNameFor(model => model.Hotel.HotelName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Price)
@@ -26,28 +19,37 @@
     </tr>
     @foreach (var item in Model)
     {
+        string hotelName = item.Hotel.HotelName;
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.HotelId)
+            @Html.ActionLink(
+            linkText: hotelName,
+            actionName: "Details",
+            controllerName: "Hotel",
+            routeValues: new
+            {
+                id = item.HotelId,
+            },
+            htmlAttributes: null
+            )
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Price)
+            @Html.DisplayFor(modelItem => item.Price) $
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.RoomType)
         </td>
         <td>|
-            @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Book this room", "Details", new { id = item.Id }) |
             @* Admin actions:*@
             @{
             if (User.IsInRole("admin"))
                 {
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }); @:|
+                @* @Html.ActionLink("Edit", "Edit", new { id = item.Id }); @:| *@
                 @Html.ActionLink("Delete", "Delete", new { id = item.Id }); @:|
                 }
             }
         </td>
-
     </tr>
     }
 </table>

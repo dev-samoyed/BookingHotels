@@ -1,14 +1,7 @@
 ﻿@model IEnumerable<BookingHotels.Web.Models.HotelViewModel>
 @{
     ViewBag.Title = "Hotels";
-
     <h2>@ViewBag.Title</h2>
-
-    if (User.IsInRole("admin"))
-    {
-        <p>You are admin!</p>
-        @Html.ActionLink("+ Create New Hotel +", "Create");
-    }
 }
 <br>
 <table class="table">
@@ -31,12 +24,11 @@
             </td>
             <td>|
                 @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @* Admin actions*@
+                @* Admin actions *@
                 @{
                     if (User.IsInRole("admin"))
                     {
-                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) @:|
-
+                        @* @Html.ActionLink("Edit", "Edit", new { id=item.Id }) @:| *@
                         @Html.ActionLink("Delete", "Delete", new { id = item.Id }) @:|
                     }
                 }

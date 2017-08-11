@@ -12,6 +12,5 @@ namespace BookingHotels.BLL.Interfaces
         void AddHotel(HotelDTO hotel);
         void DeleteHotel(HotelDTO hotel);
         void Dispose();
-        
     }
 }
