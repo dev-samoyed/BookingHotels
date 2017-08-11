@@ -1,13 +1,11 @@
 ﻿@model BookingHotels.Web.Models.RoomViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Room details";
+
+    <h2>@ViewBag.Title</h2>
 }
-
-<h2>Details</h2>
-
 <div>
-    <h4>RoomViewModel</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -37,6 +35,16 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    | @Html.ActionLink("Book this room", "Book") |
+    
+    | @Html.ActionLink("Back to List", "Index") |
+    @* Admin actions*@
+    @{
+        if (User.IsInRole("admin"))
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }); @:|
+            @Html.ActionLink("Delete", "Delete", new { id = Model.Id }); @:|
+        }
+    }
+
 </p>

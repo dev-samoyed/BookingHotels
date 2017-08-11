@@ -10,7 +10,7 @@ namespace BookingHotels.BLL.Interfaces
     public interface IRoomService
     {
         // Get 1 room
-        RoomDTO GetRoom(Guid Id);
+        RoomDTO GetRoom(Guid? Id);
         void AddRoom(RoomDTO roomDto);
         // Get all rooms
         IEnumerable<RoomDTO> GetRooms();

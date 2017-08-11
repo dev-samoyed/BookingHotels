@@ -17,7 +17,7 @@ namespace BookingHotels.BLL.Services
             _unitOfWork = uow;
         }
         // Gets room by ID
-        public RoomDTO GetRoom(Guid ID)
+        public RoomDTO GetRoom(Guid? ID)
         {
             var room = _unitOfWork.Rooms.Get(ID);
             return Mapper.Map<Room, RoomDTO>(room);

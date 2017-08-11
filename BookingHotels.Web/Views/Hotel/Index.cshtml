@@ -1,44 +1,46 @@
 ﻿@model IEnumerable<BookingHotels.Web.Models.HotelViewModel>
-
 @{
-    ViewBag.Title = "Index";
-}
+    ViewBag.Title = "Hotels";
 
-<h2>Hotels</h2>
+    <h2>@ViewBag.Title</h2>
 
-
-@{
-    if (User.IsInRole("admin")){
-        @Html.ActionLink("+ Create New Hotel +", "Create");
+    if (User.IsInRole("admin"))
+    {
         <p>You are admin!</p>
+        @Html.ActionLink("+ Create New Hotel +", "Create");
     }
 }
-
-    <table class="table">
+<br>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.HotelName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.HotelStars)
+        </th>
+    </tr>
+    @foreach (var item in Model) 
+    {
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.HotelName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.HotelStars)
-            </th>
+            <td>
+                @Html.DisplayFor(modelItem => item.HotelName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.HotelStars)
+            </td>
+            <td>|
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @* Admin actions*@
+                @{
+                    if (User.IsInRole("admin"))
+                    {
+                        @Html.ActionLink("Edit", "Edit", new { id=item.Id }) @:|
+
+                        @Html.ActionLink("Delete", "Delete", new { id = item.Id }) @:|
+                    }
+                }
+            </td>
         </tr>
-
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HotelName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.HotelStars)
-                </td>
-                <td>
-                    @* @Html.ActionLink("Edit not implemented yet", "Edit", new { id=item.Id }) | *@
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
-        }
-
-    </table>
+    }
+</table>

@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using BookingHotels.DAL.EF;
 using BookingHotels.Web.Models;
 using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.DTO;
 using AutoMapper;
+using System.Net;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -24,7 +19,7 @@ namespace BookingHotels.Web.Controllers
             hotelService = hotelServ;
         }
 
-        // GET: RoomViewModels
+        // GET: Room/Index
         public ActionResult Index()
         {
             IEnumerable<RoomDTO> roomDtos = roomService.GetRooms();
@@ -32,6 +27,23 @@ namespace BookingHotels.Web.Controllers
             var rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
             return View(rooms);
         }
+        // GET: Room/Details/{Guid}
+        public ActionResult Details(Guid? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            RoomDTO roomDto = roomService.GetRoom(id);
+            var room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
+
+            if (room == null)
+            {
+                return HttpNotFound();
+            }
+            return View(room);
+        }
+
         // GET: Room/Create
         [Authorize(Roles = "admin")]
         public ActionResult Create()
@@ -59,49 +71,14 @@ namespace BookingHotels.Web.Controllers
             // Map DTO to ViewModel using Dtos data
             List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
-
-
+            
             return View(roomViewModel);
         }
 
-        //// GET: RoomViewModels/Details/5
-        //public ActionResult Details(Guid? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    RoomViewModel roomViewModel = db.RoomViewModels.Find(id);
-        //    if (roomViewModel == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(roomViewModel);
-        //}
 
-        //// GET: RoomViewModels/Create
-        //public ActionResult Create()
-        //{
-        //    return View();
-        //}
 
-        //// POST: RoomViewModels/Create
-        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,HotelId,Price,RoomType")] RoomViewModel roomViewModel)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        roomViewModel.Id = Guid.NewGuid();
-        //        db.RoomViewModels.Add(roomViewModel);
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
 
-        //    return View(roomViewModel);
-        //}
+
 
         //// GET: RoomViewModels/Edit/5
         //public ActionResult Edit(Guid? id)

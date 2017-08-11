@@ -1,34 +1,31 @@
 ﻿@model BookingHotels.Web.Models.RoomViewModel
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create a new Room";
 }
 
-<h2>Create</h2>
-
+<h2>@ViewBag.Title</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>RoomViewModel</h4>
+        <h4>Create a new room</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @* Choose Hotel where room will be*@
+
+        @* Dropdown list:*@
+
         <div class="form-group">
             @Html.LabelFor(model => model.HotelId, "HotelId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @{
                     var hotels = ViewBag.hotels;
                 }
-
-                    @Html.DropDownListFor(m => m.HotelId, hotels as SelectList, "Choose one")
-                    @*
-            Html.DropDownListFor(m => m.HotelId, hotels, "Select one")
-                    *@
-                    @Html.ValidationMessageFor(model => model.HotelId, "", new { @class = "text-danger" })
-</div>
+                @Html.DropDownListFor(m => m.HotelId, hotels as SelectList, "Select hotel where new room will be", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.HotelId, "", new { @class = "text-danger" })
+            </div>
         </div>
 
         <div class="form-group">
