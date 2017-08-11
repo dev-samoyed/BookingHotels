@@ -111,14 +111,18 @@ namespace BookingHotels.Web.Controllers
         // Get: Room/Book/{Guid}
         public ActionResult Book(Guid? id)
         {
-                // Get room which we want to book
-                RoomDTO room = roomService.GetRoom(id);
-                Mapper.Map<RoomDTO, RoomViewModel>(room);
+            // Get room which we want to book
+            RoomDTO roomDto = roomService.GetRoom(id);
+            var room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
+            ViewBag.RoomType = room.RoomType.ToString();
+            ViewBag.Price = room.Price.ToString();
+            ViewBag.Hotel = room.Hotel.HotelName.ToString();
+            ViewBag.HotelStars = room.Hotel.HotelStars.ToString();
 
-                //Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, RoomViewModel>()
-                //.ForMember("RoomId", opt => opt.MapFrom(src => src.Id)));
+            //Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, RoomViewModel>()
+            //.ForMember("RoomId", opt => opt.MapFrom(src => src.Id)));
 
-            return View(room);
+            return View();
         }
 
         // Post: Room/Book/{Guid}

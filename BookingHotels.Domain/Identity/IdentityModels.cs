@@ -35,7 +35,11 @@ namespace BookingHotels.Domain.Identity
         public string Name { get; set; }
     }
     // Extend Identity classes to specify a Guid for the key
-    public class CustomUserRole : IdentityUserRole<Guid> { }
+    public class CustomUserRole : IdentityUserRole<Guid>
+    {
+        [Key]
+        public Guid Id { get; set; }
+    }
     public class CustomUserClaim : IdentityUserClaim<Guid> { }
     public class CustomRole : IdentityRole<Guid, CustomUserRole>
     {

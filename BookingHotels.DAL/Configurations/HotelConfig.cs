@@ -15,7 +15,7 @@ namespace BookingHotels.DAL.Configurations
             // ToTable("Hotels");
 
             // Specify constraints
-            HasMany(p => p.Rooms);
+            //HasMany(p => p.Rooms);
             //.WithRequired(p => (Hotel)p.Hotel);
         }
     }

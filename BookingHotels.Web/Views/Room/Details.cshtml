@@ -40,8 +40,13 @@
     </dl>
 </div>
 <p>
-    | @Html.ActionLink("Book this room", "Book") |
+
+    @using (Html.BeginForm("Book", "Room", new { id = Model.Id }))
+    {
+        <button class="btn btn-default">Book this room</button>
+    }
     
+    <br>
     @Html.ActionLink("Back to List", "Index") |
     @* Admin actions*@
     @{

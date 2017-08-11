@@ -3,7 +3,7 @@ namespace BookingHotels.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class init_again : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -77,10 +77,11 @@ namespace BookingHotels.DAL.Migrations
                     {
                         UserId = c.Guid(nullable: false),
                         RoleId = c.Guid(nullable: false),
+                        Id = c.Guid(nullable: false),
                     })
                 .PrimaryKey(t => new { t.UserId, t.RoleId })
                 .ForeignKey("dbo.ApplicationUsers", t => t.UserId, cascadeDelete: true)
-                .ForeignKey("dbo.CustomRoles", t => t.RoleId, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleId, cascadeDelete: true)
                 .Index(t => t.UserId)
                 .Index(t => t.RoleId);
             
@@ -124,19 +125,20 @@ namespace BookingHotels.DAL.Migrations
                 .Index(t => t.ApplicationUser_Id);
             
             CreateTable(
-                "dbo.CustomRoles",
+                "dbo.AspNetRoles",
                 c => new
                     {
                         Id = c.Guid(nullable: false),
-                        Name = c.String(),
+                        Name = c.String(nullable: false, maxLength: 256),
                     })
-                .PrimaryKey(t => t.Id);
+                .PrimaryKey(t => t.Id)
+                .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
         }
         
         public override void Down()
         {
-            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.CustomRoles");
+            DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Feedbacks", "HotelId", "dbo.Hotels");
             DropForeignKey("dbo.Feedbacks", "ApplicationUser_Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.Bookings", "RoomId", "dbo.Rooms");
@@ -145,6 +147,7 @@ namespace BookingHotels.DAL.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "UserId", "dbo.ApplicationUsers");
             DropForeignKey("dbo.AspNetUserLogins", "Id", "dbo.ApplicationUsers");
             DropForeignKey("dbo.AspNetUserClaims", "ApplicationUser_Id", "dbo.ApplicationUsers");
+            DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.Feedbacks", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.Feedbacks", new[] { "HotelId" });
             DropIndex("dbo.Rooms", new[] { "HotelId" });
@@ -154,7 +157,7 @@ namespace BookingHotels.DAL.Migrations
             DropIndex("dbo.AspNetUserClaims", new[] { "ApplicationUser_Id" });
             DropIndex("dbo.Bookings", new[] { "ApplicationUserId" });
             DropIndex("dbo.Bookings", new[] { "RoomId" });
-            DropTable("dbo.CustomRoles");
+            DropTable("dbo.AspNetRoles");
             DropTable("dbo.Feedbacks");
             DropTable("dbo.Hotels");
             DropTable("dbo.Rooms");
