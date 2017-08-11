@@ -13,7 +13,7 @@ namespace BookingHotels.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201708110214411_init"; }
+            get { return "201708110437423_init"; }
         }
         
         string IMigrationMetadata.Source

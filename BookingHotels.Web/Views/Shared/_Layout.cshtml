@@ -24,8 +24,19 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Hotel")</li>
+                    <li>@Html.ActionLink("Hotels", "Index", "Hotel")</li>
                 </ul>
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Rooms", "Index", "Room")</li>
+                </ul>
+                @{
+                    if (User.IsInRole("admin"))
+                    {
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Create room", "Create", "Room")</li>
+                </ul>
+                    }
+                }
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

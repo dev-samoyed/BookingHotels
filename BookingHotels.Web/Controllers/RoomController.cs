@@ -17,10 +17,13 @@ namespace BookingHotels.Web.Controllers
     public class RoomController : Controller
     {
         IRoomService roomService;
-        public RoomController(IRoomService serv)
+        IHotelService hotelService;
+        public RoomController(IRoomService serv, IHotelService hotelServ)
         {
             roomService = serv;
+            hotelService = hotelServ;
         }
+
         // GET: RoomViewModels
         public ActionResult Index()
         {
@@ -33,6 +36,11 @@ namespace BookingHotels.Web.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
+            IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();
+            // Map DTO to ViewModel using Dtos data
+            List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
+            ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
+
             return View();
         }
         [HttpPost]
@@ -46,6 +54,13 @@ namespace BookingHotels.Web.Controllers
                 roomService.AddRoom(roomDto);
                 return RedirectToAction("Index");
             }
+            // Repopulating
+            IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();
+            // Map DTO to ViewModel using Dtos data
+            List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
+            ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
+
+
             return View(roomViewModel);
         }
 

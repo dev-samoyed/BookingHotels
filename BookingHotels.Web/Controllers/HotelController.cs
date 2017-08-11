@@ -16,8 +16,7 @@ namespace BookingHotels.Web.Controllers
         {
             hotelService = serv;
         }
-        
-        // GET: HotelViewModels
+
         public ActionResult Index()
         {
             IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();

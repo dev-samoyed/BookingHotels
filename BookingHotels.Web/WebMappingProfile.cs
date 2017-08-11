@@ -19,6 +19,7 @@ namespace BookingHotels.Web
             CreateMap<FeedbackDTO, FeedbackViewModel>(MemberList.None);
             CreateMap<BookingDTO, BookingViewModel>(MemberList.None);
             CreateMap<HotelViewModel, HotelDTO>();
+            CreateMap<RoomViewModel, RoomDTO>();
         }
     }
 
