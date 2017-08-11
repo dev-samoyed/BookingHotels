@@ -16,26 +16,22 @@ namespace BookingHotels.BLL.Services
         {
             _unitOfWork = uow;
         }
-        // Gets 1 hotel by it's ID and sends it to view
+
+        // Gets 1 hotel by it's Id
         public HotelDTO GetHotel(Guid? id)
         {
             Hotel hotel = _unitOfWork.Hotels.Get(id);
             return Mapper.Map<Hotel, HotelDTO>(hotel);
         }
-        // Find hotel by room ID TODO
-        public HotelDTO GetHotelByRoom(Guid id)
-        {
 
-            Hotel hotel = _unitOfWork.Hotels.Get(id);
-            return Mapper.Map<Hotel, HotelDTO>(hotel);
-        }
-        // Get All Hotels
+        // Get all hotels
         public IEnumerable<HotelDTO> GetHotels()
         {
             var hotels = _unitOfWork.Hotels.GetAll().ToList();
             return Mapper.Map<List<Hotel>, List<HotelDTO>>(hotels);
         }
 
+        // Add a new hotel
         public void AddHotel(HotelDTO hotelDto)
         {
             Hotel hotel = Mapper.Map<HotelDTO, Hotel>(hotelDto);
@@ -44,14 +40,17 @@ namespace BookingHotels.BLL.Services
             _unitOfWork.Save();
         }
 
+        // Delete hotels
         public void DeleteHotel(HotelDTO hotelDto)
         {
             Hotel hotel = Mapper.Map<HotelDTO, Hotel>(hotelDto);
 
             _unitOfWork.Hotels.Delete(hotel.Id);
-            _unitOfWork.Save();
+            _unitOfWork.
+            Save();
         }
 
+        // Dispose
         public void Dispose()
         {
             _unitOfWork.Dispose();

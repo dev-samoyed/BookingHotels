@@ -47,6 +47,7 @@ namespace BookingHotels.DAL.Repositories
         public IEnumerable<T> SearchFor(Func<T, Boolean> predicate)
         {
             return GetAll().Where(predicate);
+            // dataContext.Set<T>().Where(predicate);
         }
 
         public void Delete(Guid id)

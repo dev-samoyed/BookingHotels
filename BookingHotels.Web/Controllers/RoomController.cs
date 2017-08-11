@@ -35,7 +35,9 @@ namespace BookingHotels.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             RoomDTO roomDto = roomService.GetRoom(id);
-            var room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
+            RoomViewModel room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
+            
+            ViewBag.hotelName = hotelService.GetHotel(room.HotelId).HotelName;
 
             if (room == null)
             {
@@ -75,11 +77,7 @@ namespace BookingHotels.Web.Controllers
             return View(roomViewModel);
         }
 
-
-
-
-
-
+        
         //// GET: RoomViewModels/Edit/5
         //public ActionResult Edit(Guid? id)
         //{

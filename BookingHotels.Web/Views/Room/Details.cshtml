@@ -1,27 +1,38 @@
 ﻿@model BookingHotels.Web.Models.RoomViewModel
-
 @{
     ViewBag.Title = "Room details";
 
     <h2>@ViewBag.Title</h2>
+    
+    string hotelName = ViewBag.hotelName;
+    
 }
 <div>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.HotelId)
+            @Html.DisplayNameFor(model => model.Hotel)
         </dt>
-
         <dd>
-            @Html.DisplayFor(model => model.HotelId)
+
+            @Html.ActionLink(
+            linkText: hotelName,
+            actionName: "Details",
+            controllerName: "Hotel",
+            routeValues: new
+            {
+                id = Model.HotelId,
+            },
+            htmlAttributes: null
+            )
+
         </dd>
-
         <dt>
-            @Html.DisplayNameFor(model => model.Price)
+            @Html.DisplayNameFor(model => model.Price) 
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.Price)$
         </dd>
 
         <dt>
@@ -31,13 +42,12 @@
         <dd>
             @Html.DisplayFor(model => model.RoomType)
         </dd>
-
     </dl>
 </div>
 <p>
     | @Html.ActionLink("Book this room", "Book") |
     
-    | @Html.ActionLink("Back to List", "Index") |
+    @Html.ActionLink("Back to List", "Index") |
     @* Admin actions*@
     @{
         if (User.IsInRole("admin"))
@@ -46,5 +56,4 @@
             @Html.ActionLink("Delete", "Delete", new { id = Model.Id }); @:|
         }
     }
-
 </p>

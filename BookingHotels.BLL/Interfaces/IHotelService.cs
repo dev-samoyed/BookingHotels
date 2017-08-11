@@ -8,8 +8,6 @@ namespace BookingHotels.BLL.Interfaces
     {
         // Get 1 hotel by ID
         HotelDTO GetHotel(Guid? id);
-        // Get 1 hotel, where room is
-        HotelDTO GetHotelByRoom(Guid id);
         IEnumerable<HotelDTO> GetHotels();
         void AddHotel(HotelDTO hotel);
         void DeleteHotel(HotelDTO hotel);

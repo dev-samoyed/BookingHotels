@@ -1,5 +1,4 @@
-﻿
-@model BookingHotels.Web.Models.HotelViewModel
+﻿@model BookingHotels.Web.Models.HotelViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -25,7 +24,7 @@
             {
                 <div>Room number: @room.Price</div>
                 <div>Room type: @room.RoomType</div>
-                @Html.ActionLink("Book", "Index")
+                @Html.ActionLink("Details", "Details", "Room", new { id = room.Id }, htmlAttributes: null);
                 <hr>
             }
         </dd>
