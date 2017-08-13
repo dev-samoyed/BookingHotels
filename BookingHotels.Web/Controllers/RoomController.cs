@@ -6,6 +6,7 @@ using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.DTO;
 using AutoMapper;
 using System.Net;
+using Microsoft.AspNet.Identity;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -13,6 +14,7 @@ namespace BookingHotels.Web.Controllers
     {
         IRoomService roomService;
         IHotelService hotelService;
+        IBookingService bookingService;
         public RoomController(IRoomService serv, IHotelService hotelServ)
         {
             roomService = serv;
@@ -29,7 +31,7 @@ namespace BookingHotels.Web.Controllers
             return View(rooms);
         }
         // GET: Room/Details/{Guid}
-        public ActionResult Details(Guid? id)
+        public ActionResult Details(Guid id)
         {
             if (id == null)
             {
@@ -82,7 +84,7 @@ namespace BookingHotels.Web.Controllers
 
         // GET: Room/Delete/{Guid}
         [Authorize(Roles = "admin")]
-        public ActionResult Delete(Guid? id)
+        public ActionResult Delete(Guid id)
         {
             if (id == null)
             {
@@ -106,35 +108,41 @@ namespace BookingHotels.Web.Controllers
             roomService.DeleteRoom(roomDto);
             return RedirectToAction("Index");
         }
-        
+
+        [Authorize]
+        [HttpGet]
         // ======Booking in progress============================== 
-        // Get: Room/Book/{Guid}
-        public ActionResult Book(Guid? id)
+        // GET: Room/Book/{Guid}
+        public ActionResult Book(Guid id)
         {
             // Get room which we want to book
             RoomDTO roomDto = roomService.GetRoom(id);
-            var room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
-            ViewBag.RoomType = room.RoomType.ToString();
-            ViewBag.Price = room.Price.ToString();
-            ViewBag.Hotel = room.Hotel.HotelName.ToString();
-            ViewBag.HotelStars = room.Hotel.HotelStars.ToString();
+            ViewBag.RoomType = roomDto.RoomType.ToString();
+            ViewBag.Price = roomDto.Price.ToString();
+            ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
+            ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
+
+            BookingViewModel bookingViewModel = new BookingViewModel();
+            bookingViewModel.RoomId = id;
+            bookingViewModel.ApplicationUserId = Guid.Parse(User.Identity.GetUserId());
 
             //Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, RoomViewModel>()
             //.ForMember("RoomId", opt => opt.MapFrom(src => src.Id)));
-
             return View();
         }
-
-        // Post: Room/Book/{Guid}
-        [HttpPost]
-        public ActionResult Book(BookingViewModel booking)
+        // POST        
+        [HttpPost, ActionName("Book")]
+        [ValidateAntiForgeryToken]
+        public ActionResult BookConfirmed(BookingViewModel bookingViewModel)
         {
-                //Mapper.Initialize(cfg => cfg.CreateMap<OrderViewModel, OrderDTO>());
-                //var bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(booking);
-                //bookingService.MakeBooking(orderDto);
-                //return Content("<h2>Ваш заказ успешно оформлен</h2>");
-            
-            return View(booking);
+            if (ModelState.IsValid)
+            {
+                BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
+                bookingDto.Id = Guid.NewGuid();
+                bookingService.CreateBooking(bookingDto);
+                return Content("<h2>You have succesfully booked this room</h2>");
+            }
+            return View(bookingViewModel);
         }
         // ==================================== 
         // Dispose

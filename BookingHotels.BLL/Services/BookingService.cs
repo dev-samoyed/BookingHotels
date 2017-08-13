@@ -1,12 +1,8 @@
-﻿using System;
-using BookingHotels.BLL.DTO;
+﻿using BookingHotels.BLL.DTO;
 using BookingHotels.Domain.Entities;
 using BookingHotels.Domain.Interfaces;
-using BookingHotels.BLL.Infrastructure;
 using BookingHotels.BLL.Interfaces;
-using System.Collections.Generic;
 using AutoMapper;
-using System.Linq;
 
 namespace BookingHotels.BLL.Services
 {
@@ -22,7 +18,7 @@ namespace BookingHotels.BLL.Services
         }
 
         // Get bookingDto from Web, create booking and save to db
-        public void AddBooking(BookingDTO bookingDto)
+        public void CreateBooking(BookingDTO bookingDto)
         {
              Booking booking = Mapper.Map<BookingDTO, Booking>(bookingDto);
             _unitOfWork.Bookings.Create(booking);

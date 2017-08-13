@@ -39,7 +39,7 @@ namespace BookingHotels.DAL.EF
             modelBuilder.Configurations.Add(new ApplicationUserConfig());
 
             // Roles Configuarations
-            //modelBuilder.Configurations.Add(new CustomRoleConfig());
+            modelBuilder.Configurations.Add(new CustomRoleConfig());
 
             // User Configuarations
             //modelBuilder.Entity<CustomUserRole>().Ignore(t => t.ApplicationUser_Id);

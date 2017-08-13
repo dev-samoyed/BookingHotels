@@ -1,73 +1,69 @@
 ﻿@model BookingHotels.Web.Models.BookingViewModel
 
 @{
-    ViewBag.Title = "Book";
+    ViewBag.Title = "Make new booking";
     <h2>@ViewBag.Title</h2>
 }
+<hr />
 
-@using (Html.BeginForm()) 
+@*
+
+    @* Add some hidden fieds*@
+
+
+@* Dropdown list 
+<div class="form-group">
+    @Html.LabelFor(model => model.RoomId, "RoomId", htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownList("RoomId", null, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
+    </div>
+</div>
+@* User 
+<div class="form-group">
+    @Html.LabelFor(model => model.ApplicationUserId, "ApplicationUserId", htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownList("ApplicationUserId", null, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ApplicationUserId, "", new { @class = "text-danger" })
+    </div>
+</div>
+*@
+@using (Html.BeginForm())
 {
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="row">
+        <div class="col-sm-2">Your room:</div>
+        <div class="col-sm-10">
+            @ViewBag.Hotel (@ViewBag.HotelStars)
+            <br />
+            @ViewBag.Price
+            <br />
+            @ViewBag.RoomType
+        </div>
+    </div>
+    <hr />
 
-        @*
-        @* Dropdown list 
-        <div class="form-group">
-            @Html.LabelFor(model => model.RoomId, "RoomId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("RoomId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        @* User 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ApplicationUserId, "ApplicationUserId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("ApplicationUserId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ApplicationUserId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        *@
-        
+    <div class="form-group">
+        @Html.LabelFor(model => model.BookingStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-10">
-            Your room:
-            <div class="col-md-10">
-                @ViewBag.Hotel (@ViewBag.HotelStars)
-                @ViewBag.Price
-                @ViewBag.RoomType
-            </div>
+            @Html.EditorFor(model => model.BookingStartDate, new { htmlAttributes = new { @class = "datefield, form-control", type = "date" } })
+            @Html.ValidationMessageFor(model => model.BookingStartDate, "", new { @class = "text-danger" })
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.BookingStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BookingStartDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookingStartDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
+    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BookingEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BookingEndDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookingEndDate, "", new { @class = "text-danger" })
-            </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.BookingEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.BookingEndDate, new { htmlAttributes = new { @class = "datefield, form-control", type = "date" } })
+            @Html.ValidationMessageFor(model => model.BookingEndDate, "", new { @class = "text-danger" })
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Book" class="btn btn-default" />(not working)
-            </div>
+    </div>
+    <div class="form-group">
+        @Html.AntiForgeryToken()
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Book" class="btn btn-success" />
         </div>
     </div>
 }
-
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
-
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
