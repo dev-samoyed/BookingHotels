@@ -139,13 +139,11 @@ namespace BookingHotels.Web.Controllers
             if (ModelState.IsValid)
             {
                 BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
+                // Generate Id for new booking
                 bookingDto.Id = Guid.NewGuid();
-
-                bookingDto.ApplicationUser = userService.GetUser(bookingDto.ApplicationUserId);
-                var roomDto = roomService.GetRoom(bookingDto.RoomId);
-                bookingDto.Room = Mapper.Map<RoomDTO, Room>(roomDto);
-
                 bookingService.CreateBooking(bookingDto);
+
+
                 return Content("<h2>You have succesfully booked this room</h2>");
             }
             return View(bookingViewModel);
