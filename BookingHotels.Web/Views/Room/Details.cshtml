@@ -12,15 +12,15 @@
         </dt>
         <dd>
             @Html.ActionLink(
-            linkText: hotelName,
-            actionName: "Details",
-            controllerName: "Hotel",
-            routeValues: new
-            {
-                id = Model.HotelId,
-            },
-            htmlAttributes: null
-            )
+linkText: hotelName,
+actionName: "Details",
+controllerName: "Hotel",
+routeValues: new
+{
+    id = Model.HotelId,
+},
+htmlAttributes: null
+)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Price) 
@@ -40,10 +40,17 @@
     </dl>
 </div>
 <p>
-    @using (Html.BeginForm("Book", "Room", new { id = Model.Id }))
+    @*
+    @Html.ActionLink("Book this room", "Book", new { id = Model.Id });
+    *@
+
+    <input type="button" class="btn btn-primary" value="Book this room" onclick="location.href='@Url.Action("Book", new { id = Model.Id })'" />
+
+
+    @*@using (Html.BeginForm("Book", "Room", new { id = Model.Id }))
     {
         <button class="btn btn-primary">Book this room</button>
-    }
+    }*@
     
     <br>
     @Html.ActionLink("Back to List", "Index") |
@@ -51,7 +58,6 @@
     @{
         if (User.IsInRole("admin"))
         {
-            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }); @:|
             @Html.ActionLink("Delete", "Delete", new { id = Model.Id }); @:|
         }
     }

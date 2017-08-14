@@ -143,8 +143,7 @@ namespace BookingHotels.Web.Controllers
                 bookingDto.Id = Guid.NewGuid();
                 bookingService.CreateBooking(bookingDto);
 
-
-                return Content("<h2>You have succesfully booked this room</h2>");
+                return Content("<h2>You have succesfully booked this room</h2><a href='/'>back</a>");
             }
             return View(bookingViewModel);
         }
