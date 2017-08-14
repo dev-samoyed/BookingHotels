@@ -22,7 +22,7 @@
         <dd>
             @foreach (var room in Model.Rooms)
             {
-                <div>Room number: @room.Price</div>
+                <div>Room price: @room.RoomPrice</div>
                 <div>Room type: @room.RoomType</div>
                 @Html.ActionLink("Book this room", "Details", "Room", new { id = room.Id }, htmlAttributes: null);
                 <hr>

@@ -14,6 +14,5 @@ namespace BookingHotels.BLL.Interfaces
         Task<OperationDetails> Create(UserDTO userDto);
         ApplicationUser GetUser(Guid Id);
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);
-        // Task SetInitialData(UserDTO adminDto, List<string> roles);
     }
 }

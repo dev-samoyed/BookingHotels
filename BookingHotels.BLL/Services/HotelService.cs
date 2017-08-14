@@ -43,7 +43,6 @@ namespace BookingHotels.BLL.Services
         public void DeleteHotel(HotelDTO hotelDto)
         {
             Hotel hotel = Mapper.Map<HotelDTO, Hotel>(hotelDto);
-
             _unitOfWork.Hotels.Delete(hotel.Id);
             _unitOfWork.
             Save();

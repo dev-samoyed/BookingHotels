@@ -7,7 +7,6 @@ using BookingHotels.BLL.DTO;
 using AutoMapper;
 using System.Net;
 using Microsoft.AspNet.Identity;
-using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -122,10 +121,10 @@ namespace BookingHotels.Web.Controllers
             // Get room which we want to book
             RoomDTO roomDto = roomService.GetRoom(id);
             ViewBag.RoomType = roomDto.RoomType.ToString();
-            ViewBag.Price = roomDto.Price.ToString();
+            ViewBag.Price = roomDto.RoomPrice.ToString();
             ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
             ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
-
+            // Create bookingViewModel
             BookingViewModel bookingViewModel = new BookingViewModel();
             bookingViewModel.RoomId = id;
             bookingViewModel.ApplicationUserId = Guid.Parse(User.Identity.GetUserId());
@@ -145,7 +144,13 @@ namespace BookingHotels.Web.Controllers
 
                 return Content("<h2>You have succesfully booked this room</h2><a href='/'>back</a>");
             }
-            return View(bookingViewModel);
+            // Repopulate room details
+            RoomDTO roomDto = roomService.GetRoom(bookingViewModel.RoomId);
+            ViewBag.RoomType = roomDto.RoomType.ToString();
+            ViewBag.Price = roomDto.RoomPrice.ToString();
+            ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
+            ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
+            return View();
         }
         // ==================================== 
         // Dispose

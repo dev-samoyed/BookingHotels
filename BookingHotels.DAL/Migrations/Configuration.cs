@@ -61,14 +61,14 @@ namespace BookingHotels.DAL.Migrations
             {
                 Id = new Guid("1d759e1a-b865-4b57-8845-2c7a4cb08e80"),
                 HotelId = hotel1.Id,
-                Price = 201,
+                RoomPrice = 201,
                 RoomType = RoomType.Studio
             };
             Room room2 = new Room
             {
                 Id = new Guid("1d759e1a-b865-4b57-8845-2c7a4cb08e81"),
                 HotelId = hotel1.Id,
-                Price = 202,
+                RoomPrice = 202,
                 RoomType = RoomType.DeluxeRoom
             };
             // Seed 1 room to the 2nd hotel
@@ -76,7 +76,7 @@ namespace BookingHotels.DAL.Migrations
             {
                 Id = new Guid("1d759e1a-b865-4b57-8845-2c7a4cb08e82"),
                 HotelId = hotel2.Id,
-                Price = 203,
+                RoomPrice = 203,
                 RoomType = RoomType.DeluxeRoom
             };
             

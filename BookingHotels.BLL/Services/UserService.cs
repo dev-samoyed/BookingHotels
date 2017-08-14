@@ -29,21 +29,21 @@ namespace BookingHotels.BLL.Services
         //}
 
         public ApplicationUser GetUser(Guid Id) {
-            ApplicationUser user = _unitOfWork.UserManager.FindById(Id);
+            ApplicationUser user = _unitOfWork.ApplicationUserManager.FindById(Id);
             return user;
         }
         public async Task<OperationDetails> Create(UserDTO userDto)
         {
-            ApplicationUser user = await _unitOfWork.UserManager.FindByEmailAsync(userDto.Email);
+            ApplicationUser user = await _unitOfWork.ApplicationUserManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
                 user = new ApplicationUser { Email = userDto.Email, UserName = userDto.Email};
-                var result = await _unitOfWork.UserManager.CreateAsync(user, userDto.Password);
+                var result = await _unitOfWork.ApplicationUserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
                 // Fill UserRoles table
                 //await _unitOfWork.UserManager.AddToRoleAsync(user.Id.ToString(), userDto.Role);
-                await _unitOfWork.UserManager.AddToRoleAsync(user.Id, userDto.Role);
+                await _unitOfWork.ApplicationUserManager.AddToRoleAsync(user.Id, userDto.Role);
                 await _unitOfWork.SaveAsync();
                 return new OperationDetails(true, "Registration succesfull", "");
             }
@@ -57,10 +57,10 @@ namespace BookingHotels.BLL.Services
         {
             ClaimsIdentity claim = null;
             // Find user
-            ApplicationUser user = await _unitOfWork.UserManager.FindAsync(userDto.Email, userDto.Password);
+            ApplicationUser user = await _unitOfWork.ApplicationUserManager.FindAsync(userDto.Email, userDto.Password);
             // Authorize him and return ClaimsIdentity obj
             if (user != null)
-                claim = await _unitOfWork.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                claim = await _unitOfWork.ApplicationUserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
         }
 

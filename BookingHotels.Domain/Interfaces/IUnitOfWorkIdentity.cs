@@ -6,8 +6,8 @@ namespace BookingHotels.Domain.Interfaces
 {
     public interface IUnitOfWorkIdentity : IDisposable
     {
-        ApplicationUserManager UserManager { get; }
-        ApplicationRoleManager RoleManager { get; }
+        ApplicationUserManager ApplicationUserManager { get; }
+        ApplicationRoleManager ApplicationRoleManager { get; }
         Task SaveAsync();
     }
 }

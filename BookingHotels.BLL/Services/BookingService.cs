@@ -3,6 +3,9 @@ using BookingHotels.Domain.Entities;
 using BookingHotels.Domain.Interfaces;
 using BookingHotels.BLL.Interfaces;
 using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace BookingHotels.BLL.Services
 {
@@ -16,8 +19,23 @@ namespace BookingHotels.BLL.Services
         {
             _unitOfWork = uow;
         }
+        //public IEnumerable<BookingDTO> GetBookingsByRoomId(Guid Id)
+        //{
+        //    var allBookings = _unitOfWork.Bookings.GetAll().ToList();
+        //    var bookings = from b
+        //                    in allBookings
+        //                   where b.RoomId==Id
+        //                   select b;
+        //    return Mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
+        //}
 
-        // Get bookingDto from Web, create booking and save to db
+        public IEnumerable<BookingDTO> GetBookings()
+        {
+            var bookings = _unitOfWork.Bookings.GetAll().ToList();
+            return Mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
+        }
+
+        // Get bookingDto from Web, create booking object and save to db
         public void CreateBooking(BookingDTO bookingDto)
         {
              Booking booking = Mapper.Map<BookingDTO, Booking>(bookingDto);

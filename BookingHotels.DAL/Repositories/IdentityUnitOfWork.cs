@@ -10,26 +10,25 @@ namespace BookingHotels.DAL.Repositories
     public class IdentityUnitOfWork : IUnitOfWorkIdentity
     {
         private MyDbContext context;
-
-        private ApplicationUserManager userManager;
-        private ApplicationRoleManager roleManager;
+        private ApplicationUserManager applicationUserManager;
+        private ApplicationRoleManager applicationRoleManager;
 
         public IdentityUnitOfWork(string connectionString)
         {
             context = new MyDbContext(connectionString);
-            userManager = new ApplicationUserManager(new CustomUserStore(context));
-            roleManager = new ApplicationRoleManager(new CustomRoleStore(context));
+            applicationUserManager = new ApplicationUserManager(new CustomUserStore(context));
+            applicationRoleManager = new ApplicationRoleManager(new CustomRoleStore(context));
         }
 
-        public ApplicationUserManager UserManager
+        public ApplicationUserManager ApplicationUserManager
         {
-            get { return userManager; }
+            get { return applicationUserManager; }
         }
 
 
-        public ApplicationRoleManager RoleManager
+        public ApplicationRoleManager ApplicationRoleManager
         {
-            get { return roleManager; }
+            get { return applicationRoleManager; }
         }
 
         public async Task SaveAsync()
@@ -50,8 +49,8 @@ namespace BookingHotels.DAL.Repositories
             {
                 if (disposing)
                 {
-                    userManager.Dispose();
-                    roleManager.Dispose();
+                    applicationUserManager.Dispose();
+                    applicationRoleManager.Dispose();
                 }
                 this.disposed = true;
             }
