@@ -6,60 +6,62 @@
 <div class="row">
     <div class="col-sm-9">
         <h2>@ViewBag.Title</h2>
-        <table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Hotel.HotelName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RoomPrice)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.RoomType)
-                </th>
-                <th></th>
-            </tr>
+            @* Cards *@ 
+        <div class="container">
+
             @foreach (var item in Model)
             {
                 string hotelName = item.Hotel.HotelName;
-                <tr>
-                    <td>
-                        @Html.ActionLink(
-                linkText: hotelName,
-                actionName: "Details",
-                controllerName: "Hotel",
-                routeValues: new
-                {
-                    id = item.HotelId,
-                },
-                htmlAttributes: null
-                )
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomPrice) $
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomType)
-                    </td>
-                    <td>
-                        |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                        @* Admin actions:*@
-                        @{
-                            if (User.IsInRole("admin"))
+                <div class="col-md-3 panel panel-default text-center">
+                    <img class="card-img-top" src="~/Content/Images/room.png" width="100" height="100">
+                    <div class="card-block">
+                        <h4 class="card-title">
+                            @Html.DisplayFor(modelItem => item.RoomType)
+                        </h4>
+                        <p class="card-text">
+                            This room is in
+                            @Html.ActionLink(
+                            linkText: hotelName,
+                            actionName: "Details",
+                            controllerName: "Hotel",
+                            routeValues: new
                             {
-                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }); @:|
+                                id = item.HotelId,
+                            },
+                            htmlAttributes: null
+                            )
+                        </p>
+                        <input type="button" 
+                            class="btn btn-primary" 
+                            value="@Html.DisplayFor(modelItem => item.RoomPrice) $"
+                            onclick="location.href='@Url.Action("Details", new { id = item.Id })'" 
+                        />
+                    </div>
+                    <div class="panel-footer">
+                        <p class="card-text">
+                            @* Admin actions:*@
+                            @{
+                                if (User.IsInRole("admin"))
+                                {
+                                @:|
+                                @Html.ActionLink("Delete", "Delete", new { id = item.Id }); 
+                                @:|
                             }
-                        }
-                    </td>
-                </tr>
-            }
-        </table>
-    </div>
+                            }
+                        </p>
+                    </div>
+                </div>
+             }
+        </div>
+          </div>
     <div class="col-sm-3">
         <h2>Filters</h2>
+        Start Date
+        <input class="input-sm" />
+        End Date
+        <input class="input-sm" />
+        Price
+        <input class="input-sm" />
 
     </div>
 </div>
-
-

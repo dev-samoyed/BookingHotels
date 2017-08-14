@@ -19,3 +19,12 @@ textarea {
 .dl-horizontal dd {
     margin-bottom: 28px;
 }
+
+.col-md-3,
+.col-md-9,
+.col-md-6,
+.col-md-8,
+.col-md-4
+{
+   border: 1px solid #eee;
+}
