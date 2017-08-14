@@ -90,7 +90,6 @@
     <Compile Include="Services\BookingService.cs" />
     <Compile Include="Services\RoomService.cs" />
     <Compile Include="Services\HotelService.cs" />
-    <Compile Include="Services\ServiceCreator.cs" />
     <Compile Include="Services\UserService.cs" />
   </ItemGroup>
   <ItemGroup>

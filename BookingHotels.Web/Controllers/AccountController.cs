@@ -14,14 +14,22 @@ namespace BookingHotels.Controllers
 {
     public class AccountController : Controller
     {
-        private IUserService UserService
+
+        IUserService userService;
+        public AccountController(IUserService serv)
         {
-            // Get User Service registred through Owin context
-            get
-            {
-                return HttpContext.GetOwinContext().GetUserManager<IUserService>();
-            }
+            userService = serv;
         }
+
+
+        //private IUserService UserService
+        //{
+        //    // Get User Service registred through Owin context
+        //    get
+        //    {
+        //        return HttpContext.GetOwinContext().GetUserManager<IUserService>();
+        //    }
+        //}
 
         private IAuthenticationManager AuthenticationManager
         {
@@ -47,8 +55,11 @@ namespace BookingHotels.Controllers
             //await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
-                UserDTO userDto = new UserDTO { Id = model.Id, Email = model.Email, Password = model.Password };
-                ClaimsIdentity claim = await UserService.Authenticate(userDto);
+                UserDTO userDto = new UserDTO {
+                    Email = model.Email, 
+                    Password = model.Password
+                };
+                ClaimsIdentity claim = await userService.Authenticate(userDto);
                 if (claim == null)
                 {
                     ModelState.AddModelError("", "Incorrect login or password");
@@ -87,7 +98,7 @@ namespace BookingHotels.Controllers
                 var userDto = Mapper.Map<CustomUserRegister, UserDTO>(model);
                 userDto.Role = "user";
 
-                OperationDetails operationDetails = await UserService.Create(userDto);
+                OperationDetails operationDetails = await userService.Create(userDto);
                 if (operationDetails.Succedeed) {
                     return View("SuccessRegister");
                 }

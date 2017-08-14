@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookingHotels.BLL.DTO;
+using BookingHotels.Domain.Entities;
 using BookingHotels.Web.Models;
 
 namespace BookingHotels.Web
@@ -10,6 +11,7 @@ namespace BookingHotels.Web
         public WebMappingProfile()
         {
             CreateMap<RoomDTO, RoomViewModel>(MemberList.None);
+            CreateMap<RoomDTO, Room>(MemberList.None);
             CreateMap<RoomViewModel, RoomDTO>();
 
             CreateMap<HotelDTO, HotelViewModel>(MemberList.None);

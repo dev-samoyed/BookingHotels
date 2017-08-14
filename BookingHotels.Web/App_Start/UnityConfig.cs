@@ -23,15 +23,17 @@ namespace BookingHotels.Web
             container.RegisterType<IBookingService, BookingService>();
             container.RegisterType<IHotelService, HotelService>();
             container.RegisterType<IRoomService, RoomService>();
+            container.RegisterType<IUserService, UserService>();
+
+            
 
             // from middle layer
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
 
 
              container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("DefaultConnection"));
-
-            // было: Bind<IUnitOfWork>().To<EFUnitOfWork>().WithConstructorArgument(connectionString);
-
+            container.RegisterType<IUnitOfWorkIdentity, IdentityUnitOfWork>(new InjectionConstructor("DefaultConnection"));
+             
         }
 
 

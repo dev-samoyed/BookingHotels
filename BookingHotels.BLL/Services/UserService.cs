@@ -22,6 +22,16 @@ namespace BookingHotels.BLL.Services
             _unitOfWork = uow;
         }
 
+        //public Guid GetUserId(ApplicationUser applicationUser)
+        //{
+        //    Guid id = _unitOfWork.UserManager.(Id);
+        //    return user;
+        //}
+
+        public ApplicationUser GetUser(Guid Id) {
+            ApplicationUser user = _unitOfWork.UserManager.FindById(Id);
+            return user;
+        }
         public async Task<OperationDetails> Create(UserDTO userDto)
         {
             ApplicationUser user = await _unitOfWork.UserManager.FindByEmailAsync(userDto.Email);
@@ -53,24 +63,7 @@ namespace BookingHotels.BLL.Services
                 claim = await _unitOfWork.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
         }
-        /*
-        // Initialize DB
-        public async Task SetInitialData(UserDTO adminDto, List<string> roles)
-        {
-            // Create roles
-            foreach (string roleName in roles)
-            {
-                var role = await _unitOfWork.RoleManager.FindByNameAsync(roleName);
-                if (role == null)
-                {
-                    role = new CustomRole(roleName);
-                    await _unitOfWork.RoleManager.CreateAsync(role);
-                }
-            }
-            // Create admin
-            await Create(adminDto);
-        }
-        */
+
         public void Dispose()
         {
             _unitOfWork.Dispose();

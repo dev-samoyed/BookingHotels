@@ -35,13 +35,14 @@ namespace BookingHotels.DAL.Migrations
                 manager.Create(role);
             }
             // Seed admin
-            if (!db.Users.Any(u => u.UserName == "admin"))
+            if (!db.Users.Any(u => u.Email == "ad@ad.ad"))
             {
                 var store = new CustomUserStore(db);
                 var manager = new ApplicationUserManager(store);
-                var user = new ApplicationUser() { UserName = "admin" };
+                var user = new ApplicationUser() { UserName = "ad@ad.ad", Email= "ad@ad.ad"};
                 manager.Create(user, "123123");
                 manager.AddToRole(user.Id, "admin");
+                //manager.AddToRole(user.Id, "admin");
             }
             // Seed 2 hotels
             Hotel hotel1 = new Hotel {

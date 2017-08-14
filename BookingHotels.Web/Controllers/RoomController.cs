@@ -7,6 +7,7 @@ using BookingHotels.BLL.DTO;
 using AutoMapper;
 using System.Net;
 using Microsoft.AspNet.Identity;
+using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -15,10 +16,13 @@ namespace BookingHotels.Web.Controllers
         IRoomService roomService;
         IHotelService hotelService;
         IBookingService bookingService;
-        public RoomController(IRoomService serv, IHotelService hotelServ)
+        IUserService userService;
+        public RoomController(IRoomService serv, IHotelService hotelServ, IUserService userServ, IBookingService bookingServ)
         {
             roomService = serv;
             hotelService = hotelServ;
+            bookingService = bookingServ;
+            userService = userServ;
         }
 
         // GET: Room/Index
@@ -125,20 +129,22 @@ namespace BookingHotels.Web.Controllers
             BookingViewModel bookingViewModel = new BookingViewModel();
             bookingViewModel.RoomId = id;
             bookingViewModel.ApplicationUserId = Guid.Parse(User.Identity.GetUserId());
-
-            //Mapper.Initialize(cfg => cfg.CreateMap<RoomDTO, RoomViewModel>()
-            //.ForMember("RoomId", opt => opt.MapFrom(src => src.Id)));
-            return View();
+            
+            return View(bookingViewModel);
         }
         // POST        
         [HttpPost, ActionName("Book")]
-        [ValidateAntiForgeryToken]
         public ActionResult BookConfirmed(BookingViewModel bookingViewModel)
         {
             if (ModelState.IsValid)
             {
                 BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
                 bookingDto.Id = Guid.NewGuid();
+
+                bookingDto.ApplicationUser = userService.GetUser(bookingDto.ApplicationUserId);
+                var roomDto = roomService.GetRoom(bookingDto.RoomId);
+                bookingDto.Room = Mapper.Map<RoomDTO, Room>(roomDto);
+
                 bookingService.CreateBooking(bookingDto);
                 return Content("<h2>You have succesfully booked this room</h2>");
             }

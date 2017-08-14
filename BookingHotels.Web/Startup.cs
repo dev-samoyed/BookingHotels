@@ -13,7 +13,7 @@ namespace BookingHotels.Web
     public partial class Startup
     {
         // Through service factory create service for work with services:
-        IServiceCreator serviceCreator = new ServiceCreator();
+        //IServiceCreator serviceCreator = new ServiceCreator();
         public void Configuration(IAppBuilder app)
         {
             // Add Automapper profile
@@ -23,7 +23,8 @@ namespace BookingHotels.Web
             });
             
             // Register service with Owin context
-            app.CreatePerOwinContext<IUserService>(CreateUserService);
+            //app.CreatePerOwinContext<IUserService>(CreateUserService);
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
@@ -33,10 +34,10 @@ namespace BookingHotels.Web
             Mapper.AssertConfigurationIsValid();
         }
 
-        private IUserService CreateUserService()
-        {
-            return serviceCreator.CreateUserService("DefaultConnection");
-        }
+        //private IUserService CreateUserService()
+        //{
+        //    return serviceCreator.CreateUserService("DefaultConnection");
+        //}
     }
 }
  

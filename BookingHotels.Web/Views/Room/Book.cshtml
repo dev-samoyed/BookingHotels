@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Make new booking";
     <h2>@ViewBag.Title</h2>
+
+
 }
 <hr />
 
@@ -30,6 +32,9 @@
 *@
 @using (Html.BeginForm())
 {
+    @Html.HiddenFor(model => model.RoomId)
+    @Html.HiddenFor(model => model.Room)
+    @Html.HiddenFor(model => model.ApplicationUserId)
     <div class="row">
         <div class="col-sm-2">Your room:</div>
         <div class="col-sm-10">
