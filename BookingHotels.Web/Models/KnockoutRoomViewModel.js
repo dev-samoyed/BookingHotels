@@ -1,4 +1,16 @@
-﻿var viewModel = function (data) {
+﻿var myViewModel = {
+    personName: 'Bob',
+    personAge: 123
+};
+
+ko.applyBindings(new myViewModel());
+
+
+
+///////////////////////////////////////////
+/*
+
+var viewModel = function (data) {
     if (data != null) {
         ko.mapping.fromJS(data, { Rooms: clientMapping }, self);
     }
@@ -24,4 +36,4 @@ var clientMapping = {
     }
 };
 
-//
+*/

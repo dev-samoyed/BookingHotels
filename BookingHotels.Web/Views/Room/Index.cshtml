@@ -2,12 +2,11 @@
 @{
     ViewBag.Title = "Rooms";
 
-
-
 }
 @* Content *@
 <div class="col-sm-9">
     <h2>@ViewBag.Title</h2>
+    <h1>The name: <span data-bind="text: personName"></span></h1>
     @foreach (var item in Model)
     {
         @Html.DisplayFor(m => item, "RoomTemplate")
@@ -61,3 +60,7 @@
     <hr/>
     <button class="btn-primary">Apply</button>
 </div>
+
+@section scripts{
+    <script src="~/Models/KnockoutRoomViewModel.js"></script>
+}

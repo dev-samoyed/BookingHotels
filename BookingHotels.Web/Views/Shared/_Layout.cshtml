@@ -1,5 +1,6 @@
 ﻿@{
     ViewBag.Title = "Bookig Hotels";
+
 }
 <!DOCTYPE html>
 <html>
@@ -9,10 +10,6 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/knockout.js")
-    @RenderSection("scripts", required: false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -54,5 +51,9 @@
     <footer>
         <p> &copy; @DateTime.Now.Year - Bookig Hotels</p>
     </footer>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/knockout.js")
+    @RenderSection("scripts", required: false)
 </body>
 </html>
