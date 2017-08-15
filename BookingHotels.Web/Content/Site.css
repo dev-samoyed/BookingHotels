@@ -19,7 +19,10 @@ textarea {
 .dl-horizontal dd {
     margin-bottom: 28px;
 }
-
+.card{
+   background: #f1f1f1;
+   margin: 10px;
+}
 .col-md-3,
 .col-md-9,
 .col-md-6,

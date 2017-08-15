@@ -2,27 +2,59 @@
 @{
     ViewBag.Title = "Rooms";
 }
-<br>
-<div class="row">
-    <div class="col-sm-9">
-        <h2>@ViewBag.Title</h2>
-        @* Cards *@ 
-        <div class="container">
+@* Content *@
+<div class="col-sm-9">
+    <h2>@ViewBag.Title</h2>
+    @foreach (var item in Model)
+    {
+        @Html.DisplayFor(m => item, "RoomTemplate")
+    }
+</div>
 
-
-            @foreach (var item in Model)
-            {
-                @Html.DisplayFor(m => item, "RoomTemplate")
-            }
+@* Sidebar *@
+<div class="col-sm-3 text-center">
+    <h2>Filters</h2>
+    <div class="row">
+        <div class="col-sm-5">
+            Start Date
+        </div>
+        <div class="col-sm-7">
+            <input type = "date" class="input-sm, datefield, form-control" />
         </div>
     </div>
-    <div class="col-sm-3">
-        <h2>Filters</h2>
-        Start Date
-        <input class="input-sm" />
-        End Date
-        <input class="input-sm" />
-        Price
-        <input class="input-sm" />
+    <div class="row">
+        <div class="col-sm-5">
+            End Date
+        </div>
+        <div class="col-sm-7">
+            <input type="date" class="input-sm, datefield, form-control" />
+        </div>
     </div>
+    <div class="row">
+        <div class="col-sm-5">
+            Room price
+        </div>
+        <div class="col-sm-7">
+            <input class="input-sm" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-5">
+            Hotel
+        </div>
+        <div class="col-sm-7">
+            <input class="input-sm" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-5">
+            Room type
+        </div>
+        <div class="col-sm-7">
+            <input class="input-sm" />
+        </div>
+    </div>
+
+    <hr/>
+    <button class="btn-primary">Apply</button>
 </div>
