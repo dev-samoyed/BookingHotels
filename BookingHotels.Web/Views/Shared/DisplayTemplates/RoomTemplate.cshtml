@@ -1,0 +1,43 @@
+﻿@model BookingHotels.Web.Models.RoomViewModel
+
+@{string hotelName = Model.Hotel.HotelName; }
+<div class="col-md-3 panel panel-default text-center">
+    <img class="card-img-top" src="~/Content/Images/room.png" width="100" height="100">
+
+    <div class="card-block">
+        <h4 class="card-title">
+            @Html.DisplayFor(modelItem => Model.RoomType)
+        </h4>
+        <p class="card-text">
+            This room is in
+            @Html.ActionLink(
+            linkText: hotelName,
+            actionName: "Details",
+            controllerName: "Hotel",
+            routeValues: new
+            {
+                id = Model.HotelId,
+            },
+            htmlAttributes: null
+            )
+        </p>
+        <input type="button"
+               class="btn btn-primary"
+               value="@Html.DisplayFor(modelItem => Model.RoomPrice) $"
+               onclick="location.href='@Url.Action("Details", new { id = Model.Id })'" />
+    </div>
+
+    <div class="panel-footer">
+        <p class="card-text">
+            @* Admin actions:*@
+            @{
+                if (User.IsInRole("admin"))
+                {
+                @:|
+                    @Html.ActionLink("Delete", "Delete", new { id = Model.Id });
+                @:|
+            }
+            }
+        </p>
+    </div>
+</div>
