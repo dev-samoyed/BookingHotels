@@ -1,13 +1,30 @@
 ﻿@model IEnumerable<BookingHotels.Web.Models.RoomViewModel>
 @{
     ViewBag.Title = "Rooms";
-
-
-
 }
 @* Content *@
 <div class="col-sm-9">
     <h2>@ViewBag.Title</h2>
+
+    @*Output rooms with knockout:*@
+    <p> We have 
+        <span data-bind="text: okrooms().length"></span>
+        rooms </p>
+    <table>
+        <tbody data-bind="template: { name: 'okroomsRowTemplate', foreach: okrooms }"></tbody>
+    </table>
+
+    <script type="text/html" id="okroomsRowTemplate">
+        <tr>
+            <td>HotelId: <input data-bind="value: HotelId" /></td>
+            <td>RoomId: <input data-bind="value: RoomId"/></td>
+            <td>RoomPrice:<input data-bind="value: RoomPrice"/></td>
+            <td>RoomType:<input data-bind="value: RoomType" /></td>
+            <td>RoomType:<input data-bind="value: RoomType"/></td>
+        </tr>
+    </script>
+
+    @*The same output with razor:*@
     @foreach (var item in Model)
     {
         @Html.DisplayFor(m => item, "RoomTemplate")
@@ -61,3 +78,21 @@
     <hr/>
     <button class="btn-primary">Apply</button>
 </div>
+
+<script>
+    // Using Json.NET to JSON encode server-side Model directly in view
+    var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
+                                 Newtonsoft.Json.JsonConvert.SerializeObject(
+                                 Model,
+                                 Newtonsoft.Json.Formatting.None,
+                                 new Newtonsoft.Json.JsonSerializerSettings {
+                                     ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
+
+    console.log(JsonRooms);
+
+        var viewModel = {
+            okrooms: ko.observableArray(JsonRooms)
+        };
+
+        ko.applyBindings(viewModel, document.body);
+</script>
