@@ -10,6 +10,15 @@ using Microsoft.AspNet.Identity;
 
 namespace BookingHotels.Web.Controllers
 {
+    public class RoomList
+    {
+        public List<RoomViewModel> Rooms { get; set; }
+        public RoomList()
+        {
+            Rooms = new List<RoomViewModel>();
+        }
+    }
+
     public class RoomController : Controller
     {
         IRoomService roomService;
@@ -24,9 +33,17 @@ namespace BookingHotels.Web.Controllers
             userService = userServ;
         }
 
+        // A wrapper class to carry the data we create and send it back to the browser.
+
+
         // GET: Room/Index
         public ActionResult Index()
         {
+        
+ 
+
+
+
             // Get all rooms
             IEnumerable<RoomDTO> roomDtos = roomService.GetRooms();
             // Map DTO to ViewModel using Dtos data
