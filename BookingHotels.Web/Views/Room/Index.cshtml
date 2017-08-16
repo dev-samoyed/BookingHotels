@@ -1,15 +1,44 @@
 ﻿@model IEnumerable<BookingHotels.Web.Models.RoomViewModel>
 @{
     ViewBag.Title = "Rooms";
-
 }
 @* Content *@
 <div class="col-sm-9">
     <h2>@ViewBag.Title</h2>
-    <h1>The name: <span data-bind="text: personName"></span></h1>
+
+    @* Output all rooms in knockout template: *@
+    <p>
+        We have
+        <span data-bind="text: okrooms().length"></span>
+        rooms
+    </p>
+    <div data-bind="template: { name: 'okroomsRowTemplate', foreach: okrooms }"></div>
+    <script type="text/html" id="okroomsRowTemplate">
+        <p>
+            HotelId:
+            <span data-bind="text: HotelId">&nbsp;</span>
+        </p>
+        <p>
+            RoomId:
+            <span data-bind="text: Id">&nbsp;</span>
+        </p>
+        <p>
+            RoomPrice:
+            <span data-bind="text: RoomPrice">&nbsp;</span>
+        </p>
+        <p>
+            RoomType:
+            <span data-bind="text: RoomType">&nbsp;</span>
+        </p>
+        <a href="#" data-bind="click: $parent.details">Details</a>
+        <hr />
+    </script>
+
+
+    @* The same output with asp net template: *@
     @foreach (var item in Model)
     {
-        @Html.DisplayFor(m => item, "RoomTemplate")
+    @Html.DisplayFor(m => item, "RoomTemplate")
     }
 </div>
 
@@ -21,7 +50,7 @@
             Start Date
         </div>
         <div class="col-sm-7">
-            <input type = "date" class="input-sm, datefield, form-control" />
+            <input type="date" class="input-sm, datefield, form-control" />
         </div>
     </div>
     <div class="row">
@@ -57,10 +86,28 @@
         </div>
     </div>
 
-    <hr/>
+    <hr />
     <button class="btn-primary">Apply</button>
 </div>
 
-@section scripts{
-    <script src="~/Models/KnockoutRoomViewModel.js"></script>
-}
+
+<script type="text/javascript">
+    // Using Json.NET to JSON encode server-side Model directly in view
+    var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
+                                 Newtonsoft.Json.JsonConvert.SerializeObject(
+                                 Model,
+                                 Newtonsoft.Json.Formatting.None,
+                                 new Newtonsoft.Json.JsonSerializerSettings {
+                                     ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
+    console.log(JsonRooms);
+    function viewModel() {
+        var self = this;
+        self.okrooms = ko.observableArray(JsonRooms)
+        self.details = function ()
+        {
+            // redirect to details
+        }
+
+    };
+    ko.applyBindings(new viewModel(), document.body);
+</script>

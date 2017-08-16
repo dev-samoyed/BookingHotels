@@ -5,19 +5,18 @@
     string hotelName = ViewBag.hotelName;
 }
 <div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="img">
+                <img src="~/Content/Images/room.png" height="100" width="100">
+            </div>
+        </div>
+        <div class="col-md-6">
             <div class="row">
-                
-                <div class="col-md-4 text-center">
-                    <div class="img">
-                        <img src="~/Content/Images/room.png" height="100" width="100">
-                    </div>
-                </div>
-                    
-                <div class="col-md-8">@Html.DisplayFor(model => model.RoomPrice) $</div>
-
+                    @Html.DisplayFor(model => model.RoomPrice) $
             </div>
             <div class="row">
-                <div class="col-md-6 text-center">
+                <div class="col-md-6">
                     @Html.DisplayFor(model => model.RoomType)
                 </div>
                 <div class="col-md-6">
@@ -32,10 +31,12 @@
                         htmlAttributes: null)
                 </div>
             </div>
-            <hr/>
-            <div class="row text-center">
+            <div class="row">
                 <input type="button" class="btn btn-primary" value="Book this room" onclick="location.href='@Url.Action("Book", new { id = Model.Id })'" /> 
             </div>
+        </div>
+
+    </div>
 </div>
 @Html.ActionLink("Back to List", "Index") |
 @* Admin actions*@
