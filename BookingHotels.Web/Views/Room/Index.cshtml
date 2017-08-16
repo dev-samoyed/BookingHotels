@@ -1,97 +1,97 @@
 ﻿@model IEnumerable<BookingHotels.Web.Models.RoomViewModel>
-@{
+    @{
     ViewBag.Title = "Rooms";
-}
-@* Content *@
-<div class="col-sm-9">
-    <h2>@ViewBag.Title</h2>
-
-    @* Output all rooms in knockout template: *@
-    <p>
-        We have
-        <span data-bind="text: okrooms().length"></span>
-        rooms
-    </p>
-    <div data-bind="template: { name: 'okroomsRowTemplate', foreach: okrooms }"></div>
-    <script type="text/html" id="okroomsRowTemplate">
-        <p>
-            HotelId:
-            <span data-bind="text: HotelId">&nbsp;</span>
-        </p>
-        <p>
-            RoomId:
-            <span data-bind="text: Id">&nbsp;</span>
-        </p>
-        <p>
-            RoomPrice:
-            <span data-bind="text: RoomPrice">&nbsp;</span>
-        </p>
-        <p>
-            RoomType:
-            <span data-bind="text: RoomType">&nbsp;</span>
-        </p>
-        <a href="#" data-bind="click: $parent.details">Details</a>
-        <hr />
-    </script>
-
-
-    @* The same output with asp net template: *@
-    @foreach (var item in Model)
-    {
-    @Html.DisplayFor(m => item, "RoomTemplate")
     }
-</div>
+    @* Content *@
+    <div class="col-sm-9">
+        <h2>@ViewBag.Title</h2>
 
-@* Sidebar *@
-<div class="col-sm-3 text-center">
-    <h2>Filters</h2>
-    <div class="row">
-        <div class="col-sm-5">
-            Start Date
-        </div>
-        <div class="col-sm-7">
-            <input type="date" class="input-sm, datefield, form-control" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-5">
-            End Date
-        </div>
-        <div class="col-sm-7">
-            <input type="date" class="input-sm, datefield, form-control" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-5">
-            Max room price
-        </div>
-        <div class="col-sm-7">
-            <input class="input-sm" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-5">
-            Hotel
-        </div>
-        <div class="col-sm-7">
-            <input class="input-sm" />
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-5">
-            Room type
-        </div>
-        <div class="col-sm-7">
-            <input class="input-sm" />
-        </div>
-    </div>
-
-    <hr />
-    <button class="btn-primary">Apply</button>
-</div>
+        @* Output all rooms in knockout template: *@
+        <p>
+            We have
+            <span data-bind="text: okrooms().length"></span>
+            rooms
+        </p>
+        <div data-bind="template: { name: 'okroomsRowTemplate', foreach: okrooms }"></div>
+        <script type="text/html" id="okroomsRowTemplate">
+            <p>
+                HotelId:
+                <span data-bind="text: HotelId">&nbsp;</span>
+            </p>
+            <p>
+                RoomId:
+                <span data-bind="text: Id">&nbsp;</span>
+            </p>
+            <p>
+                RoomPrice:
+                <span data-bind="text: RoomPrice">&nbsp;</span>
+            </p>
+            <p>
+                RoomType:
+                <span data-bind="text: RoomType">&nbsp;</span>
+            </p>
+            <a href="#" data-bind="click: $parent.details">Details</a>
+            <hr />
+        </script>
 
 
-<script type="text/javascript">
+        @* The same output with asp net template: *@
+        @foreach (var item in Model)
+        {
+        @Html.DisplayFor(m => item, "RoomTemplate")
+        }
+    </div>
+
+    @* Sidebar *@
+    <div class="col-sm-3 text-center">
+        <h2>Filters</h2>
+        <div class="row">
+            <div class="col-sm-5">
+                Start Date
+            </div>
+            <div class="col-sm-7">
+                <input type="date" class="input-sm, datefield, form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                End Date
+            </div>
+            <div class="col-sm-7">
+                <input type="date" class="input-sm, datefield, form-control" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                Max room price
+            </div>
+            <div class="col-sm-7">
+                <input class="input-sm" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                Hotel
+            </div>
+            <div class="col-sm-7">
+                <input class="input-sm" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                Room type
+            </div>
+            <div class="col-sm-7">
+                <input class="input-sm" />
+            </div>
+        </div>
+
+        <hr />
+        <button class="btn-primary">Apply</button>
+    </div>
+
+
+    <script type="text/javascript">
     // Using Json.NET to JSON encode server-side Model directly in view
     var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
                                  Newtonsoft.Json.JsonConvert.SerializeObject(
@@ -110,4 +110,4 @@
 
     };
     ko.applyBindings(new viewModel(), document.body);
-</script>
+    </script>
