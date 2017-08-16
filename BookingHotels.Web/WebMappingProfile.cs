@@ -10,7 +10,10 @@ namespace BookingHotels.Web
     {
         public WebMappingProfile()
         {
-            CreateMap<RoomDTO, RoomViewModel>(MemberList.None);
+            CreateMap<RoomDTO, RoomViewModel>(MemberList.None)
+            .ForMember(o => o.RoomType, b => b.MapFrom(z => z.RoomType));
+          
+
             CreateMap<RoomDTO, Room>(MemberList.None);
             CreateMap<RoomViewModel, RoomDTO>();
 

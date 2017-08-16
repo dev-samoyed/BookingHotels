@@ -26,18 +26,10 @@ ViewBag.Title = "Rooms";
                 </a>
             </p>
             <a href="#" data-bind="click: $parent.details">
-                <span class="btn btn-primary" data-bind="text: RoomPrice"></span> $
+                <span class="btn btn-primary" data-bind="text: $parent.bookThisRoom(RoomPrice)"></span>
             </a>
         </div>
     </script>
-
-    @*
-    The same output with asp net template:
-    @foreach (var item in Model)
-    {
-    @Html.DisplayFor(m => item, "RoomTemplate")
-    }
-    *@
 </div>
 
 @* Sidebar *@
@@ -90,30 +82,38 @@ ViewBag.Title = "Rooms";
 
 
 <script type="text/javascript">
-// Using Json.NET to JSON encode server-side Model directly in view
-var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
-                             Newtonsoft.Json.JsonConvert.SerializeObject(
-                             Model,
-                             Newtonsoft.Json.Formatting.None,
-                             new Newtonsoft.Json.JsonSerializerSettings {
-                                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
-console.log(JsonRooms);
-function viewModel() {
-    var self = this;
-    self.okRooms = ko.observableArray(JsonRooms)
-    // Knockout supplies the current model value as the first parameter
-    self.details = function(room)
-    {
-        // Redirect to room details
-        window.location.href = "/room/details/"+room.Id;
-    }
-    self.hotelDetails = function (room) {
-        // Redirect to room details
-        window.location.href = "/hotel/details/" + room.HotelId;
-    }
+    // Using Json.NET to JSON encode server-side Model directly in view
+    var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
+  Newtonsoft.Json.JsonConvert.SerializeObject(
+  Model,
+  Newtonsoft.Json.Formatting.None,
+  new Newtonsoft.Json.JsonSerializerSettings {
+      ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
+    console.log(JsonRooms);
+    function viewModel() {
+        var self = this;
+        self.okRooms = ko.observableArray(JsonRooms)
+        // Knockout supplies the current model value as the first parameter
+        self.details = function (room) {
+            // Redirect to room details
+            window.location.href = "/room/details/" + room.Id;
+        }
+        self.hotelDetails = function (room) {
+            // Redirect to hotel details
+            window.location.href = "/hotel/details/" + room.HotelId;
+        }
+        self.bookThisRoom = function (price) {
+            return "Book for " + price + " $";
+        }
+        @*self.getRoomType = function (type) {
+            @{
+                String roomTypeByIndex = Enum.GetName(typeof(BookingHotels.Domain.Enums.RoomType),2);
+            }
 
+            var room = "@Html.Raw(HttpUtility.JavaScriptStringEncode(roomTypeByIndex))";
 
-
-};
-ko.applyBindings(new viewModel(), document.body);
+            return room;
+        }*@
+    };
+    ko.applyBindings(new viewModel(), document.body);
 </script>

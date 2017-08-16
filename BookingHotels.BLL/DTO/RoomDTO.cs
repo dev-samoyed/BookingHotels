@@ -1,5 +1,5 @@
 ﻿using System;
-using BookingHotels.DAL.Enums;
+using BookingHotels.Domain.Enums;
 using BookingHotels.Domain.Entities;
 
 namespace BookingHotels.BLL.DTO

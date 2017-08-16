@@ -4,7 +4,7 @@ namespace BookingHotels.DAL.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
     using BookingHotels.Domain.Entities;
-    using BookingHotels.DAL.Enums;
+    using BookingHotels.Domain.Enums;
     using EF;
     using Microsoft.AspNet.Identity;
     using Identity;

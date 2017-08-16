@@ -1,5 +1,5 @@
 ﻿using BookingHotels.Domain.Entities;
-using BookingHotels.DAL.Enums;
+using BookingHotels.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

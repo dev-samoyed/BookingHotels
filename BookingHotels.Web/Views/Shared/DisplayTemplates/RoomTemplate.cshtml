@@ -1,4 +1,13 @@
-﻿@model BookingHotels.Web.Models.RoomViewModel
+﻿@*
+    In The view: output with asp net template:
+    @foreach (var item in Model)
+    {
+    @Html.DisplayFor(m => item, "RoomTemplate")
+    }
+*@
+
+
+@model BookingHotels.Web.Models.RoomViewModel
 
 @{string hotelName = Model.Hotel.HotelName; }
 

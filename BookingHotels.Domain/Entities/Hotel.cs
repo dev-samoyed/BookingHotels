@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using BookingHotels.DAL.Enums;
+using BookingHotels.Domain.Enums;
 
 namespace BookingHotels.Domain.Entities
 {
