@@ -1,113 +1,119 @@
 ﻿@model IEnumerable<BookingHotels.Web.Models.RoomViewModel>
-    @{
-    ViewBag.Title = "Rooms";
-    }
-    @* Content *@
-    <div class="col-sm-9">
-        <h2>@ViewBag.Title</h2>
-
-        @* Output all rooms in knockout template: *@
-        <p>
-            We have
-            <span data-bind="text: okrooms().length"></span>
-            rooms
-        </p>
-        <div data-bind="template: { name: 'okroomsRowTemplate', foreach: okrooms }"></div>
-        <script type="text/html" id="okroomsRowTemplate">
-            <p>
-                HotelId:
-                <span data-bind="text: HotelId">&nbsp;</span>
+@{
+ViewBag.Title = "Rooms";
+}
+@* Content *@
+<div class="col-sm-9">
+    <h2>@ViewBag.Title</h2>
+    <h3> We have
+        <span data-bind="text: okRooms().length"></span>
+        rooms:
+    </h3>
+    <hr/>
+    @* knockout template: *@
+    <div data-bind="template: { name: 'okRoomDisplayTemplate', foreach: okRooms }"></div>
+    
+    <script type="text/html" id="okRoomDisplayTemplate">
+        <div class="card col-md-3 text-center">
+            <img class="card-img-top" src="/Content/Images/room.png" width="100" height="100">
+            <h4 class="card-title">
+                <span data-bind="text: RoomType"></span>
+            </h4>
+            <p class="card-text">
+                This room is in
+                <a href="#" data-bind="click: $parent.hotelDetails">
+                    <span data-bind="text: Hotel.HotelName"></span>
+                </a>
             </p>
-            <p>
-                RoomId:
-                <span data-bind="text: Id">&nbsp;</span>
-            </p>
-            <p>
-                RoomPrice:
-                <span data-bind="text: RoomPrice">&nbsp;</span>
-            </p>
-            <p>
-                RoomType:
-                <span data-bind="text: RoomType">&nbsp;</span>
-            </p>
-            <a href="#" data-bind="click: $parent.details">Details</a>
-            <hr />
-        </script>
-
-
-        @* The same output with asp net template: *@
-        @foreach (var item in Model)
-        {
-        @Html.DisplayFor(m => item, "RoomTemplate")
-        }
-    </div>
-
-    @* Sidebar *@
-    <div class="col-sm-3 text-center">
-        <h2>Filters</h2>
-        <div class="row">
-            <div class="col-sm-5">
-                Start Date
-            </div>
-            <div class="col-sm-7">
-                <input type="date" class="input-sm, datefield, form-control" />
-            </div>
+            <a href="#" data-bind="click: $parent.details">
+                <span class="btn btn-primary" data-bind="text: RoomPrice"></span> $
+            </a>
         </div>
-        <div class="row">
-            <div class="col-sm-5">
-                End Date
-            </div>
-            <div class="col-sm-7">
-                <input type="date" class="input-sm, datefield, form-control" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-5">
-                Max room price
-            </div>
-            <div class="col-sm-7">
-                <input class="input-sm" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-5">
-                Hotel
-            </div>
-            <div class="col-sm-7">
-                <input class="input-sm" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-5">
-                Room type
-            </div>
-            <div class="col-sm-7">
-                <input class="input-sm" />
-            </div>
-        </div>
-
-        <hr />
-        <button class="btn-primary">Apply</button>
-    </div>
-
-
-    <script type="text/javascript">
-    // Using Json.NET to JSON encode server-side Model directly in view
-    var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
-                                 Newtonsoft.Json.JsonConvert.SerializeObject(
-                                 Model,
-                                 Newtonsoft.Json.Formatting.None,
-                                 new Newtonsoft.Json.JsonSerializerSettings {
-                                     ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
-    console.log(JsonRooms);
-    function viewModel() {
-        var self = this;
-        self.okrooms = ko.observableArray(JsonRooms)
-        self.details = function ()
-        {
-            // redirect to details
-        }
-
-    };
-    ko.applyBindings(new viewModel(), document.body);
     </script>
+
+    @*
+    The same output with asp net template:
+    @foreach (var item in Model)
+    {
+    @Html.DisplayFor(m => item, "RoomTemplate")
+    }
+    *@
+</div>
+
+@* Sidebar *@
+<div class="col-sm-3 text-center">
+     <h2>Filters</h2>
+     <div class="row">
+         <div class="col-sm-5">
+             Start Date
+         </div>
+         <div class="col-sm-7">
+             <input type="date" class="input-sm, datefield, form-control" />
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-sm-5">
+             End Date
+         </div>
+         <div class="col-sm-7">
+             <input type="date" class="input-sm, datefield, form-control" />
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-sm-5">
+             Max room price
+         </div>
+         <div class="col-sm-7">
+             <input class="input-sm" />
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-sm-5">
+             Hotel
+         </div>
+         <div class="col-sm-7">
+             <input class="input-sm" />
+         </div>
+     </div>
+     <div class="row">
+         <div class="col-sm-5">
+             Room type
+         </div>
+         <div class="col-sm-7">
+             <input class="input-sm" />
+         </div>
+     </div>
+
+     <hr />
+     <button class="btn-primary">Apply</button>
+ </div>
+
+
+<script type="text/javascript">
+// Using Json.NET to JSON encode server-side Model directly in view
+var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
+                             Newtonsoft.Json.JsonConvert.SerializeObject(
+                             Model,
+                             Newtonsoft.Json.Formatting.None,
+                             new Newtonsoft.Json.JsonSerializerSettings {
+                                 ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
+console.log(JsonRooms);
+function viewModel() {
+    var self = this;
+    self.okRooms = ko.observableArray(JsonRooms)
+    // Knockout supplies the current model value as the first parameter
+    self.details = function(room)
+    {
+        // Redirect to room details
+        window.location.href = "/room/details/"+room.Id;
+    }
+    self.hotelDetails = function (room) {
+        // Redirect to room details
+        window.location.href = "/hotel/details/" + room.HotelId;
+    }
+
+
+
+};
+ko.applyBindings(new viewModel(), document.body);
+</script>

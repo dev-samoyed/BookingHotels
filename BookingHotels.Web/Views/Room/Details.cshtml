@@ -4,40 +4,35 @@
     <h2>@ViewBag.Title</h2>
     string hotelName = ViewBag.hotelName;
 }
-<div class="container">
-    <div class="row">
-        <div class="col-md-6">
-            <div class="img">
-                <img src="~/Content/Images/room.png" height="100" width="100">
-            </div>
+<div class="row">
+    <div class="col-md-3 text-center">
+        <img src="~/Content/Images/room.png" height="100" width="100">
+    </div>
+    <div class="col-md-9">
+        <div class="row">
+        @Html.DisplayFor(model => model.RoomPrice) $
         </div>
-        <div class="col-md-6">
-            <div class="row">
-                    @Html.DisplayFor(model => model.RoomPrice) $
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    @Html.DisplayFor(model => model.RoomType)
-                </div>
-                <div class="col-md-6">
-                    @Html.ActionLink(
-                        linkText: hotelName,
-                        actionName: "Details",
-                        controllerName: "Hotel",
-                        routeValues: new
-                        {
-                            id = Model.HotelId,
-                        },
-                        htmlAttributes: null)
-                </div>
-            </div>
-            <div class="row">
-                <input type="button" class="btn btn-primary" value="Book this room" onclick="location.href='@Url.Action("Book", new { id = Model.Id })'" /> 
-            </div>
+        <div class="row">
+            @Html.DisplayFor(model => model.RoomType)
         </div>
-
+        <div class="row">
+            @Html.ActionLink(
+            linkText: hotelName,
+            actionName: "Details",
+            controllerName: "Hotel",
+            routeValues: new
+            {
+                id = Model.HotelId,
+            },
+            htmlAttributes: null)
+        </div>
     </div>
 </div>
+<br/>
+<div class="text-center">
+    <input type="button" class="btn btn-primary" value="Book this room" onclick="location.href='@Url.Action("Book", new { id = Model.Id })'" />
+</div>
+
 @Html.ActionLink("Back to List", "Index") |
 @* Admin actions*@
 @{

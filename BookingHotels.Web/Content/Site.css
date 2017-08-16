@@ -31,3 +31,10 @@ textarea {
 {
    border: 1px solid #eee;
 }
+
+.row {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
