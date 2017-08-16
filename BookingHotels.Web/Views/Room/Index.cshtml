@@ -6,14 +6,14 @@ ViewBag.Title = "Rooms";
 <div class="col-sm-9">
     <h2>@ViewBag.Title</h2>
     <h3> We have
-        <span data-bind="text: okRooms().length"></span>
+        <span data-bind="text: koRooms().length"></span>
         rooms:
     </h3>
     <hr/>
-    @* knockout template: *@
-    <div data-bind="template: { name: 'okRoomDisplayTemplate', foreach: okRooms }"></div>
-    
-    <script type="text/html" id="okRoomDisplayTemplate">
+    @* Knockout template: *@
+    <div data-bind="template: { name: 'koRoomDisplayTemplate', foreach: koRoomsFiltered }"></div>
+
+    <script type="text/html" id="koRoomDisplayTemplate">
         <div class="card col-md-3 text-center">
             <img class="card-img-top" src="/Content/Images/room.png" width="100" height="100">
             <h4 class="card-title">
@@ -80,40 +80,39 @@ ViewBag.Title = "Rooms";
      <button class="btn-primary">Apply</button>
  </div>
 
-
 <script type="text/javascript">
     // Using Json.NET to JSON encode server-side Model directly in view
     var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
-  Newtonsoft.Json.JsonConvert.SerializeObject(
-  Model,
-  Newtonsoft.Json.Formatting.None,
-  new Newtonsoft.Json.JsonSerializerSettings {
-      ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
+        Newtonsoft.Json.JsonConvert.SerializeObject(
+          Model,
+          Newtonsoft.Json.Formatting.None,
+          new Newtonsoft.Json.JsonSerializerSettings {
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
     console.log(JsonRooms);
-    function viewModel() {
+
+    @* Knockout View Model *@
+    var knockoutRoomViewModel
+    {
         var self = this;
-        self.okRooms = ko.observableArray(JsonRooms)
+        self.koRooms = ko.observableArray(JsonRooms);
+
         // Knockout supplies the current model value as the first parameter
         self.details = function (room) {
-            // Redirect to room details
             window.location.href = "/room/details/" + room.Id;
         }
         self.hotelDetails = function (room) {
-            // Redirect to hotel details
             window.location.href = "/hotel/details/" + room.HotelId;
         }
         self.bookThisRoom = function (price) {
             return "Book for " + price + " $";
         }
-        @*self.getRoomType = function (type) {
-            @{
-                String roomTypeByIndex = Enum.GetName(typeof(BookingHotels.Domain.Enums.RoomType),2);
-            }
-
-            var room = "@Html.Raw(HttpUtility.JavaScriptStringEncode(roomTypeByIndex))";
-
-            return room;
-        }*@
     };
-    ko.applyBindings(new viewModel(), document.body);
+
+    knockoutRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
+        return ko.utils.arrayFilter(self.koRooms(), function (p) {
+            return p.RoomPrice()==123;
+        });
+    }, knockoutRoomViewModel);
+
+    ko.applyBindings(new knockoutRoomViewModel(), document.body);
 </script>
