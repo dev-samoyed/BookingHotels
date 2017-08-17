@@ -10,8 +10,6 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
-
-
     @Scripts.Render("~/bundles/knockout.js")
     @RenderSection("scripts", required: false)
 </head>
@@ -49,8 +47,8 @@
     </div>
     <div class="container body-content">
         @RenderBody()
+        <br />
         <hr />
-
     </div>
     <footer>
         <p> &copy; @DateTime.Now.Year - Bookig Hotels</p>

@@ -19,6 +19,33 @@ namespace BookingHotels.BLL.Services
         {
             _unitOfWork = uow;
         }
+        public List<object> IsRoomOccupied(Guid id, DateTime startDate1, DateTime endDate1)
+        {
+            List<object> result = new List<object>();
+            // All bookings for this room
+            var bookings = GetBookingsByRoom(id);
+            // Check if room is already booked in that ranges 
+            foreach (BookingDTO booking in bookings)
+            {
+                var startDate2 = booking.BookingStartDate;
+                var endDate2 = booking.BookingEndDate;
+                // Check date is within already booked date ranges
+                if ((startDate2 >= startDate1 && startDate2 <= endDate1) ||
+                    (endDate2 >= startDate1 && endDate2 <= endDate1))
+                {
+                    result.Add(true);
+                    result.Add(booking.BookingStartDate);
+                    result.Add(booking.BookingEndDate);
+
+                    return result;
+                    //return Content("Sorry, the room is occupied from " + booking.BookingStartDate + " to " + booking.BookingEndDate + "<a href='javascript: history.back()'>Go Back</a>");
+                }
+            }
+            result.Add(false);
+            return result;
+
+        }
+
         public IEnumerable<BookingDTO> GetBookingsByRoom(Guid Id)
         {
             var allBookings = _unitOfWork.Bookings.GetAll().ToList();

@@ -5,11 +5,11 @@ ViewBag.Title = "Rooms";
 @* Content *@
 <div class="col-sm-8">
     <h2>@ViewBag.Title</h2>
+    <hr />
     <h3> We have
         <span data-bind="text: koRooms().length"></span>
         rooms:
     </h3>
-    <hr/>
     @* Knockout template: *@
     <div data-bind="template: { name: 'koRoomDisplayTemplate', foreach: koRoomsFiltered }"></div>
 
@@ -35,6 +35,7 @@ ViewBag.Title = "Rooms";
 @* Sidebar *@
 <div class="col-sm-4 text-center">
      <h2>Filters</h2>
+     <hr/>
      <div class="row">
          <div class="col-sm-5">
              Max room price
@@ -43,7 +44,7 @@ ViewBag.Title = "Rooms";
              <input 
              type="number"
              class="form-control" 
-            data-bind="textInput: maxRomPrice">
+            data-bind="textInput: maxRoomPrice">
          </div>$
      </div>
      <br/>
@@ -79,31 +80,54 @@ ViewBag.Title = "Rooms";
                    id="filterSortType" />
         </div>
     </div>
+    <br/>
+    <div class="row">
+        <div class="col-lg-6">
+            <label for="startDate">Start date</label>
+            <input type="date"
+                   data-bind="textInput: startDate"
+                   id="startDate" />
+        </div>
+        <div class="col-lg-6">
+            <label for="endDate">End date</label>
+            <input type="date"
+                   data-bind="textInput: endDate"
+                   id="endDate" />
+        </div>
+    </div>
      <hr />
  </div>
 
 <script type="text/javascript">
     // Using Json.NET to JSON encode server-side Model directly in view
     var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
-    Newtonsoft.Json.JsonConvert.SerializeObject(
-    Model,
-    Newtonsoft.Json.Formatting.None,
-    new Newtonsoft.Json.JsonSerializerSettings {
-    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }
-    )))");
+        Newtonsoft.Json.JsonConvert.SerializeObject(
+        Model,
+        Newtonsoft.Json.Formatting.None,
+        new Newtonsoft.Json.JsonSerializerSettings {
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }
+        )))");
     console.log(JsonRooms);
 
+    var JsonBookings = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
+        Newtonsoft.Json.JsonConvert.SerializeObject(
+        ViewBag.bookings,
+        Newtonsoft.Json.Formatting.None,
+        new Newtonsoft.Json.JsonSerializerSettings {
+        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }
+        )))");
+    console.log(JsonBookings);
+
     var JsonRoomTypes = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
-    Newtonsoft.Json.JsonConvert.SerializeObject(
-    Enum.GetNames(typeof(BookingHotels.Domain.Enums.RoomType))
-    )))");
+        Newtonsoft.Json.JsonConvert.SerializeObject(
+        Enum.GetNames(typeof(BookingHotels.Domain.Enums.RoomType))
+        )))");
     console.log(JsonRoomTypes);
 
+    $.each(JsonBookings, function (index, value) {
+        console.log('My array has at position ' + index + ', this value: ' + value);
+    });
 
-    // Get string value by name from coocie or get defaultValue, if cookie is empty
-    var getParam = function (paramName, defaultValue) {
-        return paramName ? paramName : defaultValue;
-    };
 
     @* Knockout View Model *@
     var koRoomViewModel =
@@ -112,8 +136,11 @@ ViewBag.Title = "Rooms";
         koRooms: ko.observableArray(JsonRooms),
         koRoomTypes: ko.observableArray(JsonRoomTypes),
         selectedRoomTypes: ko.observableArray(JsonRoomTypes),
-        maxRomPrice: ko.observable(),
-        sorting: ko.observable(getParam('sorting', 'priceSort')),
+        maxRoomPrice: ko.observable(),
+        startDate: ko.observable(),
+        endDate: ko.observable(),
+
+        sorting: ko.observable(),
         // Knockout supplies the current model value as the first parameter
         details : function (room) {
             window.location.href = "/room/details/" + room.Id;
@@ -149,24 +176,42 @@ ViewBag.Title = "Rooms";
         koRoomViewModel.sortProcesssing(sortType);
     });
 
-    koRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
+    koRoomViewModel.koRoomsFiltered = ko.computed(function () {
         var result = koRoomViewModel.koRooms();
-        console.log(koRoomViewModel.maxRomPrice());
-        console.log(koRoomViewModel.selectedRoomTypes());
+        console.log("maxRoomPrice changed to "+koRoomViewModel.maxRoomPrice());
+        console.log("selectedRoomTypes  changed to " + koRoomViewModel.selectedRoomTypes());
+        console.log("start date changed to " + koRoomViewModel.startDate());
+        console.log("end date changed to " + koRoomViewModel.endDate());
         // Room Price Filter
-        if (koRoomViewModel.maxRomPrice()) {
+        if (koRoomViewModel.maxRoomPrice()) {
             result = ko.utils.arrayFilter(result, function (room) {
-                // Return true (to include room) if it's RoomPrice < maxRomPrice
-                return (room.RoomPrice < koRoomViewModel.maxRomPrice());
+                // Return true (to include room)
+                // if it's RoomPrice < maxRoomPrice
+                return (room.RoomPrice < koRoomViewModel.maxRoomPrice());
             });
         }
         // Room Type Filter
         if (koRoomViewModel.selectedRoomTypes().length) {
             result = ko.utils.arrayFilter(result, function (room) {
-                // Return true (to include room) if it's RoomType appears in selectedRoomTypes
+                // Return true (to include room)
+                // if it's RoomType appears in selectedRoomTypes
                 return (-1 != ko.utils.arrayIndexOf(koRoomViewModel.selectedRoomTypes(), room.RoomType));
             });
         }
+        // Date filter
+        if (koRoomViewModel.selectedRoomTypes().length) {
+            result = ko.utils.arrayFilter(result, function (room) {
+                // Return true (to include room)
+                // if there is no existing bookings in selected date range
+                // (StartA <= EndB) and (EndA >= StartB)
+
+
+
+
+                return (true);
+            });
+        }
+        // Return filtered array
         return result;
     });
     // Apply sort before binding

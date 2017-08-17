@@ -34,17 +34,19 @@ namespace BookingHotels.Web.Controllers
             userService = userServ;
         }
         
-        // GET: Room/Index
+        // Room/Index
         public ActionResult Index()
         {
             // Get all rooms
             IEnumerable<RoomDTO> roomDtos = roomService.GetRooms();
+            IEnumerable<BookingDTO> bookings = bookingService.GetBookings();
+            ViewBag.bookings = bookings;
             // Map DTO to ViewModel using Dtos data
             var rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
             return View(rooms);
         }
 
-        // GET: Room/Details/{Guid}
+        // Room/Details/{Guid}
         public ActionResult Details(Guid id)
         {
             if (id == null)
@@ -73,7 +75,7 @@ namespace BookingHotels.Web.Controllers
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
             return View();
         }
-        // POST: Room/Create
+        // POST
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(RoomViewModel roomViewModel)
@@ -112,7 +114,7 @@ namespace BookingHotels.Web.Controllers
             return View(roomViewModel);
         }
 
-        // POST: Room/Delete/{Guid}
+        // POST
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(Guid id)
@@ -150,23 +152,13 @@ namespace BookingHotels.Web.Controllers
                 var endDate1 = bookingViewModel.BookingEndDate;
                 if (startDate1 < endDate1) 
                 {
-                    bool isOccupied = false;
-                    // All bookings for this room
-                    var bookings = bookingService.GetBookingsByRoom(bookingViewModel.RoomId);
-                    // Check if room is already booked in that ranges 
-                    foreach (BookingDTO booking in bookings)
+                    List<object> result = bookingService.IsRoomOccupied(bookingViewModel.RoomId, startDate1, endDate1);
+                    // Is occupied?
+                    if ((bool)result[0])
                     {
-                        var startDate2 = booking.BookingStartDate;
-                        var endDate2 = booking.BookingEndDate;
-                        // Check date is not within already booked date ranges
-                        if ((startDate2 >= startDate1 && startDate2 <= endDate1) ||
-                            (endDate2 >= startDate1 && endDate2 <= endDate1))
-                        {
-                            isOccupied = true;
-                            return Content("Sorry, the room is occupied from " + booking.BookingStartDate + " to " + booking.BookingEndDate + "<a href='javascript: history.back()'>Go Back</a>");
-                        }
+                        return Content("Sorry, the room is occupied from " + result[1] + " to "+ result[2] + "<a href='javascript: history.back()'>Go Back</a>");
                     }
-                    if (isOccupied == false)
+                    else
                     {
                         BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
                         // Generate Id for new booking
