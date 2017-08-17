@@ -7,6 +7,7 @@ using BookingHotels.BLL.DTO;
 using AutoMapper;
 using System.Net;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -32,24 +33,17 @@ namespace BookingHotels.Web.Controllers
             bookingService = bookingServ;
             userService = userServ;
         }
-
-        // A wrapper class to carry the data we create and send it back to the browser.
-
-
+        
         // GET: Room/Index
         public ActionResult Index()
         {
-        
- 
-
-
-
             // Get all rooms
             IEnumerable<RoomDTO> roomDtos = roomService.GetRooms();
             // Map DTO to ViewModel using Dtos data
             var rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
             return View(rooms);
         }
+
         // GET: Room/Details/{Guid}
         public ActionResult Details(Guid id)
         {
@@ -77,10 +71,9 @@ namespace BookingHotels.Web.Controllers
             // Map DTO to ViewModel using Dtos data
             List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
-
             return View();
         }
-        // Post: Room/Create
+        // POST: Room/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(RoomViewModel roomViewModel)
@@ -131,7 +124,6 @@ namespace BookingHotels.Web.Controllers
 
         [Authorize]
         [HttpGet]
-        // ======Booking in progress============================== 
         // GET: Room/Book/{Guid}
         public ActionResult Book(Guid id)
         {
@@ -154,12 +146,36 @@ namespace BookingHotels.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
-                // Generate Id for new booking
-                bookingDto.Id = Guid.NewGuid();
-                bookingService.CreateBooking(bookingDto);
-
-                return Content("<h2>You have succesfully booked this room</h2><a href='/'>back</a>");
+                var startDate1 = bookingViewModel.BookingStartDate;
+                var endDate1 = bookingViewModel.BookingEndDate;
+                if (startDate1 < endDate1) 
+                {
+                    bool isOccupied = false;
+                    // All bookings for this room
+                    var bookings = bookingService.GetBookingsByRoom(bookingViewModel.RoomId);
+                    // Check if room is already booked in that ranges 
+                    foreach (BookingDTO booking in bookings)
+                    {
+                        var startDate2 = booking.BookingStartDate;
+                        var endDate2 = booking.BookingEndDate;
+                        // Check date is not within already booked date ranges
+                        if ((startDate2 >= startDate1 && startDate2 <= endDate1) ||
+                            (endDate2 >= startDate1 && endDate2 <= endDate1))
+                        {
+                            isOccupied = true;
+                            return Content("Sorry, the room is occupied from " + booking.BookingStartDate + " to " + booking.BookingEndDate + "<a href='javascript: history.back()'>Go Back</a>");
+                        }
+                    }
+                    if (isOccupied == false)
+                    {
+                        BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
+                        // Generate Id for new booking
+                        bookingDto.Id = Guid.NewGuid();
+                        bookingService.CreateBooking(bookingDto);
+                        return Content("<h2>You have succesfully booked this room</h2><a href='javascript: history.back()'>Go Back</a>");
+                    }
+                }
+                return Content("<h2>Start date must be less than end date</h2><a href='javascript: history.back()'>Go Back</a>");
             }
             // Repopulate room details
             RoomDTO roomDto = roomService.GetRoom(bookingViewModel.RoomId);

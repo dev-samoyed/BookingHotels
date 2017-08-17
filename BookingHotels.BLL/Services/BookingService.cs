@@ -19,15 +19,17 @@ namespace BookingHotels.BLL.Services
         {
             _unitOfWork = uow;
         }
-        //public IEnumerable<BookingDTO> GetBookingsByRoomId(Guid Id)
-        //{
-        //    var allBookings = _unitOfWork.Bookings.GetAll().ToList();
-        //    var bookings = from b
-        //                    in allBookings
-        //                   where b.RoomId==Id
-        //                   select b;
-        //    return Mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
-        //}
+        public IEnumerable<BookingDTO> GetBookingsByRoom(Guid Id)
+        {
+            var allBookings = _unitOfWork.Bookings.GetAll().ToList();
+            var bookings = (from b
+                            in allBookings
+                           where b.RoomId==Id
+                           select b
+                           ).ToList();
+            return Mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
+        }
+       
 
         public IEnumerable<BookingDTO> GetBookings()
         {
