@@ -3,7 +3,7 @@
 ViewBag.Title = "Rooms";
 }
 @* Content *@
-<div class="col-sm-9">
+<div class="col-sm-8">
     <h2>@ViewBag.Title</h2>
     <h3> We have
         <span data-bind="text: koRooms().length"></span>
@@ -33,40 +33,20 @@ ViewBag.Title = "Rooms";
 </div>
 
 @* Sidebar *@
-<div class="col-sm-3 text-center">
+<div class="col-sm-4 text-center">
      <h2>Filters</h2>
      <div class="row">
          <div class="col-sm-5">
-             Start Date
-         </div>
-         <div class="col-sm-7">
-             <input type="date" class="input-sm, datefield, form-control" />
-         </div>
-     </div>
-     <div class="row">
-         <div class="col-sm-5">
-             End Date
-         </div>
-         <div class="col-sm-7">
-             <input type="date" class="input-sm, datefield, form-control" />
-         </div>
-     </div>
-     <div class="row">
-         <div class="col-sm-5">
              Max room price
-         </div>
+           </div>
          <div class="col-sm-7">
-             <input class="input-sm" />
-         </div>
+             <input 
+             type="number"
+             class="form-control" 
+            data-bind="textInput: maxRomPrice">
+         </div>$
      </div>
-     <div class="row">
-         <div class="col-sm-5">
-             Hotel
-         </div>
-         <div class="col-sm-7">
-             <input class="input-sm" />
-         </div>
-     </div>
+     <br/>
      <div class="row">
          <div class="col-sm-5">
              Room type
@@ -80,9 +60,7 @@ ViewBag.Title = "Rooms";
              </select>
          </div>
      </div>
-
      <hr />
-     <button class="btn-primary">Apply</button>
  </div>
 
 <script type="text/javascript">
@@ -106,7 +84,8 @@ ViewBag.Title = "Rooms";
     {
         koRooms: ko.observableArray(JsonRooms),
         koRoomTypes: ko.observableArray(RoomTypes),
-        selectedRoomTypes: ko.observableArray([]),
+        selectedRoomTypes: ko.observableArray(RoomTypes),
+        maxRomPrice: ko.observable(),
         // Knockout supplies the current model value as the first parameter
         details : function (room) {
             window.location.href = "/room/details/" + room.Id;
@@ -120,15 +99,24 @@ ViewBag.Title = "Rooms";
     };
 
     koRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
-        //Only filter if one or more countries selected
+        var result = koRoomViewModel.koRooms();
+        console.log(koRoomViewModel.maxRomPrice());
+        console.log(koRoomViewModel.selectedRoomTypes());
+        // Room Price Filter
+        if (koRoomViewModel.maxRomPrice()) {
+            result = ko.utils.arrayFilter(result, function (room) {
+                // Return true (to include room) if it's RoomPrice < maxRomPrice
+                return (room.RoomPrice < koRoomViewModel.maxRomPrice());
+            });
+        }
+        // Room Type Filter
         if (koRoomViewModel.selectedRoomTypes().length) {
-            return ko.utils.arrayFilter(koRoomViewModel.koRooms(), function (room) {
-                //Return true (to include room) if it's RoomType appears in selectedRoomTypes
+            result = ko.utils.arrayFilter(result, function (room) {
+                // Return true (to include room) if it's RoomType appears in selectedRoomTypes
                 return (-1 != ko.utils.arrayIndexOf(koRoomViewModel.selectedRoomTypes(), room.RoomType));
             });
         }
-        //Otherwise return all people if no RoomType selected
-        return koRoomViewModel.koRooms;
+        return result;
     });
 
     ko.applyBindings(koRoomViewModel);
