@@ -60,6 +60,25 @@ ViewBag.Title = "Rooms";
              </select>
          </div>
      </div>
+     <br/>
+     <div class="row">
+         <div class="col-lg-12">
+             <label for="filterSortPrice">Sort by price</label>
+             <input type="radio"
+                    data-bind="checked: sorting"
+                    value="priceSort"
+                    id="filterSortPrice" />
+         </div>
+     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <label for="filterSortType">Sort by room type</label>
+            <input type="radio"
+                   data-bind="checked: sorting"
+                   value="roomTypeSort"
+                   id="filterSortType" />
+        </div>
+    </div>
      <hr />
  </div>
 
@@ -74,19 +93,27 @@ ViewBag.Title = "Rooms";
     )))");
     console.log(JsonRooms);
 
-    var RoomTypes =JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
+    var JsonRoomTypes = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
     Newtonsoft.Json.JsonConvert.SerializeObject(
     Enum.GetNames(typeof(BookingHotels.Domain.Enums.RoomType))
     )))");
-    console.log(RoomTypes);
+    console.log(JsonRoomTypes);
+
+
+    // Get string value by name from coocie or get defaultValue, if cookie is empty
+    var getParam = function (paramName, defaultValue) {
+        return paramName ? paramName : defaultValue;
+    };
 
     @* Knockout View Model *@
     var koRoomViewModel =
     {
+        // All rooms in array of objects
         koRooms: ko.observableArray(JsonRooms),
-        koRoomTypes: ko.observableArray(RoomTypes),
-        selectedRoomTypes: ko.observableArray(RoomTypes),
+        koRoomTypes: ko.observableArray(JsonRoomTypes),
+        selectedRoomTypes: ko.observableArray(JsonRoomTypes),
         maxRomPrice: ko.observable(),
+        sorting: ko.observable(getParam('sorting', 'priceSort')),
         // Knockout supplies the current model value as the first parameter
         details : function (room) {
             window.location.href = "/room/details/" + room.Id;
@@ -96,8 +123,31 @@ ViewBag.Title = "Rooms";
         },
         bookThisRoom : function (price) {
             return "Book for " + price + " $";
+        },
+
+        sortTypes: {
+            // Room sort by price
+            'priceSort': function (left, right) {
+                return left.RoomPrice === right.RoomPrice ? 0 : (left.RoomPrice < right.RoomPrice ? -1 : 1)
+            },
+            'roomTypeSort': function (left, right) {
+                return left.RoomType === right.RoomType ? 0 : (left.RoomType < right.RoomType ? -1 : 1)
+            }
+        }, 
+
+        sortProcesssing: function (sortType) {
+            sortType = sortType || this.sorting();
+            if (this.sortTypes[sortType]) {
+                this.koRooms.sort(this.sortTypes[sortType]);
+            }
         }
+
     };
+
+    // Subscribe for sort type changes
+    koRoomViewModel.sorting.subscribe(function (sortType) {
+        koRoomViewModel.sortProcesssing(sortType);
+    });
 
     koRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
         var result = koRoomViewModel.koRooms();
@@ -119,6 +169,7 @@ ViewBag.Title = "Rooms";
         }
         return result;
     });
-
+    // Apply sort before binding
+    koRoomViewModel.sortProcesssing();
     ko.applyBindings(koRoomViewModel);
 </script>

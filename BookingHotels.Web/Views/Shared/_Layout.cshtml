@@ -9,6 +9,8 @@
     <title>@ViewBag.Title</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+
 
     @Scripts.Render("~/bundles/knockout.js")
     @RenderSection("scripts", required: false)
@@ -53,7 +55,6 @@
     <footer>
         <p> &copy; @DateTime.Now.Year - Bookig Hotels</p>
     </footer>
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
 </body>
 </html>
