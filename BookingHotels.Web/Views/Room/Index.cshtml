@@ -72,7 +72,9 @@ ViewBag.Title = "Rooms";
              Room type
          </div>
          <div class="col-sm-7">
-             <input class="input-sm" />
+             <select 
+             multiple data-bind="selectedOptions: selectedRoomTypes, options: koRoomTypes">
+             </select>
          </div>
      </div>
 
@@ -91,28 +93,44 @@ ViewBag.Title = "Rooms";
     console.log(JsonRooms);
 
     @* Knockout View Model *@
-    var knockoutRoomViewModel
+    var koRoomViewModel =
     {
-        var self = this;
-        self.koRooms = ko.observableArray(JsonRooms);
-
+        koRooms: ko.observableArray(JsonRooms),
+        koRoomTypes: ko.observableArray(["SingleRoom", "DeluxeRoom", "Studio"]),
+        selectedRoomTypes: ko.observableArray([]),
         // Knockout supplies the current model value as the first parameter
-        self.details = function (room) {
+        details : function (room) {
             window.location.href = "/room/details/" + room.Id;
-        }
-        self.hotelDetails = function (room) {
+        },
+        hotelDetails : function (room) {
             window.location.href = "/hotel/details/" + room.HotelId;
-        }
-        self.bookThisRoom = function (price) {
+        },
+        bookThisRoom : function (price) {
             return "Book for " + price + " $";
         }
     };
 
-    knockoutRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
-        return ko.utils.arrayFilter(self.koRooms(), function (p) {
-            return p.RoomPrice()==123;
-        });
-    }, knockoutRoomViewModel);
+    //koRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
+    //    return ko.utils.arrayFilter(self.koRooms(), function (p) {
+    //        return p.RoomPrice()==123;
+    //    });
+    //}, koRoomViewModel);
+    console.log(1+koRoomViewModel.koRooms());
+    console.log(2+koRoomViewModel.koRoomTypes());
 
-    ko.applyBindings(new knockoutRoomViewModel(), document.body);
+    koRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
+        //Only filter if one or more countries selected
+        if (koRoomViewModel.selectedRoomTypes().length) {
+            return ko.utils.arrayFilter(koRoomViewModel.koRooms(), function (room) {
+                console.log(4+room.RoomType);
+                console.log(5+room);
+                //Return true (to include room) if it's RoomType appears in selectedRoomTypes
+                return (-1 != ko.utils.arrayIndexOf(koRoomViewModel.selectedRoomTypes(), room.RoomType));
+            });
+        }
+        //Otherwise return all people if no RoomType selected
+        return koRoomViewModel.koRooms;
+    });
+
+    ko.applyBindings(koRoomViewModel);
 </script>
