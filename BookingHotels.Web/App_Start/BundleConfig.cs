@@ -21,10 +21,12 @@ namespace BookingHotels.Web
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap-select.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-select.css",
                       "~/Content/site.css"));
             bundles.Add(new ScriptBundle("~/bundles/knockout.js").Include(
                     "~/Scripts/knockout-3.4.2.js"));

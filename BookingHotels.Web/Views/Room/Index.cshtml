@@ -73,7 +73,10 @@ ViewBag.Title = "Rooms";
          </div>
          <div class="col-sm-7">
              <select 
-             multiple data-bind="selectedOptions: selectedRoomTypes, options: koRoomTypes">
+                 class="selectpicker"
+                 data-selected-text-format="count > 3"
+                 multiple
+                 data-bind="selectedOptions: selectedRoomTypes, options: koRoomTypes">
              </select>
          </div>
      </div>
@@ -85,18 +88,24 @@ ViewBag.Title = "Rooms";
 <script type="text/javascript">
     // Using Json.NET to JSON encode server-side Model directly in view
     var JsonRooms = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
-        Newtonsoft.Json.JsonConvert.SerializeObject(
-          Model,
-          Newtonsoft.Json.Formatting.None,
-          new Newtonsoft.Json.JsonSerializerSettings {
-        ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore })))");
-    console.log(JsonRooms);
+    Newtonsoft.Json.JsonConvert.SerializeObject(
+    Model,
+    Newtonsoft.Json.Formatting.None,
+    new Newtonsoft.Json.JsonSerializerSettings {
+    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore }
+    )))");
+
+    var RoomTypes =JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
+    Newtonsoft.Json.JsonConvert.SerializeObject(
+    Enum.GetNames(typeof(BookingHotels.Domain.Enums.RoomType))
+    )))");
+    console.log(RoomTypes);
 
     @* Knockout View Model *@
     var koRoomViewModel =
     {
         koRooms: ko.observableArray(JsonRooms),
-        koRoomTypes: ko.observableArray(["SingleRoom", "DeluxeRoom", "Studio"]),
+        koRoomTypes: ko.observableArray(RoomTypes),
         selectedRoomTypes: ko.observableArray([]),
         // Knockout supplies the current model value as the first parameter
         details : function (room) {
@@ -110,20 +119,10 @@ ViewBag.Title = "Rooms";
         }
     };
 
-    //koRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
-    //    return ko.utils.arrayFilter(self.koRooms(), function (p) {
-    //        return p.RoomPrice()==123;
-    //    });
-    //}, koRoomViewModel);
-    console.log(1+koRoomViewModel.koRooms());
-    console.log(2+koRoomViewModel.koRoomTypes());
-
     koRoomViewModel.koRoomsFiltered = ko.dependentObservable(function () {
         //Only filter if one or more countries selected
         if (koRoomViewModel.selectedRoomTypes().length) {
             return ko.utils.arrayFilter(koRoomViewModel.koRooms(), function (room) {
-                console.log(4+room.RoomType);
-                console.log(5+room);
                 //Return true (to include room) if it's RoomType appears in selectedRoomTypes
                 return (-1 != ko.utils.arrayIndexOf(koRoomViewModel.selectedRoomTypes(), room.RoomType));
             });
