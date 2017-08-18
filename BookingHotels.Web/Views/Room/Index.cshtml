@@ -7,8 +7,8 @@ ViewBag.Title = "Rooms";
     <h2>@ViewBag.Title</h2>
     <hr />
     <h3> We have
-        <span data-bind="text: koRooms().length"></span>
-        rooms:
+        <span data-bind="text: koRoomsFiltered().length"></span>/<span data-bind="text: koRooms().length"></span>
+        rooms for your filters:
     </h3>
     @* Knockout template: *@
     <div data-bind="template: { name: 'koRoomDisplayTemplate', foreach: koRoomsFiltered }"></div>
@@ -85,7 +85,7 @@ ViewBag.Title = "Rooms";
         <div class="col-lg-6">
             <label for="startDateInput">Start date</label>
             <input type="text"
-                   data-bind="textInput: startDate1"
+                   data-bind="textInput: startDate"
                    id="startDateInput" />
         </div>
         <div class="col-lg-6">
@@ -147,7 +147,7 @@ ViewBag.Title = "Rooms";
         koRoomTypes: ko.observableArray(JsonRoomTypes),
         selectedRoomTypes: ko.observableArray(JsonRoomTypes),
         maxRoomPrice: ko.observable(),
-        startDate1: ko.observable(),
+        startDate: ko.observable(),
         endDate: ko.observable(),
         bookings: ko.observableArray(JsonBookings),
         sorting: ko.observable(),
@@ -210,11 +210,8 @@ ViewBag.Title = "Rooms";
             });
         }
         // Date filter
-        var BookingStartDateDesired = Date.parse(koRoomViewModel.startDate1());
+        var BookingStartDateDesired = Date.parse(koRoomViewModel.startDate());
         var BookingEndDateDesired = Date.parse(koRoomViewModel.endDate());
-        console.log("QQQQQ0 " + koRoomViewModel.startDate1());
-        console.log("QQQQQ1 " + BookingStartDateDesired);
-        console.log("QQQQQ2 " + BookingEndDateDesired);
         if (BookingStartDateDesired <= BookingEndDateDesired) {
             result = ko.utils.arrayFilter(result, function (room) {
                 console.log("===============\n Starting to check room: ");
@@ -278,27 +275,26 @@ ViewBag.Title = "Rooms";
         // Datepicker
         $("#startDateInput").datepicker({
             minDate: 0,
-            setDate: new Date(),
             onClose: function (date) {
                 var date2 = $('#startDateInput').datepicker('getDate');
                 $('#endDateInput').datepicker('setDate', date2);
                 $('#endDateInput').datepicker('option', 'minDate', date2);
-                $(this).change(); // Forces re-validation
                 $('#endDateInput').change();
             }
-        });
+        }).datepicker("setDate", new Date());
+
         $('#endDateInput').datepicker({
             onClose: function () {
-                $("#endDateInput").datepicker("refresh");
                 var dt1 = $('#startDateInput').datepicker('getDate');
-                var dt2 = $('#endDateInput').datepicker('getDate');
+                var dt2 = $(this).datepicker('getDate');
                 if (dt2 < dt1) {
-                    var minDate = $('#endDateInput').datepicker('option', 'minDate');
-                    $('#endDateInput').datepicker('setDate', minDate);
+                    var minDate = $(this).datepicker('option', 'minDate');
+                    $(this).datepicker('setDate', minDate);
                     $(this).change();
                 }
             }
-        });
+        }).datepicker("setDate", new Date());
+        $('#startDateInput').change(); // Forces re-validation
+        $('#endDateInput').change();
     });
-
 </script>
