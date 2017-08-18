@@ -7,7 +7,6 @@ using BookingHotels.BLL.DTO;
 using AutoMapper;
 using System.Net;
 using Microsoft.AspNet.Identity;
-using System.Diagnostics;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -148,11 +147,11 @@ namespace BookingHotels.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                var startDate1 = bookingViewModel.BookingStartDate;
-                var endDate1 = bookingViewModel.BookingEndDate;
-                if (startDate1 < endDate1) 
+                var startDateDesired = bookingViewModel.BookingStartDate;
+                var endDateDesired = bookingViewModel.BookingEndDate;
+                if (startDateDesired <= endDateDesired) 
                 {
-                    List<object> result = bookingService.IsRoomOccupied(bookingViewModel.RoomId, startDate1, endDate1);
+                    List<object> result = bookingService.IsRoomOccupied(bookingViewModel.RoomId, startDateDesired, endDateDesired);
                     // Is occupied?
                     if ((bool)result[0])
                     {
@@ -177,7 +176,7 @@ namespace BookingHotels.Web.Controllers
             ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
             return View();
         }
-        // ==================================== 
+
         // Dispose
         protected override void Dispose(bool disposing)
         {

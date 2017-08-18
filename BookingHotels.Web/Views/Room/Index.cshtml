@@ -118,16 +118,26 @@ ViewBag.Title = "Rooms";
         )))");
     console.log(JsonBookings);
 
+
+    function filter(arr, criteria) {
+        return arr.filter(function(obj) {
+            return Object.keys(criteria).every(function(c) {
+                return obj[c] == criteria[c];
+            });
+        });
+    }
+
     var JsonRoomTypes = JSON.parse("@Html.Raw(HttpUtility.JavaScriptStringEncode(
         Newtonsoft.Json.JsonConvert.SerializeObject(
         Enum.GetNames(typeof(BookingHotels.Domain.Enums.RoomType))
         )))");
     console.log(JsonRoomTypes);
 
+    /*
     $.each(JsonBookings, function (index, value) {
         console.log('My array has at position ' + index + ', this value: ' + value);
     });
-
+    */
 
     @* Knockout View Model *@
     var koRoomViewModel =
@@ -139,7 +149,7 @@ ViewBag.Title = "Rooms";
         maxRoomPrice: ko.observable(),
         startDate: ko.observable(),
         endDate: ko.observable(),
-
+        bookings: ko.observableArray(JsonBookings),
         sorting: ko.observable(),
         // Knockout supplies the current model value as the first parameter
         details : function (room) {
@@ -168,7 +178,6 @@ ViewBag.Title = "Rooms";
                 this.koRooms.sort(this.sortTypes[sortType]);
             }
         }
-
     };
 
     // Subscribe for sort type changes
@@ -178,10 +187,12 @@ ViewBag.Title = "Rooms";
 
     koRoomViewModel.koRoomsFiltered = ko.computed(function () {
         var result = koRoomViewModel.koRooms();
-        console.log("maxRoomPrice changed to "+koRoomViewModel.maxRoomPrice());
-        console.log("selectedRoomTypes  changed to " + koRoomViewModel.selectedRoomTypes());
-        console.log("start date changed to " + koRoomViewModel.startDate());
-        console.log("end date changed to " + koRoomViewModel.endDate());
+        // console.log("maxRoomPrice changed to " + koRoomViewModel.maxRoomPrice());
+        // console.log("selectedRoomTypes  changed to " + koRoomViewModel.selectedRoomTypes());
+
+        // console.log("start date filter changed to " + startDateDesired);
+        // console.log("end date filter changed to " + endDateDesired);
+
         // Room Price Filter
         if (koRoomViewModel.maxRoomPrice()) {
             result = ko.utils.arrayFilter(result, function (room) {
@@ -199,21 +210,56 @@ ViewBag.Title = "Rooms";
             });
         }
         // Date filter
-        if (koRoomViewModel.selectedRoomTypes().length) {
+        var BookingStartDateDesired = koRoomViewModel.startDate();
+        var BookingEndDateDesired = koRoomViewModel.endDate();
+        if (BookingStartDateDesired <= BookingEndDateDesired) {
             result = ko.utils.arrayFilter(result, function (room) {
-                // Return true (to include room)
-                // if there is no existing bookings in selected date range
-                // (StartA <= EndB) and (EndA >= StartB)
-
-
-
-
-                return (true);
+                console.log("===============\n Starting to check room: ");
+                console.log(room);
+                var bookingsForCurrentRoom = filter(koRoomViewModel.bookings(), { RoomId: room.Id });
+                if (bookingsForCurrentRoom.length > 0)
+                {
+                    // Get all existing booking dates for this room
+                    $.each(bookingsForCurrentRoom, function (index, value)
+                    {
+                        var BookingStartDateExisting = value.BookingStartDate;
+                        var BookingEndDateExisting = value.BookingEndDate;
+                        // Check if bookings for this room conflict with desired booking
+                        if ((BookingStartDateExisting > BookingStartDateDesired && BookingStartDateExisting < BookingEndDateDesired) ||
+                            (BookingEndDateExisting > BookingStartDateDesired && BookingEndDateExisting < BookingEndDateDesired))
+                        {
+                            console.log("This room is occupied from " + BookingStartDateExisting + " to " + BookingEndDateExisting);
+                            console.log(room);
+                            // Room is occupied for this period, not include
+                            return false;
+                        }
+                        else
+                        {
+                            console.log("Room is not occupied for this period, include");
+                            console.log(room);
+                            // Room is not occupied for this period, continue checking
+                            return true;
+                        }
+                    });
+                }
+                else
+                {
+                    console.log("This room has no bokings, include");
+                    console.log(room);
+                    // Current room has no bookings, include
+                    return true;
+                }
             });
         }
-        // Return filtered array
-        return result;
-    });
+        else
+        {
+            // Start date must be < end date
+        } // Date filter end
+    //Return filtered array
+    console.log("==============\n Rooms are filtered");
+    return result;
+    }); // Filters end
+
     // Apply sort before binding
     koRoomViewModel.sortProcesssing();
     ko.applyBindings(koRoomViewModel);
