@@ -275,16 +275,16 @@ ViewBag.Title = "Rooms";
 
 
     $(document).ready(function () {
+        // Datepicker
         $("#startDateInput").datepicker({
             minDate: 0,
+            setDate: new Date(),
             onClose: function (date) {
                 var date2 = $('#startDateInput').datepicker('getDate');
-                //date2.setDate(date2.getDate() + 1);
-                //$('#endDateInput').datepicker('setDate', date2);
-                //sets minDate to dt1 date + 1
+                $('#endDateInput').datepicker('setDate', date2);
                 $('#endDateInput').datepicker('option', 'minDate', date2);
-                $("#endDateInput").datepicker("refresh");
-
+                $(this).change(); // Forces re-validation
+                $('#endDateInput').change();
             }
         });
         $('#endDateInput').datepicker({
@@ -292,13 +292,10 @@ ViewBag.Title = "Rooms";
                 $("#endDateInput").datepicker("refresh");
                 var dt1 = $('#startDateInput').datepicker('getDate');
                 var dt2 = $('#endDateInput').datepicker('getDate');
-                //check to prevent a user from entering a date below date of dt1
-                if (dt2 < dt1 || !Date.parse(dt2)) {
+                if (dt2 < dt1) {
                     var minDate = $('#endDateInput').datepicker('option', 'minDate');
                     $('#endDateInput').datepicker('setDate', minDate);
-                    koRoomViewModel.endDate().valueHasMutated()
-                    $("#endDateInput").datepicker("refresh");
-
+                    $(this).change();
                 }
             }
         });
