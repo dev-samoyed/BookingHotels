@@ -210,8 +210,8 @@ ViewBag.Title = "Rooms";
             });
         }
         // Date filter
-        var BookingStartDateDesired = koRoomViewModel.startDate();
-        var BookingEndDateDesired = koRoomViewModel.endDate();
+        var BookingStartDateDesired = Date.parse(koRoomViewModel.startDate());
+        var BookingEndDateDesired = Date.parse(koRoomViewModel.endDate());
         if (BookingStartDateDesired <= BookingEndDateDesired) {
             result = ko.utils.arrayFilter(result, function (room) {
                 console.log("===============\n Starting to check room: ");
@@ -219,34 +219,42 @@ ViewBag.Title = "Rooms";
                 var bookingsForCurrentRoom = filter(koRoomViewModel.bookings(), { RoomId: room.Id });
                 if (bookingsForCurrentRoom.length > 0)
                 {
+                    var haveConflicts = false;
                     // Get all existing booking dates for this room
                     $.each(bookingsForCurrentRoom, function (index, value)
                     {
-                        var BookingStartDateExisting = value.BookingStartDate;
-                        var BookingEndDateExisting = value.BookingEndDate;
-                        // Check if bookings for this room conflict with desired booking
-                        if ((BookingStartDateExisting > BookingStartDateDesired && BookingStartDateExisting < BookingEndDateDesired) ||
-                            (BookingEndDateExisting > BookingStartDateDesired && BookingEndDateExisting < BookingEndDateDesired))
+
+
+                        var BookingStartDateExisting = Date.parse(value.BookingStartDate);
+                        var BookingEndDateExisting = Date.parse(value.BookingEndDate);
+                        // Check if existing bookings for this room have conflict with desired booking
+                        if ((BookingStartDateExisting >= BookingStartDateDesired && BookingStartDateExisting <= BookingEndDateDesired) ||
+                            (BookingEndDateExisting >= BookingStartDateDesired && BookingEndDateExisting <= BookingEndDateDesired))
                         {
                             console.log("This room is occupied from " + BookingStartDateExisting + " to " + BookingEndDateExisting);
                             console.log(room);
-                            // Room is occupied for this period, not include
-                            return false;
+                            haveConflicts = true;
+                            return false; // it is like break in jQuery
                         }
                         else
                         {
-                            console.log("Room is not occupied for this period, include");
-                            console.log(room);
-                            // Room is not occupied for this period, continue checking
-                            return true;
+                            console.log("This booking have no conflicts, continue checking");
+
+                            console.log("ex start: " + BookingStartDateExisting + " ex end: " + BookingEndDateExisting);
+                            console.log("des start: " + BookingStartDateDesired + " des end: " + BookingEndDateDesired);
+                            //console.log(value);
                         }
                     });
+                    if (!haveConflicts)
+                    {
+                        console.log("No conflits, return true (include this room)");
+                        return true;
+                    }
                 }
                 else
                 {
-                    console.log("This room has no bokings, include");
-                    console.log(room);
-                    // Current room has no bookings, include
+                    console.log("This room has no bookings, include");
+                    // Current room has no bookings, return true (include this room)
                     return true;
                 }
             });
