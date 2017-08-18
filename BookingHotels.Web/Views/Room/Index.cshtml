@@ -83,16 +83,16 @@ ViewBag.Title = "Rooms";
     <br/>
     <div class="row">
         <div class="col-lg-6">
-            <label for="startDate">Start date</label>
-            <input type="date"
-                   data-bind="textInput: startDate"
-                   id="startDate" />
+            <label for="startDateInput">Start date</label>
+            <input type="text"
+                   data-bind="textInput: startDate1"
+                   id="startDateInput" />
         </div>
         <div class="col-lg-6">
-            <label for="endDate">End date</label>
-            <input type="date"
+            <label for="endDateInput">End date</label>
+            <input type="text"
                    data-bind="textInput: endDate"
-                   id="endDate" />
+                   id="endDateInput" />
         </div>
     </div>
      <hr />
@@ -147,7 +147,7 @@ ViewBag.Title = "Rooms";
         koRoomTypes: ko.observableArray(JsonRoomTypes),
         selectedRoomTypes: ko.observableArray(JsonRoomTypes),
         maxRoomPrice: ko.observable(),
-        startDate: ko.observable(),
+        startDate1: ko.observable(),
         endDate: ko.observable(),
         bookings: ko.observableArray(JsonBookings),
         sorting: ko.observable(),
@@ -210,8 +210,11 @@ ViewBag.Title = "Rooms";
             });
         }
         // Date filter
-        var BookingStartDateDesired = Date.parse(koRoomViewModel.startDate());
+        var BookingStartDateDesired = Date.parse(koRoomViewModel.startDate1());
         var BookingEndDateDesired = Date.parse(koRoomViewModel.endDate());
+        console.log("QQQQQ0 " + koRoomViewModel.startDate1());
+        console.log("QQQQQ1 " + BookingStartDateDesired);
+        console.log("QQQQQ2 " + BookingEndDateDesired);
         if (BookingStartDateDesired <= BookingEndDateDesired) {
             result = ko.utils.arrayFilter(result, function (room) {
                 console.log("===============\n Starting to check room: ");
@@ -223,8 +226,6 @@ ViewBag.Title = "Rooms";
                     // Get all existing booking dates for this room
                     $.each(bookingsForCurrentRoom, function (index, value)
                     {
-
-
                         var BookingStartDateExisting = Date.parse(value.BookingStartDate);
                         var BookingEndDateExisting = Date.parse(value.BookingEndDate);
                         // Check if existing bookings for this room have conflict with desired booking
@@ -239,7 +240,6 @@ ViewBag.Title = "Rooms";
                         else
                         {
                             console.log("This booking have no conflicts, continue checking");
-
                             console.log("ex start: " + BookingStartDateExisting + " ex end: " + BookingEndDateExisting);
                             console.log("des start: " + BookingStartDateDesired + " des end: " + BookingEndDateDesired);
                             //console.log(value);
@@ -261,6 +261,7 @@ ViewBag.Title = "Rooms";
         }
         else
         {
+            return false;
             // Start date must be < end date
         } // Date filter end
     //Return filtered array
@@ -271,4 +272,36 @@ ViewBag.Title = "Rooms";
     // Apply sort before binding
     koRoomViewModel.sortProcesssing();
     ko.applyBindings(koRoomViewModel);
+
+
+    $(document).ready(function () {
+        $("#startDateInput").datepicker({
+            minDate: 0,
+            onClose: function (date) {
+                var date2 = $('#startDateInput').datepicker('getDate');
+                //date2.setDate(date2.getDate() + 1);
+                //$('#endDateInput').datepicker('setDate', date2);
+                //sets minDate to dt1 date + 1
+                $('#endDateInput').datepicker('option', 'minDate', date2);
+                $("#endDateInput").datepicker("refresh");
+
+            }
+        });
+        $('#endDateInput').datepicker({
+            onClose: function () {
+                $("#endDateInput").datepicker("refresh");
+                var dt1 = $('#startDateInput').datepicker('getDate');
+                var dt2 = $('#endDateInput').datepicker('getDate');
+                //check to prevent a user from entering a date below date of dt1
+                if (dt2 < dt1 || !Date.parse(dt2)) {
+                    var minDate = $('#endDateInput').datepicker('option', 'minDate');
+                    $('#endDateInput').datepicker('setDate', minDate);
+                    koRoomViewModel.endDate().valueHasMutated()
+                    $("#endDateInput").datepicker("refresh");
+
+                }
+            }
+        });
+    });
+
 </script>
