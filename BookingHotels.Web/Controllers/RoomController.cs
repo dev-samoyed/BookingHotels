@@ -7,17 +7,30 @@ using BookingHotels.BLL.DTO;
 using AutoMapper;
 using System.Net;
 using Microsoft.AspNet.Identity;
+using System.Net.Http;
+using System.IO;
+using System.Drawing;
 
 namespace BookingHotels.Web.Controllers
 {
-    public class RoomList
-    {
-        public List<RoomViewModel> Rooms { get; set; }
-        public RoomList()
-        {
-            Rooms = new List<RoomViewModel>();
-        }
-    }
+    //public class RoomList
+    //{
+    //    public List<RoomViewModel> Rooms { get; set; }
+    //    public RoomList()
+    //    {
+    //        Rooms = new List<RoomViewModel>();
+    //    }
+    //}
+
+    //static async Task RunAsync()
+    //{
+    //    // New code:
+    //    client.BaseAddress = new Uri("http://localhost:9000/");
+    //    client.DefaultRequestHeaders.Accept.Clear();
+    //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+    //    Console.ReadLine();
+    //}
 
     public class RoomController : Controller
     {
@@ -32,7 +45,7 @@ namespace BookingHotels.Web.Controllers
             bookingService = bookingServ;
             userService = userServ;
         }
-        
+
         // Room/Index
         public ActionResult Index()
         {
@@ -54,7 +67,7 @@ namespace BookingHotels.Web.Controllers
             }
             RoomDTO roomDto = roomService.GetRoom(id);
             RoomViewModel room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
-            
+
             ViewBag.hotelName = hotelService.GetHotel(room.HotelId).HotelName;
 
             if (room == null)
@@ -64,6 +77,28 @@ namespace BookingHotels.Web.Controllers
             return View(room);
         }
 
+        // GET: Room/Edit
+        public ActionResult Edit()
+        {
+            string baseAddress = "http://localhost:9000/";
+            // Create HttpCient and make a request to api/values 
+            HttpClient client = new HttpClient();
+            
+            var response = client.GetAsync(baseAddress + "api/image/").Result;
+
+            //var responseContent = response.Content.ReadAsStringAsync().Result;
+            var responseContent = response.Content.ReadAsByteArrayAsync().Result;
+            
+            MemoryStream ms = new MemoryStream(responseContent);
+            Image returnImage = Image.FromStream(ms);
+
+            ViewBag.response = response;
+            ViewBag.responseContent = responseContent;
+            ViewBag.returnImage = responseContent;
+
+            return View();
+        }
+        
         // GET: Room/Create
         [Authorize(Roles = "admin")]
         public ActionResult Create()
@@ -74,6 +109,7 @@ namespace BookingHotels.Web.Controllers
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
             return View();
         }
+
         // POST
         [HttpPost]
         [ValidateAntiForgeryToken]

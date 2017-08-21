@@ -1,0 +1,12 @@
+﻿@{
+    ViewBag.Title = "Get image from web api";
+    var base64 = Convert.ToBase64String(ViewBag.returnImage);
+    var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+}
+<h2>Response from Web Api:</h2>
+@ViewBag.response
+<h2>Response Content from Web Api:</h2>
+@ViewBag.responseContent
+<h2>Response Content to Image:</h2>
+<img src="@imgSrc" width="100" height="100"/>
