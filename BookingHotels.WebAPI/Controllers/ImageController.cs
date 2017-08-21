@@ -10,64 +10,54 @@ using System.Web.Http;
 using System.Web.Hosting;
 using System.Drawing.Imaging;
 using System.Net.Http.Headers;
+using System.Text;
 //using static System.Net.Mime.MediaTypeNames;
 
 namespace OwinSelfhostSample
 {
     public class ImageController : ApiController
     {
-
-
-        //// GET api/values 
-        //public IEnumerable<string> Get()
-        //{
-
-        //    return new string[] { "value1", "value2" };
-        //}
-
+        // GET api/image 
         public HttpResponseMessage Get()
         {
+            //var uriPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
+            //var path = new Uri(uriPath).LocalPath;
 
             AppDomain root = AppDomain.CurrentDomain;
             AppDomainSetup setup = new AppDomainSetup();
             setup.ApplicationBase = root.SetupInformation.ApplicationBase + @"..\..\Images\";
             AppDomain domain = AppDomain.CreateDomain("ImagesDomain", null, setup);
-            string path = domain.SetupInformation.ApplicationBase;
-            Console.WriteLine("path = " + path);
+            string imagesPath = domain.SetupInformation.ApplicationBase;
             AppDomain.Unload(domain);
             
             var result = new HttpResponseMessage(HttpStatusCode.OK);
-            string filePath = path+"/room.jpg";
-            //FileStream fileStream = new FileStream(filePath, FileMode.Open);
-            FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            
+            string filePath = imagesPath + "room.jpg";
 
-            Image image = Image.FromStream(fileStream);
-            MemoryStream memoryStream = new MemoryStream();
-            image.Save(memoryStream, ImageFormat.Jpeg);
-            result.Content = new ByteArrayContent(memoryStream.ToArray());
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+            //// Send as ByteArrayContent:
+            //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+            //Image image = Image.FromStream(fileStream);
+            //MemoryStream memoryStream = new MemoryStream();
+            //image.Save(memoryStream, ImageFormat.Jpeg);
+            //result.Content = new ByteArrayContent(memoryStream.ToArray());
+            //result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+
+            // result.Content = new StringContent(filePath, Encoding.UTF8, "text/html");
+            result.Content = new StringContent(filePath);
 
             return result;
         }
 
-        //// GET api/values/5 
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        // POST api/values 
+        // POST api/image 
         public void Post([FromBody]string value)
         {
         }
 
-        // PUT api/values/5 
+        // PUT api/image/5 
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5 
+        // DELETE api/image/5 
         public void Delete(int id)
         {
         }

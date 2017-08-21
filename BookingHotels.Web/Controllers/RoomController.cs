@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity;
 using System.Net.Http;
 using System.IO;
 using System.Drawing;
+using System.Diagnostics;
+using System.Drawing.Imaging;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -77,6 +79,7 @@ namespace BookingHotels.Web.Controllers
             return View(room);
         }
 
+
         // GET: Room/Edit
         public ActionResult Edit()
         {
@@ -85,17 +88,57 @@ namespace BookingHotels.Web.Controllers
             HttpClient client = new HttpClient();
             
             var response = client.GetAsync(baseAddress + "api/image/").Result;
-
-            //var responseContent = response.Content.ReadAsStringAsync().Result;
-            var responseContent = response.Content.ReadAsByteArrayAsync().Result;
             
-            MemoryStream ms = new MemoryStream(responseContent);
-            Image returnImage = Image.FromStream(ms);
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+            // var responseContent = response.Content.ReadAsByteArrayAsync().Result;
 
-            ViewBag.response = response;
-            ViewBag.responseContent = responseContent;
-            ViewBag.returnImage = responseContent;
+            //MemoryStream ms = new MemoryStream(responseContent);
+            //Image returnImage = Image.FromStream(ms);
 
+
+            // WebClient wc = new WebClient();
+            // byte[] bytes = wc.DownloadData("http://localhost/image.gif");
+            // MemoryStream ms = new MemoryStream(bytes);
+            // System.Drawing.Image img = System.Drawing.Image.FromStream(ms);
+
+            // Download image
+            //WebClient wc = new WebClient();
+            //byte[] bytes = wc.DownloadData(responseContent);
+
+            //var img = Image.FromFile(responseContent);
+            //ViewBag.img = img;
+            
+            var srcImage = Image.FromFile(responseContent);
+            using (var ms = new MemoryStream())
+            {
+                srcImage.Save(ms, ImageFormat.Png);
+                ViewBag.img = File(ms.ToArray(), "image/png");
+            }
+        
+                    // Read image
+            //using (var strm = new MemoryStream())
+            //{
+            //    img.Save(strm, "image/png");
+            //    return File(strm, "image/png");
+            //}
+
+            //if (bytes != null)
+            //{
+            //    ViewBag.img=  new File(bytes);
+
+            //    return View();
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+
+            //using (var ms = new MemoryStream(bytes))
+            //{
+            //    Image img = Image.FromStream(ms);
+            //    ViewBag.img = img;
+            //    // img.Save(ms, ImageFormat.Jpeg);
+            //}
             return View();
         }
         
