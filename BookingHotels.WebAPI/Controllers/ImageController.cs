@@ -20,9 +20,11 @@ namespace OwinSelfhostSample
         // GET api/image 
         public HttpResponseMessage Get()
         {
+            // Get root path (method 1):
             //var uriPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
             //var path = new Uri(uriPath).LocalPath;
 
+            // Get root path (method 2):
             AppDomain root = AppDomain.CurrentDomain;
             AppDomainSetup setup = new AppDomainSetup();
             setup.ApplicationBase = root.SetupInformation.ApplicationBase + @"..\..\Images\";
@@ -30,19 +32,24 @@ namespace OwinSelfhostSample
             string imagesPath = domain.SetupInformation.ApplicationBase;
             AppDomain.Unload(domain);
             
-            var result = new HttpResponseMessage(HttpStatusCode.OK);
-            string filePath = imagesPath + "room.jpg";
+            // Send content as strings array:
+            string[] filePaths = { 
+            imagesPath + "room.jpg",
+             imagesPath + "room2.jpg",
+              imagesPath + "room3.jpg",
+              imagesPath + "room4.jpg",
+              imagesPath + "room5.jpg",
+              imagesPath + "room6.jpg"
+            };
+            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK, filePaths);
 
-            //// Send as ByteArrayContent:
+            //// Send content as ByteArrayContent (slower than paths array):
             //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
             //Image image = Image.FromStream(fileStream);
             //MemoryStream memoryStream = new MemoryStream();
             //image.Save(memoryStream, ImageFormat.Jpeg);
             //result.Content = new ByteArrayContent(memoryStream.ToArray());
             //result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-
-            // result.Content = new StringContent(filePath, Encoding.UTF8, "text/html");
-            result.Content = new StringContent(filePath);
 
             return result;
         }

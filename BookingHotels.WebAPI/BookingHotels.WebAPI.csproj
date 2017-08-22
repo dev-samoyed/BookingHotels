@@ -89,6 +89,11 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="Images\room.jpg" />
+    <Content Include="Images\room2.jpg" />
+    <Content Include="Images\room3.jpg" />
+    <Content Include="Images\room4.jpg" />
+    <Content Include="Images\room5.jpg" />
+    <Content Include="Images\room6.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

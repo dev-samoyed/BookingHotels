@@ -8,33 +8,9 @@ using AutoMapper;
 using System.Net;
 using Microsoft.AspNet.Identity;
 using System.Net.Http;
-using System.IO;
-using System.Drawing;
-using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.ComponentModel;
 
 namespace BookingHotels.Web.Controllers
 {
-    //public class RoomList
-    //{
-    //    public List<RoomViewModel> Rooms { get; set; }
-    //    public RoomList()
-    //    {
-    //        Rooms = new List<RoomViewModel>();
-    //    }
-    //}
-
-    //static async Task RunAsync()
-    //{
-    //    // New code:
-    //    client.BaseAddress = new Uri("http://localhost:9000/");
-    //    client.DefaultRequestHeaders.Accept.Clear();
-    //    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-    //    Console.ReadLine();
-    //}
-
     public class RoomController : Controller
     {
         IRoomService roomService;
@@ -48,9 +24,7 @@ namespace BookingHotels.Web.Controllers
             bookingService = bookingServ;
             userService = userServ;
         }
-
-
-
+        
         // Room/Index
         public ActionResult Index()
         {
@@ -81,149 +55,52 @@ namespace BookingHotels.Web.Controllers
             }
             return View(room);
         }
-        //public ActionResult GetImageSrc2(string filePath)
-        //{
-        //    byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
-        //    return File(imageByteData, "image/png");
+        
 
-
-        // // WebClient wc = new WebClient();
-        //// byte[] bytes = wc.DownloadData(path);
-        ////FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        ////Image image = Image.FromStream(fileStream);
-        ////MemoryStream memoryStream = new MemoryStream();
-        ////image.Save(memoryStream, ImageFormat.Jpeg);
-
-        ////MemoryStream memoryStream = new MemoryStream();
-        ////var bytes = new ByteArrayContent(memoryStream.ToArray());
-
-        ////FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        ////Image image = Image.FromStream(fileStream);
-        ////MemoryStream memoryStream = new MemoryStream();
-        ////image.Save(memoryStream, ImageFormat.Jpeg);
-        ////var bytesarray = new ByteArrayContent(memoryStream.ToArray());
-
-
-        ////var base64 = Convert.ToBase64String(bytes);
-        ////var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-
-        ////MemoryStream memoryStream = new MemoryStream();
-        ////var bytes = new ByteArrayContent(memoryStream.ToArray());
-
-
-        ////// Read image
-        ////using (var ms = new MemoryStream(bytes))
-        ////{
-        ////    return Image.FromStream(ms);
-        ////}
-        ////return File(bytes, "image/jpeg");
-        //}
-
-        public string GetImageSrc(string filePath)
+        public string[] GetImageSrc(string[] filePaths)
         {
-            // Download image
-            byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
-            string imageBase64Data = Convert.ToBase64String(imageByteData);
-            string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-            return imageDataURL;
+            string[] result = new string[filePaths.Length];
+            // Download images
+            for (int i=0;i< filePaths.Length; i++)
+            {
+                byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
+                string imageBase64Data = Convert.ToBase64String(imageByteData);
+                string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                result[i] = imageDataURL;
+            }
+            return result;
         }
         
+        // Room/Edit
         public ActionResult Edit()
         {           
             string baseAddress = "http://localhost:9000/";
-            // Create HttpCient and make a request to api/values 
+            // Create HttpCient and make a request to api/image 
             HttpClient client = new HttpClient();
             // Response
             var response = client.GetAsync(baseAddress + "api/image/").Result;
-            // Response Content
-            string path = response.Content.ReadAsStringAsync().Result;
-            // Get image
-            var img = GetImageSrc(path);
-
-
-            ViewBag.rooms = roomService.GetRooms();
-
             ViewBag.response = response;
-            ViewBag.responseContent = path;
-            ViewBag.img = img;
-
+            // Response Content
+            string[] paths = response.Content.ReadAsAsync<string[]>().Result;
+            ViewBag.responseContent = paths;
+            // Get images Srcs
+            ViewBag.imgSrcs = GetImageSrc(paths);
+            // Create selectlist of rooms
+            var roomDtos = roomService.GetRooms();
+            List<RoomViewModel> rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
+            // Send SelectList of rooms to link images to them
+            ViewBag.rooms = new SelectList(rooms, "Id", "HotelName");
             return View();
         }
-
-        //// GET: Room/Edit
-        //public ActionResult Edit()
-        //{
-        //    string baseAddress = "http://localhost:9000/";
-        //    // Create HttpCient and make a request to api/values 
-        //    HttpClient client = new HttpClient();
-            
-        //    var response = client.GetAsync(baseAddress + "api/image/").Result;
-        //    var responseContent = response.Content.ReadAsStringAsync().Result;
-        //    ViewBag.response = response;
-        //    ViewBag.responseContent = responseContent;
-
-
-        //    // var responseContent = response.Content.ReadAsByteArrayAsync().Result;
-
-        //    //MemoryStream ms = new MemoryStream(responseContent);
-        //    //Image returnImage = Image.FromStream(ms);
-
-
-        //    // WebClient wc = new WebClient();
-        //    // byte[] bytes = wc.DownloadData("http://localhost/image.gif");
-        //    // MemoryStream ms = new MemoryStream(bytes);
-        //    // System.Drawing.Image img = System.Drawing.Image.FromStream(ms);
-
-
-        //    var img = GetImage(bytes);
-        //    ViewBag.bytes = bytes;
-        //    ViewBag.img = img;
-        
-        //    //var img = Image.FromFile(responseContent);
-        //    //ViewBag.img = img;
-
-        //    //var srcImage = Image.FromFile(responseContent);
-        //    //using (var ms = new MemoryStream())
-        //    //{
-        //    //    srcImage.Save(ms, ImageFormat.Jpeg);
-        //    //    ViewBag.img = File(ms.ToArray(), "image/jpeg");
-        //    //}
-
-        //    // Read image
-        //    //using (var strm = new MemoryStream())
-        //    //{
-        //    //    img.Save(strm, "image/png");
-        //    //    return File(strm, "image/png");
-        //    //}
-
-        //    //if (bytes != null)
-        //    //{
-        //    //    ViewBag.img=  new File(bytes);
-
-        //    //    return View();
-        //    //}
-        //    //else
-        //    //{
-        //    //    return null;
-        //    //}
-
-        //    //using (var ms = new MemoryStream(bytes))
-        //    //{
-        //    //    Image img = Image.FromStream(ms);
-        //    //    ViewBag.img = img;
-        //    //    // img.Save(ms, ImageFormat.Jpeg);
-        //    //}
-        //    return View();
-        //}
         
         // GET: Room/Create
-
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();
             // Map DTO to ViewModel using Dtos data
             List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
+            // Send SelectList of hotels to link rooms to them
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
             return View();
         }
@@ -246,7 +123,6 @@ namespace BookingHotels.Web.Controllers
             List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
             // Sent hotels SelectList to viewBag
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
-            
             return View(roomViewModel);
         }
 
@@ -292,9 +168,9 @@ namespace BookingHotels.Web.Controllers
             BookingViewModel bookingViewModel = new BookingViewModel();
             bookingViewModel.RoomId = id;
             bookingViewModel.ApplicationUserId = Guid.Parse(User.Identity.GetUserId());
-            
             return View(bookingViewModel);
         }
+
         // POST        
         [HttpPost, ActionName("Book")]
         public ActionResult BookConfirmed(BookingViewModel bookingViewModel)
@@ -342,3 +218,33 @@ namespace BookingHotels.Web.Controllers
         }
     }
 }
+        //// gists
+        //public Image GetImageSrc4(string filePath)
+        //{
+        //    // WebClient wc = new WebClient();
+        //    // byte[] bytes = wc.DownloadData(path);
+        //    byte[] bytes = System.IO.File.ReadAllBytes(filePath);
+        //    // Read image
+        //    using (var ms = new MemoryStream(bytes))
+        //    {
+        //        return Image.FromStream(ms);
+        //    }
+        //}
+
+        //public Image GetImageSrc3(string filePath)
+        //{
+        //    FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        //    Image image = Image.FromStream(fileStream);
+        //    MemoryStream memoryStream = new MemoryStream();
+        //    image.Save(memoryStream, ImageFormat.Jpeg);
+        //    return image;
+        //}
+        
+        //public ActionResult GetImageSrc2(string filePath)
+        //{
+        //    var watch2 = Stopwatch.StartNew();
+        //    byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
+        //    watch2.Stop();
+        //    Debug.WriteLine("GetImageSrc2: " + watch2.ElapsedMilliseconds);
+        //    return File(imageByteData, "image/jpeg");
+        //}

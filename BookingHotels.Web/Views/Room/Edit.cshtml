@@ -1,16 +1,46 @@
 ﻿@{
     ViewBag.Title = "Get image from web api";
-    var img = ViewBag.img;
+    var imgSrcs = ViewBag.imgSrcs;
 }
 
 <h2>Response from Web Api:</h2>
 @ViewBag.response
 <h2>Response Content from Web Api:</h2>
 @ViewBag.responseContent
-<h2>Response Content to Image:</h2>
+<h2>Response Content to Images:</h2>
 
-<img src="@img" width="150" height="150" />
 @*
-    <img src='@Url.Action("GetImageSrc2", "Room", new { filePath = ViewBag.responseContent });
 *@
+
+@foreach (string imgsrc in imgSrcs)
+{
+<img src="@imgsrc" width="150" height="150" />
+}
+<br/>
+@*
+@foreach (string imgsrc in ViewBag.responseContent)
+{
+    var watch = System.Diagnostics.Stopwatch.StartNew();
+
+    <img src='@Url.Action("GetImageSrc2", "Room", new { filePath = imgsrc })' width="150" height="150"/>
+
+    watch.Stop();
+    System.Diagnostics.Debug.WriteLine("GetImageSrc1 time: " + watch.ElapsedMilliseconds);
+}
+*@
+
+<h3>Select room to edit</h3>
+@* Room *@
+@*<div class="form-group">
+    @Html.LabelFor(model => model.RoomId, "Hotel", htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @{
+            var hotels = ViewBag.hotels;
+        }
+        @Html.DropDownListFor(m => m.RoomId, hotels as SelectList, "Select where new room will be", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
+    </div>
+</div>*@
+
+
 
