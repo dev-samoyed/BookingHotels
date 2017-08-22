@@ -1,9 +1,6 @@
 ﻿using Microsoft.Owin.Hosting;
 using System;
-using System.IO;
 using System.Net.Http;
-using System.Reflection;
-using System.Web.Hosting;
 
 namespace OwinSelfhostSample
 {

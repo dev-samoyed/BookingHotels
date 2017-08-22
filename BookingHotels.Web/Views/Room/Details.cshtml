@@ -33,11 +33,13 @@
     <input type="button" class="btn btn-primary" value="Book this room" onclick="location.href='@Url.Action("Book", new { id = Model.Id })'" />
 </div>
 
-@Html.ActionLink("Back to List", "Index") |
+@Html.ActionLink("Back to List", "Index")
+|
 @* Admin actions*@
 @{
     if (User.IsInRole("admin"))
     {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }); @:|
         @Html.ActionLink("Delete", "Delete", new { id = Model.Id }); @:|
     }
 }

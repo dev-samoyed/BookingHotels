@@ -55,27 +55,26 @@ namespace BookingHotels.Web.Controllers
             }
             return View(room);
         }
-        
-
+        // Get images src
         public string[] GetImageSrc(string[] filePaths)
         {
-            string[] result = new string[filePaths.Length];
+            //string[] result = new string[filePaths.Length];
             // Download images
             for (int i=0;i< filePaths.Length; i++)
             {
                 byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
                 string imageBase64Data = Convert.ToBase64String(imageByteData);
                 string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-                result[i] = imageDataURL;
+                filePaths[i] = imageDataURL;
             }
-            return result;
+            return filePaths;
         }
         
         // Room/Edit
-        public ActionResult Edit()
+        public ActionResult Edit(Guid id)
         {           
             string baseAddress = "http://localhost:9000/";
-            // Create HttpCient and make a request to api/image 
+            // Create HttpClient and make a request to api/image 
             HttpClient client = new HttpClient();
             // Response
             var response = client.GetAsync(baseAddress + "api/image/").Result;
@@ -85,11 +84,16 @@ namespace BookingHotels.Web.Controllers
             ViewBag.responseContent = paths;
             // Get images Srcs
             ViewBag.imgSrcs = GetImageSrc(paths);
-            // Create selectlist of rooms
-            var roomDtos = roomService.GetRooms();
-            List<RoomViewModel> rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
-            // Send SelectList of rooms to link images to them
-            ViewBag.rooms = new SelectList(rooms, "Id", "HotelName");
+            //// Create selectlist of rooms
+            //var roomDtos = roomService.GetRooms();
+            //List<RoomViewModel> rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
+            //// Send SelectList of rooms to link images to them
+            //ViewBag.rooms = new SelectList(rooms, "Id", "Id");
+            // Get edited room
+            var roomDto = roomService.GetRoom(id);
+            RoomViewModel room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
+            ViewBag.room = room;
+            
             return View();
         }
         

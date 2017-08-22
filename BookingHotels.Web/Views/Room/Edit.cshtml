@@ -1,46 +1,84 @@
-﻿@{
-    ViewBag.Title = "Get image from web api";
+﻿@model BookingHotels.Domain.Entities.RoomImage
+@{
+    ViewBag.Title = "Edit room";
+    // Images Srcs
     var imgSrcs = ViewBag.imgSrcs;
+    // Edited room
+    BookingHotels.Web.Models.RoomViewModel room = ViewBag.room;
 }
 
-<h2>Response from Web Api:</h2>
+<h3>Response from Web Api:</h3>
 @ViewBag.response
-<h2>Response Content from Web Api:</h2>
+<h3>Response Content from Web Api:</h3>
 @ViewBag.responseContent
-<h2>Response Content to Images:</h2>
+<h3>Display some images from api/image:</h3>
 
-@*
-*@
-
+@* Display some images from api/image:*@
 @foreach (string imgsrc in imgSrcs)
 {
-<img src="@imgsrc" width="150" height="150" />
+    <img src="@imgsrc" width="50" height="50" />
 }
-<br/>
 @*
-@foreach (string imgsrc in ViewBag.responseContent)
-{
-    var watch = System.Diagnostics.Stopwatch.StartNew();
-
-    <img src='@Url.Action("GetImageSrc2", "Room", new { filePath = imgsrc })' width="150" height="150"/>
-
-    watch.Stop();
-    System.Diagnostics.Debug.WriteLine("GetImageSrc1 time: " + watch.ElapsedMilliseconds);
-}
+    Display some images (ActionResult method)
+    @foreach (string imgsrc in ViewBag.responseContent)
+    {
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        <img src='@Url.Action("GetImageSrc2", "Room", new { filePath = imgsrc })' width="150" height="150"/>
+        watch.Stop();
+        System.Diagnostics.Debug.WriteLine("GetImageSrc1 time: " + watch.ElapsedMilliseconds);
+    }
 *@
+<hr/>
 
-<h3>Select room to edit</h3>
-@* Room *@
-@*<div class="form-group">
-    @Html.LabelFor(model => model.RoomId, "Hotel", htmlAttributes: new { @class = "control-label col-md-2" })
-    <div class="col-md-10">
-        @{
-            var hotels = ViewBag.hotels;
-        }
-        @Html.DropDownListFor(m => m.RoomId, hotels as SelectList, "Select where new room will be", new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
+<div class="row">
+    <div class="col-md-5">
+        <div class="row">
+            <h2>You are editing this room:</h2>
+        </div>
+        <div class="row">
+            Id: @room.Id
+        </div>
+        <div class="row">
+            RoomType: @room.RoomType
+        </div>
+        <div class="row">
+            @Html.ActionLink(
+            linkText: "Hotel: "+room.HotelId.ToString(),
+            actionName: "Details",
+            controllerName: "Hotel",
+            routeValues: new
+            {
+                id = room.HotelId,
+            },
+            htmlAttributes: null)
+        </div>
     </div>
-</div>*@
+    <div class="col-md-7">
+        <div class="row">
+            <h2>Images for this room:</h2>
+        </div>
+        <div class="row">
+            Todo
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row text-center">
+            <h3>Choose an image to add to this room:</h3>
+        </div>
+        <div class="row form-group text-center">
+                <input type="submit" value="Upload picture (todo)" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+
+
+
+
+
 
 
 
