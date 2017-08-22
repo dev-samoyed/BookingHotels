@@ -82,10 +82,20 @@ namespace BookingHotels.Web.Controllers
             return View(room);
         }
 
+        public ActionResult GetImageSrc(string filePath)
+        {
+            byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
+            return File(imageByteData, "image/png");
+        }
 
-        public string GetImageSrc(string filePath)
+        public string GetImageSrc2(string filePath)
         {
             // Download image
+            byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
+            string imageBase64Data = Convert.ToBase64String(imageByteData);
+            string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+            return imageDataURL;
+
             // WebClient wc = new WebClient();
             // byte[] bytes = wc.DownloadData(path);
             //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -106,11 +116,6 @@ namespace BookingHotels.Web.Controllers
             //var base64 = Convert.ToBase64String(bytes);
             //var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
 
-            byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
-            string imageBase64Data = Convert.ToBase64String(imageByteData);
-            string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-
-            return imageDataURL;
             //MemoryStream memoryStream = new MemoryStream();
             //var bytes = new ByteArrayContent(memoryStream.ToArray());
 
@@ -124,15 +129,7 @@ namespace BookingHotels.Web.Controllers
         }
 
         public ActionResult Edit()
-        {
-
-            //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            //Image image = Image.FromStream(fileStream);
-            //MemoryStream memoryStream = new MemoryStream();
-            //image.Save(memoryStream, ImageFormat.Jpeg);
-            //result.Content = new ByteArrayContent(memoryStream.ToArray());
-
-
+        {           
             string baseAddress = "http://localhost:9000/";
             // Create HttpCient and make a request to api/values 
             HttpClient client = new HttpClient();
@@ -140,20 +137,15 @@ namespace BookingHotels.Web.Controllers
             var response = client.GetAsync(baseAddress + "api/image/").Result;
             // Response Content
             string path = response.Content.ReadAsStringAsync().Result;
-
-
-
-            // Get Image
-            // TypeConverter tc = TypeDescriptor.GetConverter(typeof(Bitmap));
-            // Bitmap bitmap1 = (Bitmap)tc.ConvertFrom(img);
-            // bitmap1.Save(Response.OutputStream, System.Drawing.Imaging.ImageFormat.Jpeg);
-            string imgSrc = GetImageSrc(path);
             
-            
+            string imgSrc = GetImageSrc2(path);
+
+            var imgSrc2 = GetImageSrc(path);
 
             ViewBag.response = response;
             ViewBag.responseContent = path;
             ViewBag.imgSrc = imgSrc;
+            ViewBag.imgSrc2 = imgSrc;
 
             return View();
         }

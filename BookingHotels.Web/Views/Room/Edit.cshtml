@@ -2,6 +2,7 @@
     ViewBag.Title = "Get image from web api";
 
     string imgSrc = ViewBag.imgSrc;
+    string imgSrc2 = ViewBag.imgSrc2;
 }
 
 
@@ -13,6 +14,11 @@
 <h2>Response Content to Image:</h2>
 
 <img src="@imgSrc" width="100" height="100" />
+<img src="@imgSrc2" width="150" height="150" />
+
+<img src='@Url.Action("GetImageSrc", "Room", new { filePath = ViewBag.responseContent })'
+    width="100" height="100" />
+
     @*
     <img src="@Url.Action("GetImage", new { id  = 1 })" />
         
