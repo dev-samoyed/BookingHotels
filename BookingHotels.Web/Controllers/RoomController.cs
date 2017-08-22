@@ -81,53 +81,53 @@ namespace BookingHotels.Web.Controllers
             }
             return View(room);
         }
+        //public ActionResult GetImageSrc2(string filePath)
+        //{
+        //    byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
+        //    return File(imageByteData, "image/png");
 
-        public ActionResult GetImageSrc(string filePath)
-        {
-            byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
-            return File(imageByteData, "image/png");
-        }
 
-        public string GetImageSrc2(string filePath)
+        // // WebClient wc = new WebClient();
+        //// byte[] bytes = wc.DownloadData(path);
+        ////FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        ////Image image = Image.FromStream(fileStream);
+        ////MemoryStream memoryStream = new MemoryStream();
+        ////image.Save(memoryStream, ImageFormat.Jpeg);
+
+        ////MemoryStream memoryStream = new MemoryStream();
+        ////var bytes = new ByteArrayContent(memoryStream.ToArray());
+
+        ////FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+        ////Image image = Image.FromStream(fileStream);
+        ////MemoryStream memoryStream = new MemoryStream();
+        ////image.Save(memoryStream, ImageFormat.Jpeg);
+        ////var bytesarray = new ByteArrayContent(memoryStream.ToArray());
+
+
+        ////var base64 = Convert.ToBase64String(bytes);
+        ////var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+
+        ////MemoryStream memoryStream = new MemoryStream();
+        ////var bytes = new ByteArrayContent(memoryStream.ToArray());
+
+
+        ////// Read image
+        ////using (var ms = new MemoryStream(bytes))
+        ////{
+        ////    return Image.FromStream(ms);
+        ////}
+        ////return File(bytes, "image/jpeg");
+        //}
+
+        public string GetImageSrc(string filePath)
         {
             // Download image
             byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
             string imageBase64Data = Convert.ToBase64String(imageByteData);
             string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
             return imageDataURL;
-
-            // WebClient wc = new WebClient();
-            // byte[] bytes = wc.DownloadData(path);
-            //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            //Image image = Image.FromStream(fileStream);
-            //MemoryStream memoryStream = new MemoryStream();
-            //image.Save(memoryStream, ImageFormat.Jpeg);
-
-            //MemoryStream memoryStream = new MemoryStream();
-            //var bytes = new ByteArrayContent(memoryStream.ToArray());
-
-            //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            //Image image = Image.FromStream(fileStream);
-            //MemoryStream memoryStream = new MemoryStream();
-            //image.Save(memoryStream, ImageFormat.Jpeg);
-            //var bytesarray = new ByteArrayContent(memoryStream.ToArray());
-             
-
-            //var base64 = Convert.ToBase64String(bytes);
-            //var imgSrc = String.Format("data:image/gif;base64,{0}", base64);
-
-            //MemoryStream memoryStream = new MemoryStream();
-            //var bytes = new ByteArrayContent(memoryStream.ToArray());
-
-
-            //// Read image
-            //using (var ms = new MemoryStream(bytes))
-            //{
-            //    return Image.FromStream(ms);
-            //}
-            //return File(bytes, "image/jpeg");
         }
-
+        
         public ActionResult Edit()
         {           
             string baseAddress = "http://localhost:9000/";
@@ -137,15 +137,15 @@ namespace BookingHotels.Web.Controllers
             var response = client.GetAsync(baseAddress + "api/image/").Result;
             // Response Content
             string path = response.Content.ReadAsStringAsync().Result;
-            
-            string imgSrc = GetImageSrc2(path);
+            // Get image
+            var img = GetImageSrc(path);
 
-            var imgSrc2 = GetImageSrc(path);
+
+            ViewBag.rooms = roomService.GetRooms();
 
             ViewBag.response = response;
             ViewBag.responseContent = path;
-            ViewBag.imgSrc = imgSrc;
-            ViewBag.imgSrc2 = imgSrc;
+            ViewBag.img = img;
 
             return View();
         }
@@ -178,9 +178,7 @@ namespace BookingHotels.Web.Controllers
         //    var img = GetImage(bytes);
         //    ViewBag.bytes = bytes;
         //    ViewBag.img = img;
-
-
-
+        
         //    //var img = Image.FromFile(responseContent);
         //    //ViewBag.img = img;
 
@@ -219,6 +217,7 @@ namespace BookingHotels.Web.Controllers
         //}
         
         // GET: Room/Create
+
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
