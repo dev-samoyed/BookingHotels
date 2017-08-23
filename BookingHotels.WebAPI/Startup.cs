@@ -1,4 +1,5 @@
 ﻿using Owin;
+using System.Net.Http.Formatting;
 using System.Web.Http;
 
 namespace OwinSelfhostSample
@@ -11,12 +12,14 @@ namespace OwinSelfhostSample
         {
             // Configure Web API for self-host. 
             HttpConfiguration config = new HttpConfiguration();
+            // Routes
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
-
+            // Binary JSON Formatter
+            config.Formatters.Add(new BsonMediaTypeFormatter());
             appBuilder.UseWebApi(config);
 
         }

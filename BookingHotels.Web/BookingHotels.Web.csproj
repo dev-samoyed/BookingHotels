@@ -206,6 +206,7 @@
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HotelController.cs" />
+    <Compile Include="Controllers\RoomImageController.cs" />
     <Compile Include="Controllers\RoomController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -403,6 +404,7 @@
     <Content Include="Views\Room\Create.cshtml" />
     <Content Include="Views\Room\Book.cshtml" />
     <Content Include="Views\Room\Edit.cshtml" />
+    <Content Include="Views\RoomImage\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

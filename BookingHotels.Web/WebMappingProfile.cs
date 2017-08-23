@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BookingHotels.BLL.DTO;
-using BookingHotels.Domain.Entities;
 using BookingHotels.Web.Models;
 
 namespace BookingHotels.Web

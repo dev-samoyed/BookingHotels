@@ -8,6 +8,10 @@ using AutoMapper;
 using System.Net;
 using Microsoft.AspNet.Identity;
 using System.Net.Http;
+using System.Web;
+using System.IO;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -24,7 +28,19 @@ namespace BookingHotels.Web.Controllers
             bookingService = bookingServ;
             userService = userServ;
         }
-        
+        // Create HttpClient
+        public HttpClient Client
+        {
+            get
+            {
+                var client = new HttpClient()
+                {
+                    BaseAddress = new Uri("http://localhost:9000/")
+                };
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                return client;
+            }
+        }
         // Room/Index
         public ActionResult Index()
         {
@@ -55,7 +71,7 @@ namespace BookingHotels.Web.Controllers
             }
             return View(room);
         }
-        // Get images src
+        // Get images src method
         public string[] GetImageSrc(string[] filePaths)
         {
             //string[] result = new string[filePaths.Length];
@@ -73,25 +89,58 @@ namespace BookingHotels.Web.Controllers
         // Room/Edit
         public ActionResult Edit(Guid Id)
         {           
-            string baseAddress = "http://localhost:9000/";
-            // Create HttpClient and make a request to api/image 
-            HttpClient client = new HttpClient();
-            // Response
-            var response = client.GetAsync(baseAddress + "api/image/").Result;
+            // Get response from request to api/image
+            var response = Client.GetAsync(Client.BaseAddress + "api/image/").Result;
             ViewBag.response = response;
-            // Response Content
             string[] paths = response.Content.ReadAsAsync<string[]>().Result;
+            // Response Content
             ViewBag.responseContent = paths;
-            // Get images Srcs
+            // Get images Srcs (for all rooms)
             ViewBag.imgSrcs = GetImageSrc(paths);
+
+            // Get images for this room
+            // (TODO)
+
             // Get edited room
             var roomDto = roomService.GetRoomById(Id);
-            RoomViewModel room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
-            ViewBag.room = room;
+            RoomViewModel roomViewModel = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
             
+            return View(roomViewModel);
+        }
+        // POST: Upload Image to web api
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadRoomImage(RoomViewModel roomViewModel, HttpPostedFileBase uploadedFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (uploadedFile != null && uploadedFile.ContentLength > 0)
+                {
+                    var roomImageUploadModel = new RoomImageViewModel
+                    {
+                        //ImageName = Path.GetFileName(uploadedFile.FileName),
+                        Id = Guid.NewGuid(),
+                        RoomId = roomViewModel.Id
+                        //ContentType = uploadedFile.ContentType,
+                        //ContentSize = uploadedFile.ContentLength
+                    };
+                    using (var reader = new BinaryReader(uploadedFile.InputStream))
+                    {
+                        roomImageUploadModel.Image = reader.ReadBytes(uploadedFile.ContentLength);
+                    }
+                    // Set the Accept header for BSON.
+                    Client.DefaultRequestHeaders.Accept.Clear();
+                    Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/bson"));
+                    // POST using the BSON formatter.
+                    MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
+                    var response = Client.PostAsync<RoomImageViewModel>("Image/Upload", roomImageUploadModel, bsonFormatter);
+                    response.Result.EnsureSuccessStatusCode();
+                }
+            }
+            //TODO: set correct return
             return View();
         }
-        
+
         // GET: Room/Create
         [Authorize(Roles = "admin")]
         public ActionResult Create()

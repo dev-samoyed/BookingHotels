@@ -1,11 +1,10 @@
-﻿@model BookingHotels.Domain.Entities.RoomImage
+﻿@model BookingHotels.Web.Models.RoomViewModel
 @{
     ViewBag.Title = "Edit room";
     // Images Srcs
     var imgSrcs = ViewBag.imgSrcs;
-    // Edited room
-    BookingHotels.Web.Models.RoomViewModel room = ViewBag.room;
 }
+
 <h2>@ViewBag.Title</h2>
 <hr />
 <h3>Response from Web Api:</h3>
@@ -13,8 +12,6 @@
 <h3>Response Content from Web Api:</h3>
 @ViewBag.responseContent
 <h3>Display some images from api/image:</h3>
-
-@* Display some images from api/image:*@
 @foreach (string imgsrc in imgSrcs)
 {
     <img src="@imgsrc" width="50" height="50" />
@@ -30,25 +27,26 @@
     }
 *@
 <hr/>
+@* Information about room being edited *@
 <div class="row">
     <div class="col-md-5">
         <div class="row">
             <h2>You are editing this room:</h2>
         </div>
         <div class="row">
-            Id: @room.Id
+            Id: @Model.Id
         </div>
         <div class="row">
-            RoomType: @room.RoomType
+            RoomType: @Model.RoomType
         </div>
         <div class="row">
             @Html.ActionLink(
-            linkText: "Hotel: "+room.HotelId.ToString(),
+            linkText: "Hotel: "+Model.HotelId.ToString(),
             actionName: "Details",
             controllerName: "Hotel",
             routeValues: new
             {
-                id = room.HotelId,
+                id = Model.HotelId,
             },
             htmlAttributes: null)
         </div>
@@ -61,16 +59,34 @@
             Todo
         </div>
     </div>
-
 </div>
 
 <div class="row">
     <div class="col-md-12">
         <div class="row text-center">
-            <h3>Choose an image to add to this room:</h3>
+            <h3>Upload an image for this room:</h3>
         </div>
         <div class="row form-group text-center">
-                <input type="submit" value="Upload picture (todo)" class="btn btn-default" />
+            @using (Html.BeginForm("UploadRoomImage", "Room", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                @Html.HiddenFor(model => model.Id);
+                @Html.AntiForgeryToken()
+                <div class="form-horizontal">
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.Label("Room Image", new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            <input type="file" id="RoomImage" name="uploadedFile" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Create" class="btn btn-default" />
+                        </div>
+                    </div>
+                </div>
+            }
         </div>
     </div>
 </div>
