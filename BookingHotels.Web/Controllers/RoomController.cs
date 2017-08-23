@@ -38,16 +38,16 @@ namespace BookingHotels.Web.Controllers
         }
 
         // Room/Details/{Guid}
-        public ActionResult Details(Guid id)
+        public ActionResult Details(Guid Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            RoomDTO roomDto = roomService.GetRoom(id);
+            RoomDTO roomDto = roomService.GetRoomById(Id);
             RoomViewModel room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
 
-            ViewBag.hotelName = hotelService.GetHotel(room.HotelId).HotelName;
+            ViewBag.hotelName = hotelService.GetHotelById(room.HotelId).HotelName;
 
             if (room == null)
             {
@@ -71,7 +71,7 @@ namespace BookingHotels.Web.Controllers
         }
         
         // Room/Edit
-        public ActionResult Edit(Guid id)
+        public ActionResult Edit(Guid Id)
         {           
             string baseAddress = "http://localhost:9000/";
             // Create HttpClient and make a request to api/image 
@@ -84,13 +84,8 @@ namespace BookingHotels.Web.Controllers
             ViewBag.responseContent = paths;
             // Get images Srcs
             ViewBag.imgSrcs = GetImageSrc(paths);
-            //// Create selectlist of rooms
-            //var roomDtos = roomService.GetRooms();
-            //List<RoomViewModel> rooms = Mapper.Map<IEnumerable<RoomDTO>, List<RoomViewModel>>(roomDtos);
-            //// Send SelectList of rooms to link images to them
-            //ViewBag.rooms = new SelectList(rooms, "Id", "Id");
             // Get edited room
-            var roomDto = roomService.GetRoom(id);
+            var roomDto = roomService.GetRoomById(Id);
             RoomViewModel room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
             ViewBag.room = room;
             
@@ -104,12 +99,12 @@ namespace BookingHotels.Web.Controllers
             IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();
             // Map DTO to ViewModel using Dtos data
             List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
-            // Send SelectList of hotels to link rooms to them
+            // Create SelectList of hotels to link rooms to them
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
             return View();
         }
 
-        // POST
+        // POST Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(RoomViewModel roomViewModel)
@@ -121,24 +116,22 @@ namespace BookingHotels.Web.Controllers
                 roomService.AddRoom(roomDto);
                 return RedirectToAction("Index");
             }
-            // Repopulating
+            // Repopulating hotels SelectList
             IEnumerable<HotelDTO> hotelDtos = hotelService.GetHotels();
-            // Map DTO to ViewModel using Dtos data
             List<HotelViewModel> hotels = Mapper.Map<IEnumerable<HotelDTO>, List<HotelViewModel>>(hotelDtos);
-            // Sent hotels SelectList to viewBag
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
             return View(roomViewModel);
         }
 
         // GET: Room/Delete/{Guid}
         [Authorize(Roles = "admin")]
-        public ActionResult Delete(Guid id)
+        public ActionResult Delete(Guid Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            RoomDTO roomDto = roomService.GetRoom(id);
+            RoomDTO roomDto = roomService.GetRoomById(Id);
             var roomViewModel = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
             if (roomViewModel == null)
             {
@@ -147,12 +140,12 @@ namespace BookingHotels.Web.Controllers
             return View(roomViewModel);
         }
 
-        // POST
+        // POST Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public ActionResult DeleteConfirmed(Guid Id)
         {
-            RoomDTO roomDto = roomService.GetRoom(id);
+            RoomDTO roomDto = roomService.GetRoomById(Id);
             roomService.DeleteRoom(roomDto);
             return RedirectToAction("Index");
         }
@@ -163,7 +156,7 @@ namespace BookingHotels.Web.Controllers
         public ActionResult Book(Guid id)
         {
             // Get room which we want to book
-            RoomDTO roomDto = roomService.GetRoom(id);
+            RoomDTO roomDto = roomService.GetRoomById(id);
             ViewBag.RoomType = roomDto.RoomType.ToString();
             ViewBag.Price = roomDto.RoomPrice.ToString();
             ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
@@ -175,7 +168,7 @@ namespace BookingHotels.Web.Controllers
             return View(bookingViewModel);
         }
 
-        // POST        
+        // POST Book   
         [HttpPost, ActionName("Book")]
         public ActionResult BookConfirmed(BookingViewModel bookingViewModel)
         {
@@ -203,7 +196,7 @@ namespace BookingHotels.Web.Controllers
                 return Content("<h2>Start date must be less than end date</h2><a href='javascript: history.back()'>Go Back</a>");
             }
             // Repopulate room details
-            RoomDTO roomDto = roomService.GetRoom(bookingViewModel.RoomId);
+            RoomDTO roomDto = roomService.GetRoomById(bookingViewModel.RoomId);
             ViewBag.RoomType = roomDto.RoomType.ToString();
             ViewBag.Price = roomDto.RoomPrice.ToString();
             ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
@@ -222,7 +215,7 @@ namespace BookingHotels.Web.Controllers
         }
     }
 }
-        //// gists
+        //// gists :)
         //public Image GetImageSrc4(string filePath)
         //{
         //    // WebClient wc = new WebClient();

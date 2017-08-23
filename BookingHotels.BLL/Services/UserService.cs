@@ -15,23 +15,19 @@ namespace BookingHotels.BLL.Services
 {
     public class UserService : IUserService
     {
+        // IUnitOfWorkIdentity object communicates with DAL 
         IUnitOfWorkIdentity _unitOfWork { get; set; }
-
+        // Use DI to pass implementation of IUnitOfWorkIdentity
         public UserService(IUnitOfWorkIdentity uow)
         {
             _unitOfWork = uow;
         }
-
-        //public Guid GetUserId(ApplicationUser applicationUser)
-        //{
-        //    Guid id = _unitOfWork.UserManager.(Id);
-        //    return user;
-        //}
-
-        public ApplicationUser GetUser(Guid Id) {
+        // Get user by his Id
+        public ApplicationUser GetUserById(Guid Id) {
             ApplicationUser user = _unitOfWork.ApplicationUserManager.FindById(Id);
             return user;
         }
+        // Create
         public async Task<OperationDetails> Create(UserDTO userDto)
         {
             ApplicationUser user = await _unitOfWork.ApplicationUserManager.FindByEmailAsync(userDto.Email);
@@ -42,7 +38,6 @@ namespace BookingHotels.BLL.Services
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
                 // Fill UserRoles table
-                //await _unitOfWork.UserManager.AddToRoleAsync(user.Id.ToString(), userDto.Role);
                 await _unitOfWork.ApplicationUserManager.AddToRoleAsync(user.Id, userDto.Role);
                 await _unitOfWork.SaveAsync();
                 return new OperationDetails(true, "Registration succesfull", "");
@@ -52,7 +47,7 @@ namespace BookingHotels.BLL.Services
                 return new OperationDetails(false, "User with this name already exists", "Email");
             }
         }
-
+        // Authenticate
         public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
         {
             ClaimsIdentity claim = null;
@@ -63,7 +58,6 @@ namespace BookingHotels.BLL.Services
                 claim = await _unitOfWork.ApplicationUserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
         }
-
         public void Dispose()
         {
             _unitOfWork.Dispose();

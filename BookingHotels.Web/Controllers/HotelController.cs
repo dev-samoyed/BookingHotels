@@ -27,13 +27,13 @@ namespace BookingHotels.Web.Controllers
         }
 
         // GET: Hotel/Details/{Guid}
-        public ActionResult Details(Guid? id)
+        public ActionResult Details(Guid Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HotelDTO hotelDto = hotelService.GetHotel(id);
+            HotelDTO hotelDto = hotelService.GetHotelById(Id);
             var hotel = Mapper.Map<HotelDTO, HotelViewModel>(hotelDto);
 
             if (hotel == null)
@@ -65,13 +65,13 @@ namespace BookingHotels.Web.Controllers
 
         // GET: Hotel/Delete/{Guid}
         [Authorize(Roles = "admin")]
-        public ActionResult Delete(Guid? id)
+        public ActionResult Delete(Guid Id)
         {
-            if (id == null)
+            if (Id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HotelDTO hotelDto = hotelService.GetHotel(id);
+            HotelDTO hotelDto = hotelService.GetHotelById(Id);
             var hotelViewModel = Mapper.Map<HotelDTO, HotelViewModel>(hotelDto);
             if (hotelViewModel == null)
             {
@@ -83,9 +83,9 @@ namespace BookingHotels.Web.Controllers
         // POST: Hotel/Delete/{Guid}
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(Guid id)
+        public ActionResult DeleteConfirmed(Guid Id)
         {
-            HotelDTO hotelDto = hotelService.GetHotel(id);
+            HotelDTO hotelDto = hotelService.GetHotelById(Id);
             hotelService.DeleteHotel(hotelDto);
             return RedirectToAction("Index");
         }

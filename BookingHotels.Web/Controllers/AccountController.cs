@@ -20,17 +20,6 @@ namespace BookingHotels.Controllers
         {
             userService = serv;
         }
-
-
-        //private IUserService UserService
-        //{
-        //    // Get User Service registred through Owin context
-        //    get
-        //    {
-        //        return HttpContext.GetOwinContext().GetUserManager<IUserService>();
-        //    }
-        //}
-
         private IAuthenticationManager AuthenticationManager
         {
             get
@@ -39,11 +28,12 @@ namespace BookingHotels.Controllers
             }
         }
 
-        public ActionResult Login()
+        public ActionResult Manage()
         {
             return View();
         }
-        public ActionResult Manage()
+
+        public ActionResult Login()
         {
             return View();
         }
@@ -52,7 +42,6 @@ namespace BookingHotels.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(CustomUserLogin model)
         {
-            //await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO {

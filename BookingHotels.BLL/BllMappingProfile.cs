@@ -9,16 +9,19 @@ namespace BookingHotels.BLL
     {
         public BLLMappingProfile()
         {
-            // Entity (DAL) -> DTO (BLL)
             CreateMap<Hotel, HotelDTO>(MemberList.None);
             CreateMap<HotelDTO, Hotel>(MemberList.None);
 
             CreateMap<Room, RoomDTO>(MemberList.None);
+            CreateMap<RoomDTO, Room>(MemberList.None);
 
             CreateMap<Feedback, FeedbackDTO>(MemberList.None);
 
             CreateMap<Booking, BookingDTO>(MemberList.None);
             CreateMap<BookingDTO, Booking>(MemberList.None);
+
+            CreateMap<RoomImage, RoomImageDTO>(MemberList.None);
+            CreateMap<RoomImageDTO, RoomImage>(MemberList.None);
 
             CreateMap<CustomUserRegister, UserDTO>(MemberList.None);
             CreateMap<UserDTO, CustomUserRegister>(MemberList.None);

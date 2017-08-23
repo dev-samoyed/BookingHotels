@@ -5,7 +5,7 @@ namespace BookingHotels.DAL.Configurations
 {
     public class HotelConfig : EntityTypeConfiguration<Hotel>
     {
-        // Configure models with FLUENT API
+        // Configure with FLUENT API
         public HotelConfig()
         {
             // Set primary key

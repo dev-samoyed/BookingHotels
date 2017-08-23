@@ -11,18 +11,16 @@ namespace BookingHotels.DAL.Configurations
 {
     public class BookingConfig : EntityTypeConfiguration<Booking>
     {
+        // Configure with FLUENT API
         public BookingConfig()
         {
-
             HasRequired(t => t.ApplicationUser)
             .WithMany()
             .HasForeignKey(t => t.ApplicationUserId);
 
             HasRequired(t => t.Room)
             .WithMany()
-            .HasForeignKey(t => t.RoomId);
-
-            
+            .HasForeignKey(t => t.RoomId);            
         }
     }
 

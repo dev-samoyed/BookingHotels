@@ -11,6 +11,7 @@ namespace BookingHotels.DAL.Repositories
         private BaseRepository<Room> roomRepository;
         private BaseRepository<Feedback> feedbackRepository;
         private BaseRepository<Booking> bookingRepository;
+        private BaseRepository<RoomImage> roomImageRepository;
 
         private MyDbContext context;
         public EFUnitOfWork(string connectionString)
@@ -51,6 +52,15 @@ namespace BookingHotels.DAL.Repositories
                 if (bookingRepository == null)
                     bookingRepository = new BaseRepository<Booking>(context);
                 return bookingRepository;
+            }
+        }
+        public IRepository<RoomImage> RoomImages
+        {
+            get
+            {
+                if (roomImageRepository == null)
+                    roomImageRepository = new BaseRepository<RoomImage>(context);
+                return roomImageRepository;
             }
         }
         // Save

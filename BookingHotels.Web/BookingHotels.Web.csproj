@@ -211,6 +211,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\FeedbackViewModel.cs" />
+    <Compile Include="Models\RoomImageViewModel.cs" />
     <Compile Include="Models\RoomViewModel.cs" />
     <Compile Include="Models\BookingViewModel.cs" />
     <Compile Include="Models\HotelViewModel.cs" />

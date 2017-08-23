@@ -11,15 +11,23 @@ namespace BookingHotels.BLL.Services
 {
     public class RoomService : IRoomService
     {
+        // IUnitOfWork object communicates with DAL 
         private IUnitOfWork _unitOfWork { get; set; }
+        // Use DI to pass implementation of IUnitOfWork
         public RoomService(IUnitOfWork uow)
         {
             _unitOfWork = uow;
         }
-        // Gets room by ID
-        public RoomDTO GetRoom(Guid? ID)
+        // Get all rooms
+        public IEnumerable<RoomDTO> GetRooms()
         {
-            var room = _unitOfWork.Rooms.Get(ID);
+            var rooms = _unitOfWork.Rooms.GetAll().ToList();
+            return Mapper.Map<List<Room>, List<RoomDTO>>(rooms);
+        }
+        // Get room by it's Id
+        public RoomDTO GetRoomById(Guid Id)
+        {
+            var room = _unitOfWork.Rooms.Get(Id);
             return Mapper.Map<Room, RoomDTO>(room);
         }
         // Add new room
@@ -29,19 +37,6 @@ namespace BookingHotels.BLL.Services
             _unitOfWork.Rooms.Create(room);
             _unitOfWork.Save();
         }
-        // Get rooms
-        public IEnumerable<RoomDTO> GetRooms()
-        {
-            var rooms = _unitOfWork.Rooms.GetAll().ToList();
-            return Mapper.Map<List<Room>, List<RoomDTO>>(rooms);
-        }
-        // Get rooms in specific hotel
-        public IEnumerable<RoomDTO> GetRooms(Guid ID)
-        {
-            var rooms = _unitOfWork.Rooms.GetAll().ToList();
-            return Mapper.Map<List<Room>, List<RoomDTO>>(rooms);
-        }
-
         // Delete room
         public void DeleteRoom(RoomDTO roomDto)
         {
@@ -51,7 +46,6 @@ namespace BookingHotels.BLL.Services
             _unitOfWork.
             Save();
         }
-
         public void Dispose()
         {
             _unitOfWork.Dispose();

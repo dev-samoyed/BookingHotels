@@ -6,9 +6,12 @@ namespace BookingHotels.BLL.Interfaces
 {
     public interface IBookingService
     {
-        List<object> IsRoomOccupied(Guid id, DateTime startDate, DateTime endDate);
-        IEnumerable<BookingDTO> GetBookingsByRoom(Guid Id);
+        // Get all bookings
         IEnumerable<BookingDTO> GetBookings();
+        // Get all bokings for particular room
+        IEnumerable<BookingDTO> GetBookingsByRoomId(Guid Id);
+        // Retuns list of boolean and 2 Occupied dates
+        List<object> IsRoomOccupied(Guid id, DateTime startDate, DateTime endDate);
         void CreateBooking(BookingDTO bookingDto);
         void Dispose();
     }

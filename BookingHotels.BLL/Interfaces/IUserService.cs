@@ -12,7 +12,7 @@ namespace BookingHotels.BLL.Interfaces
     public interface IUserService : IDisposable
     {
         Task<OperationDetails> Create(UserDTO userDto);
-        ApplicationUser GetUser(Guid Id);
+        ApplicationUser GetUserById(Guid Id);
         Task<ClaimsIdentity> Authenticate(UserDTO userDto);
     }
 }

@@ -11,26 +11,25 @@ namespace BookingHotels.BLL.Services
 {
     public class HotelService : IHotelService
     {
+        // IUnitOfWork object communicates with DAL 
         private IUnitOfWork _unitOfWork { get; set; }
+        // Use DI to pass implementation of IUnitOfWork
         public HotelService(IUnitOfWork uow)
         {
             _unitOfWork = uow;
         }
-
-        // Gets 1 hotel by it's Id
-        public HotelDTO GetHotel(Guid? id)
-        {
-            Hotel hotel = _unitOfWork.Hotels.Get(id);
-            return Mapper.Map<Hotel, HotelDTO>(hotel);
-        }
-
         // Get all hotels
         public IEnumerable<HotelDTO> GetHotels()
         {
             var hotels = _unitOfWork.Hotels.GetAll().ToList();
             return Mapper.Map<List<Hotel>, List<HotelDTO>>(hotels);
         }
-
+        // Gets hotel by it's Id
+        public HotelDTO GetHotelById(Guid Id)
+        {
+            Hotel hotel = _unitOfWork.Hotels.Get(Id);
+            return Mapper.Map<Hotel, HotelDTO>(hotel);
+        }
         // Add a new hotel
         public void AddHotel(HotelDTO hotelDto)
         {
@@ -38,7 +37,6 @@ namespace BookingHotels.BLL.Services
             _unitOfWork.Hotels.Create(hotel);
             _unitOfWork.Save();
         }
-
         // Delete hotel
         public void DeleteHotel(HotelDTO hotelDto)
         {
@@ -47,7 +45,6 @@ namespace BookingHotels.BLL.Services
             _unitOfWork.
             Save();
         }
-
         // Dispose
         public void Dispose()
         {

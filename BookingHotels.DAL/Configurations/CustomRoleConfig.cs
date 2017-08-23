@@ -5,7 +5,7 @@ namespace BookingHotels.DAL.Configurations
 {
     class CustomRoleConfig : EntityTypeConfiguration<CustomRole>
     {
-        // Configure models with FLUENT API
+        // Configure with FLUENT API
         public CustomRoleConfig()
         {
             HasMany(p => p.Users)

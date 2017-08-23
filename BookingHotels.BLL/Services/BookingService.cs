@@ -13,18 +13,41 @@ namespace BookingHotels.BLL.Services
     {
         // IUnitOfWork object communicates with DAL 
         private IUnitOfWork _unitOfWork { get; set; }
-
         // Use DI to pass implementation of IUnitOfWork
         public BookingService(IUnitOfWork uow)
         {
             _unitOfWork = uow;
         }
-        // Retuns list of boolean and 2 Occupied dates
+       // Get all bookings
+        public IEnumerable<BookingDTO> GetBookings()
+        {
+            var bookings = _unitOfWork.Bookings.GetAll().ToList();
+            return Mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
+        }
+        // Get bookings for specific room
+        public IEnumerable<BookingDTO> GetBookingsByRoomId(Guid Id)
+        {
+            var allBookings = _unitOfWork.Bookings.GetAll().ToList();
+            var bookings = (from b
+                            in allBookings
+                           where b.RoomId==Id
+                           select b
+                           ).ToList();
+            return Mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
+        }
+        // Get bookingDto from Web, create booking object and save to db
+        public void CreateBooking(BookingDTO bookingDto)
+        {
+             Booking booking = Mapper.Map<BookingDTO, Booking>(bookingDto);
+            _unitOfWork.Bookings.Create(booking);
+            _unitOfWork.Save();
+        }
+        // Retuns list of boolean and 2 occupied dates
         public List<object> IsRoomOccupied(Guid id, DateTime startDate1, DateTime endDate1)
         {
             List<object> result = new List<object>();
             // All bookings for this room
-            var bookings = GetBookingsByRoom(id);
+            var bookings = GetBookingsByRoomId(id);
             // Check if room is already booked in that ranges 
             foreach (BookingDTO booking in bookings)
             {
@@ -38,38 +61,15 @@ namespace BookingHotels.BLL.Services
                     result.Add(booking.BookingStartDate);
                     result.Add(booking.BookingEndDate);
                     return result;
-                    //return Content("Sorry, the room is occupied from " + booking.BookingStartDate + " to " + booking.BookingEndDate + "<a href='javascript: history.back()'>Go Back</a>");
+                    // Room is occupied
+                    // Returns list of {true, (room is occupied from), (room is occupied to)};
                 }
             }
             result.Add(false);
+            // Room is occupied
+            // Returns list of {false};
             return result;
         }
-
-        public IEnumerable<BookingDTO> GetBookingsByRoom(Guid Id)
-        {
-            var allBookings = _unitOfWork.Bookings.GetAll().ToList();
-            var bookings = (from b
-                            in allBookings
-                           where b.RoomId==Id
-                           select b
-                           ).ToList();
-            return Mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
-        }
-       
-        public IEnumerable<BookingDTO> GetBookings()
-        {
-            var bookings = _unitOfWork.Bookings.GetAll().ToList();
-            return Mapper.Map<List<Booking>, List<BookingDTO>>(bookings);
-        }
-
-        // Get bookingDto from Web, create booking object and save to db
-        public void CreateBooking(BookingDTO bookingDto)
-        {
-             Booking booking = Mapper.Map<BookingDTO, Booking>(bookingDto);
-            _unitOfWork.Bookings.Create(booking);
-            _unitOfWork.Save();
-        }
-
         public void Dispose()
         {
             _unitOfWork.Dispose();

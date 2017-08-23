@@ -6,9 +6,10 @@ namespace BookingHotels.BLL.Interfaces
 {
     public interface IHotelService
     {
-        // Get 1 hotel by ID
-        HotelDTO GetHotel(Guid? id);
+        // Get All hotels
         IEnumerable<HotelDTO> GetHotels();
+        // Get hotel by it's Id
+        HotelDTO GetHotelById(Guid id);
         void AddHotel(HotelDTO hotel);
         void DeleteHotel(HotelDTO hotel);
         void Dispose();

@@ -57,9 +57,10 @@ namespace OwinSelfhostSample
             return result;
         }
 
+        [HttpPost]
         [Route("post")]
         [AllowAnonymous]
-        public async Task<HttpResponseMessage> PostImage()
+        public async Task<HttpResponseMessage> Post()
         {
             Dictionary<string, object> dict = new Dictionary<string, object>();
             try

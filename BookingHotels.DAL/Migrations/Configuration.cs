@@ -3,14 +3,14 @@ namespace BookingHotels.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     using System.Linq;
-    using BookingHotels.Domain.Entities;
-    using BookingHotels.Domain.Enums;
+    using Domain.Entities;
+    using Domain.Enums;
     using EF;
     using Microsoft.AspNet.Identity;
     using Identity;
     using Domain.Identity;
 
-    public sealed class MyDbContextConfiguration : DbMigrationsConfiguration<BookingHotels.DAL.EF.MyDbContext>
+    public sealed class MyDbContextConfiguration : DbMigrationsConfiguration<MyDbContext>
     {
         public MyDbContextConfiguration()
         {

@@ -18,6 +18,7 @@ namespace OwinSelfhostSample
 
                 var response = client.GetAsync(baseAddress + "api/image").Result;
                 
+                Console.WriteLine("Response: ");
                 Console.WriteLine(response);
                 Console.WriteLine(response.Content.ReadAsStringAsync().Result);
                 Console.ReadLine();

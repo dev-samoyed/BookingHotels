@@ -14,6 +14,7 @@ namespace BookingHotels.DAL.EF
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Booking> Bookings { get; set; }
         public DbSet<Feedback> Feedbacks { get; set; }
+        public DbSet<RoomImage> RoomImages { get; set; }
  
         public MyDbContext() : base("DefaultConnection")
         {
@@ -43,10 +44,6 @@ namespace BookingHotels.DAL.EF
 
             // Role Configuarations
             modelBuilder.Configurations.Add(new CustomRoleConfig());
-
-            // ignore
-            //modelBuilder.Entity<CustomUserRole>().Ignore(t => t.ApplicationUser_Id);
-
         }
     }
 }
