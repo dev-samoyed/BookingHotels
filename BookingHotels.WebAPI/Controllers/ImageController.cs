@@ -5,14 +5,27 @@ using System.Net.Http;
 using System.Web.Http;
 using BookingHotels.WebAPI.Models;
 using System.Diagnostics;
+using System.Net.Http.Formatting;
+using System.Threading.Tasks;
 
-namespace OwinSelfhostSample
+namespace BookingHotels.WebAPI
 {
+    // Object to sent as post result
+    public class ImageUploadResult
+    {
+        public Guid Id;
+        public HttpStatusCode HttpStatusCode;
+        public ImageUploadResult()
+        {
+            Id = Guid.NewGuid();
+        }
+    }
     [RoutePrefix("api/image")]
     public class ImageController : ApiController
     {
         public string imagesRootPath = Path.GetFullPath(Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, @"..\..\Images\"));
+        
 
         // GET api/image
         public HttpResponseMessage Get(string Id)
@@ -22,8 +35,8 @@ namespace OwinSelfhostSample
 
             // Set content as string array:
             string[] filePaths = {
-            imagesPath + @"\room.jpg",
-            imagesPath + @"\room1.jpg",
+                imagesPath + @"\room.jpg",
+                imagesPath + @"\room1.jpg",
             };
 
             //string filePaths2 = JsonConvert.SerializeObject(filePaths, Formatting.Indented);
@@ -39,31 +52,38 @@ namespace OwinSelfhostSample
             return result;
         }
         
-    // Post
-    [HttpPost]
-    [Route("api/Image/Upload")]
-    public HttpResponseMessage UploadPicture([FromBody] RoomImageUploadModel model)
-    {
+        // Post
+        [HttpPost]
+        [Route("api/Image/Upload")]
+        public IHttpActionResult UploadPicture([FromBody] RoomImageUploadModel model)
+        {
             // model.Image contains byte[]
             if (model.Image!=null)
             {
-                // Generate id and name for image
-                string imageName = Guid.NewGuid().ToString();
+                // Generate Guid as new image name in UploadResult constructor
+                ImageUploadResult imageUploadResult = new ImageUploadResult();
                 // Create folder if not exists
                 System.IO.Directory.CreateDirectory(imagesRootPath + model.RoomId);
                 // Save image to filesystem
-                var fs = new BinaryWriter(new FileStream(imagesRootPath + model.RoomId + '\\' + imageName + ".jpg", FileMode.Append, FileAccess.Write));
+                var fs = new BinaryWriter(new FileStream(
+                    imagesRootPath + model.RoomId + '\\' + imageUploadResult.Id.ToString() + ".jpg",
+                    FileMode.Append, FileAccess.Write));
                 fs.Write(model.Image);
                 fs.Close();
-                string message1 = "===\n Image uploaded, new image name: " + imageName;
+                string message1 = "===\n Image uploaded, new image name: " + imageUploadResult.Id.ToString();
                 Debug.WriteLine(message1);
-                return Request.CreateErrorResponse(HttpStatusCode.Created, imageName);
+
+                //return Request.CreateErrorResponse(HttpStatusCode.Created, imageName);
+                MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
+                //return Request.CreateResponse<ImageUploadResult>(HttpStatusCode.Created, imageUploadResult, bsonFormatter);
+                return Ok(imageUploadResult);
             }
             else
             {
-                  return Request.CreateResponse(HttpStatusCode.BadRequest, model.ToString());
+                return Content(HttpStatusCode.BadRequest, model.ToString());
             }
-    }
+        }
+
         // PUT api/image/5 
         public void Put(int id, [FromBody]string value)
         {
