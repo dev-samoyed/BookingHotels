@@ -33,11 +33,10 @@ namespace OwinSelfhostSample
             string[] filePaths = {
             imagesPath + @"\room.jpg",
             imagesPath + @"\room1.jpg",
-
             };
-            string filePaths2 = JsonConvert.SerializeObject(filePaths, Formatting.Indented);
+            //string filePaths2 = JsonConvert.SerializeObject(filePaths, Formatting.Indented);
 
-            HttpResponseMessage result = Request.CreateResponse<string>(HttpStatusCode.OK, filePaths2);
+            HttpResponseMessage result = Request.CreateResponse<string[]>(HttpStatusCode.OK, filePaths);
 
             //// Send content as ByteArrayContent (slower than paths array):
             //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -82,7 +81,7 @@ namespace OwinSelfhostSample
                     // .... 
                     
                     Debug.WriteLine("============\n Image uploaded, new image name = " + imageName);
-                    return Request.CreateResponse(HttpStatusCode.Created, imageName);
+                    return Request.CreateResponse<string>(HttpStatusCode.Created, imageName);
               }
               else
               {

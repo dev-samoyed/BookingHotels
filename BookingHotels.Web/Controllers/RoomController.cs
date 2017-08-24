@@ -13,6 +13,7 @@ using System.IO;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using System.Diagnostics;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -30,19 +31,19 @@ namespace BookingHotels.Web.Controllers
             userService = userServ;
         }
 
-        //// Create HttpClient
-        //public HttpClient Client
-        //{
-        //    get
-        //    {
-        //        var client = new HttpClient()
-        //        {
-        //            BaseAddress = new Uri("http://localhost:9000/")
-        //        };
-        //        //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/bson"));
-        //        return client;
-        //    }
-        //}
+        // Create HttpClient
+        public HttpClient Client
+        {
+            get
+            {
+                var client = new HttpClient()
+                {
+                    BaseAddress = new Uri("http://localhost:9000/")
+                };
+                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                return client;
+            }
+        }
 
         // Room/Index
         public ActionResult Index()
@@ -75,20 +76,20 @@ namespace BookingHotels.Web.Controllers
             return View(room);
         }
 
-        //// Get images src method
-        //public string[] GetImageSrc(string[] filePaths)
-        //{
-        //    //string[] result = new string[filePaths.Length];
-        //    // Download images
-        //    for (int i=0;i< filePaths.Length; i++)
-        //    {
-        //        byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
-        //        string imageBase64Data = Convert.ToBase64String(imageByteData);
-        //        string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-        //        filePaths[i] = imageDataURL;
-        //    }
-        //    return filePaths;
-        //}
+        // Get images src method
+        public string[] GetImageSrc(string[] filePaths)
+        {
+            //string[] result = new string[filePaths.Length];
+            // Download images
+            for (int i=0;i< filePaths.Length; i++)
+            {
+                byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
+                string imageBase64Data = Convert.ToBase64String(imageByteData);
+                string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                filePaths[i] = imageDataURL;
+            }
+            return filePaths;
+        }
 
         //List<RootObject> datalist = JsonConvert.DeserializeObject<List<RootObject>>(jsonstring);
         //to something like this :
@@ -102,18 +103,17 @@ namespace BookingHotels.Web.Controllers
             HttpClient client = new HttpClient();
             string baseAddress = "http://localhost:9000/";
 
-            //// Get response from request to api/image
-            //var response = client.GetAsync(baseAddress + "api/image/"+Id.ToString()).Result;
-            //ViewBag.response = response;
-            //string[] paths = response.Content.ReadAsAsync<string[]>().Result;
-            //// Response Content
-            //ViewBag.responseContent = paths;
-            //// Get images Srcs (for all rooms)
-            ////if (paths != null)
-            ////    ViewBag.imgSrcs = GetImageSrc(paths);
+            // Get response from request to api/image
+            var response = client.GetAsync(baseAddress + "api/image/"+Id).Result;
+            ViewBag.response = response;
+            string[] paths = response.Content.ReadAsAsync<string[]>().Result;
+            // Response Content
+            ViewBag.responseContent = paths;
+            // Get images Srcs (for all rooms)
+            ViewBag.imgSrcs = GetImageSrc(paths);
 
-            //// Get images for this room
-            //// (TODO)
+            // Get images for this room
+            // (TODO)
 
             // Get edited room
             var roomDto = roomService.GetRoomById(Guid.Parse(Id));
@@ -122,42 +122,44 @@ namespace BookingHotels.Web.Controllers
             return View(roomViewModel);
         }
 
-        //// POST: Upload Image to web api
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult UploadRoomImage(RoomViewModel roomViewModel, HttpPostedFileBase uploadedFile)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        if (uploadedFile != null && uploadedFile.ContentLength > 0)
-        //        {
-        //            var roomImageUploadModel = new RoomImageViewModel
-        //            {
-        //                //ImageName = Path.GetFileName(uploadedFile.FileName),
-        //                // Id will be returned from server as new Guid picture name
-        //                //Id = Guid.NewGuid(),
-        //                RoomId = roomViewModel.Id
-        //                // Type and size will not be validated on server (TODO)
-        //                //ContentType = uploadedFile.ContentType,
-        //                //ContentSize = uploadedFile.ContentLength
-        //            };
-        //            using (var reader = new BinaryReader(uploadedFile.InputStream))
-        //            {
-        //                roomImageUploadModel.Image = reader.ReadBytes(uploadedFile.ContentLength);
-        //            }
-        //            // Set the Accept header for BSON.
-        //            Client.DefaultRequestHeaders.Accept.Clear();
-        //            Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/bson"));
-        //            // POST using the BSON formatter.
-        //            MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
-        //            var response = Client.PostAsync<RoomImageViewModel>("Image/Upload/", roomImageUploadModel, bsonFormatter);
-        //            Console.WriteLine("Got from server: "+response.Result);
-        //            response.Result.EnsureSuccessStatusCode();
-        //        }
-        //    }
-        //    //TODO: set correct return
-        //    return View();
-        //}
+        // POST: Upload Image to web api
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult UploadRoomImage(RoomViewModel roomViewModel, HttpPostedFileBase uploadedFile)
+        {
+            if (ModelState.IsValid)
+            {
+                if (uploadedFile != null && uploadedFile.ContentLength > 0)
+                {
+                    var roomImageUploadModel = new RoomImageViewModel
+                    {
+                        //ImageName = Path.GetFileName(uploadedFile.FileName),
+                        // Id will be returned from server as new Guid picture name
+                        //Id = Guid.NewGuid(),
+                        RoomId = roomViewModel.Id
+                        // Type and size will not be validated on server (TODO)
+                        //ContentType = uploadedFile.ContentType,
+                        //ContentSize = uploadedFile.ContentLength
+                    };
+                    using (var reader = new BinaryReader(uploadedFile.InputStream))
+                    {
+                        roomImageUploadModel.Image = reader.ReadBytes(uploadedFile.ContentLength);
+                    }
+                    // Set the Accept header for BSON.
+                    Client.DefaultRequestHeaders.Accept.Clear();
+                    Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/bson"));
+                    // POST using the BSON formatter.
+                    MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
+                    var response = Client.PostAsync<RoomImageViewModel>("api/Image/Upload/", roomImageUploadModel, bsonFormatter);
+                    string paths = response.Result.Content.ToString();
+                    Debug.WriteLine("Got from server: " + response.Result);
+
+                    response.Result.EnsureSuccessStatusCode();
+                }
+            }
+            //TODO: set correct return
+            return View("Edit", new { id = roomViewModel.Id });
+        }
 
         // GET: Room/Create
         [Authorize(Roles = "admin")]
