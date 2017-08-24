@@ -14,6 +14,7 @@ using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using BookingHotels.BLL.Services;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -23,12 +24,14 @@ namespace BookingHotels.Web.Controllers
         IHotelService hotelService;
         IBookingService bookingService;
         IUserService userService;
-        public RoomController(IRoomService serv, IHotelService hotelServ, IUserService userServ, IBookingService bookingServ)
+        IRoomImageService roomImageService;
+        public RoomController(IRoomService serv, IHotelService hotelServ, IUserService userServ, IBookingService bookingServ, IRoomImageService roomImageServ)
         {
             roomService = serv;
             hotelService = hotelServ;
             bookingService = bookingServ;
             userService = userServ;
+            roomImageService = roomImageServ;
         }
 
         // Create HttpClient
@@ -100,15 +103,12 @@ namespace BookingHotels.Web.Controllers
         //GET Room/Edit
         public ActionResult Edit(string Id)
         {
-            HttpClient client = new HttpClient();
-            string baseAddress = "http://localhost:9000/";
-
             // Get response from request to api/image
-            var response = client.GetAsync(baseAddress + "api/image/"+Id).Result;
-            ViewBag.response = response;
+            var response = Client.GetAsync(Client.BaseAddress + "api/image/"+Id).Result;
+            //ViewBag.response = response;
             string[] paths = response.Content.ReadAsAsync<string[]>().Result;
             // Response Content
-            ViewBag.responseContent = paths;
+            //ViewBag.responseContent = paths;
             // Get images Srcs (for all rooms)
             ViewBag.imgSrcs = GetImageSrc(paths);
 
@@ -118,7 +118,6 @@ namespace BookingHotels.Web.Controllers
             // Get edited room
             var roomDto = roomService.GetRoomById(Guid.Parse(Id));
             RoomViewModel roomViewModel = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
-            
             return View(roomViewModel);
         }
 
@@ -151,14 +150,20 @@ namespace BookingHotels.Web.Controllers
                     // POST using the BSON formatter.
                     MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
                     var response = Client.PostAsync<RoomImageViewModel>("api/Image/Upload/", roomImageUploadModel, bsonFormatter);
-                    string paths = response.Result.Content.ToString();
                     Debug.WriteLine("Got from server: " + response.Result);
+                    if ((int)response.Status == 201)
+                    {
+                        // Created, update db
+                        string imageName = response.Result.Content.ToString();
+                        Debug.WriteLine("Writing image id to db: " + imageName);
 
+                    }
                     response.Result.EnsureSuccessStatusCode();
                 }
             }
             //TODO: set correct return
-            return View("Edit", new { id = roomViewModel.Id });
+            return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString()  });
+            //return View("Edit", new { id = roomViewModel.Id.ToString() });
         }
 
         // GET: Room/Create

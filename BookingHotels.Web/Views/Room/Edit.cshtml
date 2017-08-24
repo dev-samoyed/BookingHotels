@@ -7,22 +7,20 @@
 
 <h2>@ViewBag.Title</h2>
 <hr />
-<h3>Response from Web Api:</h3>
+
+@*<h3>Response from Web Api:</h3>
 @ViewBag.response
 <h3>Response Content from Web Api:</h3>
 @ViewBag.responseContent
 
-
-
-@*
-    Display some images (ActionResult method)
-    @foreach (string imgsrc in ViewBag.responseContent)
-    {
-        var watch = System.Diagnostics.Stopwatch.StartNew();
-        <img src='@Url.Action("GetImageSrc2", "Room", new { filePath = imgsrc })' width="150" height="150"/>
-        watch.Stop();
-        System.Diagnostics.Debug.WriteLine("GetImageSrc1 time: " + watch.ElapsedMilliseconds);
-    }
+Display some images (ActionResult method)
+@foreach (string imgsrc in ViewBag.responseContent)
+{
+    var watch = System.Diagnostics.Stopwatch.StartNew();
+    <img src='@Url.Action("GetImageSrc2", "Room", new { filePath = imgsrc })' width="150" height="150"/>
+    watch.Stop();
+    System.Diagnostics.Debug.WriteLine("GetImageSrc1 time: " + watch.ElapsedMilliseconds);
+}
 *@
 <hr/>
 @* Information about room being edited *@

@@ -24,14 +24,12 @@ namespace BookingHotels.Web
             container.RegisterType<IHotelService, HotelService>();
             container.RegisterType<IRoomService, RoomService>();
             container.RegisterType<IUserService, UserService>();
-
+            container.RegisterType<IRoomImageService, RoomImageService>();
             
-
             // from middle layer
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
-
-
-             container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("DefaultConnection"));
+            
+            container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("DefaultConnection"));
             container.RegisterType<IUnitOfWorkIdentity, IdentityUnitOfWork>(new InjectionConstructor("DefaultConnection"));
              
         }
