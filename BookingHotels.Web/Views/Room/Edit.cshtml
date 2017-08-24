@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Edit room";
     // Images Srcs
-    var imgSrcs = ViewBag.imgSrcs;
+    //var imgSrcs = ViewBag.imgSrcs;
 }
 
 <h2>@ViewBag.Title</h2>
@@ -11,11 +11,13 @@
 @ViewBag.response
 <h3>Response Content from Web Api:</h3>
 @ViewBag.responseContent
-<h3>Display some images from api/image:</h3>
+
+@*<h3>Display some images from api/image:</h3>
 @foreach (string imgsrc in imgSrcs)
 {
     <img src="@imgsrc" width="50" height="50" />
-}
+}*@
+
 @*
     Display some images (ActionResult method)
     @foreach (string imgsrc in ViewBag.responseContent)

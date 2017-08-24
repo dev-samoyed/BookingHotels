@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Web.Hosting;
 using System.Web;
+using Newtonsoft.Json;
 //using static System.Net.Mime.MediaTypeNames;
 
 namespace OwinSelfhostSample
@@ -21,34 +22,22 @@ namespace OwinSelfhostSample
     public class ImageController : ApiController
     {
         // GET api/image 
-        public HttpResponseMessage Get()
+        public HttpResponseMessage Get(string Id)
         {
-            // Get root path (method 1):
-            var uriPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().GetName().CodeBase);
-            var path = new Uri(uriPath).LocalPath;
+            // Get path (console application)
+            string imagesPath = Path.GetFullPath(Path.Combine(
+                AppDomain.CurrentDomain.BaseDirectory,
+                @"..\..\Images\", Id));
 
-            //// Get root path (method 2):
-            AppDomain root = AppDomain.CurrentDomain;
-            //AppDomainSetup setup = new AppDomainSetup();
-            //setup.ApplicationBase = root.SetupInformation.ApplicationBase + @"..\..\Images\";
-            //AppDomain domain = AppDomain.CreateDomain("ImagesDomain", null, setup);
-            //string imagesPath = domain.SetupInformation.ApplicationBase;
-            //AppDomain.Unload(domain);
-            var imagesPath2 = HttpContext.Current.Server.MapPath("~/Images");
+            // Set content as string array:
+            string[] filePaths = {
+            imagesPath + @"\room.jpg",
+            imagesPath + @"\room1.jpg",
 
-            // Get root path
-            var imagesPath = HostingEnvironment.MapPath("~/Images");
-            
-            // Send content as strings array:
-            string[] filePaths = { 
-            imagesPath + "room.jpg",
-             imagesPath + "room2.jpg",
-              imagesPath + "room3.jpg",
-              imagesPath + "room4.jpg",
-              imagesPath + "room5.jpg",
-              imagesPath + "room6.jpg"
             };
-            HttpResponseMessage result = Request.CreateResponse(HttpStatusCode.OK, filePaths);
+            string filePaths2 = JsonConvert.SerializeObject(filePaths, Formatting.Indented);
+
+            HttpResponseMessage result = Request.CreateResponse<string>(HttpStatusCode.OK, filePaths2);
 
             //// Send content as ByteArrayContent (slower than paths array):
             //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
@@ -86,13 +75,14 @@ namespace OwinSelfhostSample
               if (true)
               {
                     // Generate name
-                    string imageName = model.Id + " - " + model.RoomId;
-                    // Save image
-                    // .... 
 
-                    var result = "============\n Image uploaded, new image name = " +imageName;
-                    Debug.WriteLine(result);
-                    return Request.CreateResponse(HttpStatusCode.Created, result);
+                    string imageName = Guid.NewGuid().ToString();
+
+                    // Save image to folder Images/{room.Id}
+                    // .... 
+                    
+                    Debug.WriteLine("============\n Image uploaded, new image name = " + imageName);
+                    return Request.CreateResponse(HttpStatusCode.Created, imageName);
               }
               else
               {

@@ -21,7 +21,7 @@ namespace OwinSelfhostSample
             // Binary JSON Formatter
             config.Formatters.Add(new BsonMediaTypeFormatter());
             appBuilder.UseWebApi(config);
-
         }
     }
 }
+
