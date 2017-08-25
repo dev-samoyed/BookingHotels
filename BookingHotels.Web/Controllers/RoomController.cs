@@ -103,13 +103,12 @@ namespace BookingHotels.Web.Controllers
 
         //GET Room/Edit
         public ActionResult Edit(Guid Id)
-        {
-            // Get images for this room
+        {    
+            // Get images Ids for this room
             List<RoomImageDTO> roomImageDTOs = roomImageService.GetRoomImagesByRoomId(Id).ToList();
-            var roomImageGetModel = Mapper.Map<IEnumerable<RoomImageDTO>, IEnumerable<RoomImageGetModel>>(roomImageDTOs);
 
             List<string> imageIdsList = new List<string>();
-            foreach (var roomImage in roomImageGetModel)
+            foreach (var roomImage in roomImageDTOs)
             {
                 imageIdsList.Add(roomImage.Id.ToString());
             }
@@ -125,6 +124,7 @@ namespace BookingHotels.Web.Controllers
                 // Get images Srcs for this room
                 ViewBag.imgSrcs = GetImageSrc(paths);
             }
+            
             //check ErrorMessage value
             ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
 

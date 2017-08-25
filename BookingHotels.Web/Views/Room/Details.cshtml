@@ -3,10 +3,22 @@
     ViewBag.Title = "Room details";
     <h2>@ViewBag.Title</h2>
     string hotelName = ViewBag.hotelName;
+    var imgSrcs = ViewBag.imgSrcs;
 }
 <div class="row">
     <div class="col-md-6 text-center">
-        images will be here 
+
+        <div class="row">
+            @{ if (imgSrcs != null)
+                {
+                    foreach (string imgsrc in imgSrcs)
+                    {
+                    <img src="@imgsrc" width="50" height="50" />
+                    }
+                }
+            }
+        </div>
+
     </div>
     <div class="col-md-6">
         <div class="row">

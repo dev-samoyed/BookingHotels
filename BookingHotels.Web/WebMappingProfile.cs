@@ -26,8 +26,6 @@ namespace BookingHotels.Web
             CreateMap<RoomImageUploadModel, RoomImageDTO>(MemberList.None);
             CreateMap<RoomImageDTO, RoomImageUploadModel>(MemberList.None);
 
-            CreateMap<RoomImageDTO, RoomImageGetModel>(MemberList.None);
-
         }
     }
 

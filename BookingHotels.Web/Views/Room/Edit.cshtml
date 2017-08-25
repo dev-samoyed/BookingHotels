@@ -16,7 +16,16 @@
             <h2>You are editing this room:</h2>
         </div>
         <div class="row">
-            Id: @Model.Id
+            @Html.ActionLink(
+            linkText: "Id: " + Model.Id,
+            actionName: "Details",
+            controllerName: "Room",
+            routeValues: new
+            {
+                id = Model.Id,
+            },
+            htmlAttributes: null)
+
         </div>
         <div class="row">
             RoomType: @Model.RoomType

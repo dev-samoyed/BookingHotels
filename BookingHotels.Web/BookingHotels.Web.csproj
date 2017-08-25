@@ -213,7 +213,6 @@
     </Compile>
     <Compile Include="Models\FeedbackViewModel.cs" />
     <Compile Include="Models\ImageUploadResult.cs" />
-    <Compile Include="Models\RoomImageGetModel.cs" />
     <Compile Include="Models\RoomImageUploadModel.cs" />
     <Compile Include="Models\RoomViewModel.cs" />
     <Compile Include="Models\BookingViewModel.cs" />
