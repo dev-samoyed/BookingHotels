@@ -7,52 +7,46 @@ using BookingHotels.WebAPI.Models;
 using System.Diagnostics;
 using System.Net.Http.Formatting;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace BookingHotels.WebAPI
 {
-    // Object to sent as post result
-    public class ImageUploadResult
-    {
-        public Guid Id;
-        public HttpStatusCode HttpStatusCode;
-        public ImageUploadResult()
-        {
-            Id = Guid.NewGuid();
-        }
-    }
+
     [RoutePrefix("api/image")]
     public class ImageController : ApiController
     {
         public string imagesRootPath = Path.GetFullPath(Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, @"..\..\Images\"));
-        
+
 
         // GET api/image
-        public HttpResponseMessage Get(string Id)
+        public HttpResponseMessage Get(string roomId, [FromUri] List<string> imageIds)
         {
-            // Get path (console application)
-            string imagesPath = Path.GetFullPath(Path.Combine(imagesRootPath, Id));
+            if (!imageIds.Contains(null))
+            {
+                //Debug.WriteLine( "recieved a list with length: " + imageIds.Length);
+                Debug.WriteLine("requestedRoom: " + roomId);
+                Debug.WriteLine("requestedImages: " + imageIds.ToString());
+            
 
-            // Set content as string array:
-            string[] filePaths = {
-                imagesPath + @"\room.jpg",
-                imagesPath + @"\room1.jpg",
-            };
-
-            //string filePaths2 = JsonConvert.SerializeObject(filePaths, Formatting.Indented);
-            HttpResponseMessage result = Request.CreateResponse<string[]>(HttpStatusCode.OK, filePaths);
-
-            //// Send content as ByteArrayContent (slower than string array of paths):
-            //FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-            //Image image = Image.FromStream(fileStream);
-            //MemoryStream memoryStream = new MemoryStream();
-            //image.Save(memoryStream, ImageFormat.Jpeg);
-            //result.Content = new ByteArrayContent(memoryStream.ToArray());
-            //result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
-            return result;
+                // Get path (console application)
+                string roomImagesPath = Path.GetFullPath(Path.Combine(imagesRootPath, roomId));
+                // Set response content as string array of files paths:
+                string[] filePaths = new string[imageIds.Count];
+                int i = 0;
+                foreach (string imageId in imageIds)
+                {
+                    filePaths[i] = roomImagesPath + @"\" + imageId + ".jpg";
+                    i++;
+                }
+                HttpResponseMessage result = Request.CreateResponse<string[]>(HttpStatusCode.OK, filePaths);
+                return result;
+            }
+            else
+                return Request.CreateResponse(HttpStatusCode.NoContent);
         }
-        
-        // Post
+
+        // POST api/Image/Upload
         [HttpPost]
         [Route("api/Image/Upload")]
         public IHttpActionResult UploadPicture([FromBody] RoomImageUploadModel model)
@@ -95,3 +89,13 @@ namespace BookingHotels.WebAPI
         }
     }
 }
+
+
+
+//// Send content as ByteArrayContent (slower):
+//FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+//Image image = Image.FromStream(fileStream);
+//MemoryStream memoryStream = new MemoryStream();
+//image.Save(memoryStream, ImageFormat.Jpeg);
+//result.Content = new ByteArrayContent(memoryStream.ToArray());
+//result.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");

@@ -110,7 +110,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ImageController.cs" />
-    <Compile Include="Models\RoomImageViewModel.cs" />
+    <Compile Include="Models\ImageUploadResult.cs" />
+    <Compile Include="Models\RoomImageGetModel.cs" />
+    <Compile Include="Models\RoomImageUploadModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />

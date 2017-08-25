@@ -3,26 +3,13 @@
     ViewBag.Title = "Edit room";
     // Images Srcs
     var imgSrcs = ViewBag.imgSrcs;
+    // ErrorMessage from temp data
+    var ErrorMessage = ViewBag.ErrorMessage;
 }
 
 <h2>@ViewBag.Title</h2>
-
-@*<h3>Response from Web Api:</h3>
-@ViewBag.response
-<h3>Response Content from Web Api:</h3>
-@ViewBag.responseContent
-
-Display some images (ActionResult method)
-@foreach (string imgsrc in ViewBag.responseContent)
-{
-    var watch = System.Diagnostics.Stopwatch.StartNew();
-    <img src='@Url.Action("GetImageSrc2", "Room", new { filePath = imgsrc })' width="150" height="150"/>
-    watch.Stop();
-    System.Diagnostics.Debug.WriteLine("GetImageSrc1 time: " + watch.ElapsedMilliseconds);
-}
-*@
 <hr/>
-@* Information about room being edited *@
+@* Details about room being edited *@
 <div class="row">
     <div class="col-md-5">
         <div class="row">
@@ -51,14 +38,19 @@ Display some images (ActionResult method)
             <h2>Images for this room:</h2>
         </div>
         <div class="row">
-            @foreach (string imgsrc in imgSrcs)
+        @{ if (imgSrcs!=null)
             {
-            <img src="@imgsrc" width="50" height="50" />
+                foreach (string imgsrc in imgSrcs)
+                {
+                    <img src="@imgsrc" width="50" height="50" />
+                }
             }
+        }
         </div>
     </div>
 </div>
-
+<hr />
+@* Upload image *@
 <div class="row">
     <div class="col-md-12">
         <div class="row text-center">
@@ -70,7 +62,6 @@ Display some images (ActionResult method)
                 @Html.HiddenFor(model => model.Id);
                 @Html.AntiForgeryToken()
                 <div class="form-horizontal">
-                    <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="form-group">
                         @Html.Label("Room Image", new { @class = "control-label col-md-2" })
@@ -80,14 +71,34 @@ Display some images (ActionResult method)
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Create" class="btn btn-default" />
+                            <input type="submit" value="Upload" class="btn btn-default" />
                         </div>
                     </div>
                 </div>
             }
         </div>
+        <div class="row text-center">
+            <p class="text-danger">@ErrorMessage</p>
+        </div>
     </div>
 </div>
+
+
+
+@*<h3>Response from Web Api:</h3>
+    @ViewBag.response
+    <h3>Response Content from Web Api:</h3>
+    @ViewBag.responseContent
+
+    Display some images (ActionResult method)
+    @foreach (string imgsrc in ViewBag.responseContent)
+    {
+        var watch = System.Diagnostics.Stopwatch.StartNew();
+        <img src='@Url.Action("GetImageSrc2", "Room", new { filePath = imgsrc })' width="150" height="150"/>
+        watch.Stop();
+        System.Diagnostics.Debug.WriteLine("GetImageSrc1 time: " + watch.ElapsedMilliseconds);
+    }
+*@
 
 
 

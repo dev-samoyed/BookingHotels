@@ -13,6 +13,9 @@ using System.IO;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -99,46 +102,50 @@ namespace BookingHotels.Web.Controllers
 
 
         //GET Room/Edit
-        public ActionResult Edit(string Id)
+        public ActionResult Edit(Guid Id)
         {
-            // Get response from request to api/image
-            var response = Client.GetAsync(Client.BaseAddress + "api/image/"+Id).Result;
-            //ViewBag.response = response;
-            string[] paths = response.Content.ReadAsAsync<string[]>().Result;
-            // Response Content
-            //ViewBag.responseContent = paths;
-            // Get images Srcs (for all rooms)
-            ViewBag.imgSrcs = GetImageSrc(paths);
-
             // Get images for this room
-            // (TODO)
+            List<RoomImageDTO> roomImageDTOs = roomImageService.GetRoomImagesByRoomId(Id).ToList();
+            var roomImageGetModel = Mapper.Map<IEnumerable<RoomImageDTO>, IEnumerable<RoomImageGetModel>>(roomImageDTOs);
 
-            //check errMsg value
-            var errMsg = TempData["ErrorMessage"] as string;
+            List<string> imageIdsList = new List<string>();
+            foreach (var roomImage in roomImageGetModel)
+            {
+                imageIdsList.Add(roomImage.Id.ToString());
+            }
+            // Image Ids that will be send as url parameters
+            string imageIDs="";
+            foreach (var imageId in imageIdsList)
+                imageIDs += "imageIDs="+imageId + "&";
+            string url = string.Format(Client.BaseAddress + "api/image/?roomId={0}&{1}", Id, imageIDs);
+            // Get response from request to api/image
+            var response = Client.GetAsync(url).Result;
+            if ((int)response.StatusCode==200) {
+                string[] paths = response.Content.ReadAsAsync<string[]>().Result;
+                // Get images Srcs for this room
+                ViewBag.imgSrcs = GetImageSrc(paths);
+            }
+            //check ErrorMessage value
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
 
             // Get edited room
-            var roomDto = roomService.GetRoomById(Guid.Parse(Id));
+            var roomDto = roomService.GetRoomById(Id);
             RoomViewModel roomViewModel = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
             return View(roomViewModel);
         }
 
-        // POST: Upload Image
+        // POST: Upload room image to api/Image/Upload
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<ActionResult> UploadRoomImage(RoomViewModel roomViewModel, HttpPostedFileBase uploadedFile)
+        public async Task<ActionResult> UploadRoomImage(RoomViewModel roomViewModel, HttpPostedFileBase uploadedFile)
         {
             if (ModelState.IsValid)
             {
                 if (uploadedFile != null && uploadedFile.ContentLength > 0)
                 {
-                    var roomImageUploadModel = new RoomImageViewModel
+                    var roomImageUploadModel = new RoomImageUploadModel
                     {
-                        // Do not need filename ( Path.GetFileName(uploadedFile.FileName) )
-                        // New name be returned from server as new Guid
                         RoomId = roomViewModel.Id
-                        // Type and size will not be validated on server (TODO)
-                        // ContentType = uploadedFile.ContentType,
-                        // ContentSize = uploadedFile.ContentLength
                     };
                     using (var reader = new BinaryReader(uploadedFile.InputStream))
                     {
@@ -149,35 +156,30 @@ namespace BookingHotels.Web.Controllers
                     Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/bson"));
                     // POST using the BSON formatter.
                     MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
-
-                    var response = await Client.PostAsync<RoomImageViewModel>("api/Image/Upload/", roomImageUploadModel, bsonFormatter);
-
-                    Debug.WriteLine("Got from server: " + response);
-
-                    response.EnsureSuccessStatusCode();
-
-                    // If image is created, update db
+                    var response = await Client.PostAsync<RoomImageUploadModel>("api/Image/Upload/", roomImageUploadModel, bsonFormatter);
+                    Debug.WriteLine("Server responsed: " + response);
+                    // If response is Ok
                     if ((int)response.StatusCode == 200)
                     {
-                        //await response.Content.ReadAsAsync<ImageUploadResult>();
-                        // Use BSON formatter to deserialize the result.
+                        // Use BSON formatter to deserialize the response content
                         MediaTypeFormatter[] formatters = new MediaTypeFormatter[] {
                             new BsonMediaTypeFormatter()
                         };
                         ImageUploadResult imageUploadResult = await response.Content.ReadAsAsync<ImageUploadResult>(formatters);
-                        Debug.WriteLine("Writing image id to db: " + imageUploadResult.Id);
+                        Debug.WriteLine("Send to db: " + imageUploadResult.Id);
+                        // Get image name generated on server
                         roomImageUploadModel.Id = imageUploadResult.Id;
-                        RoomImageDTO roomImageDTO = Mapper.Map<RoomImageViewModel, RoomImageDTO>(roomImageUploadModel);
+                        // Send to Database
+                        RoomImageDTO roomImageDTO = Mapper.Map<RoomImageUploadModel, RoomImageDTO>(roomImageUploadModel);
                         roomImageService.Create(roomImageDTO);
-
-
+                        TempData["ErrorMessage"] = "Image uploaded and creaded a record in Database";
+                        return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }
                     else
                     {
                         TempData["ErrorMessage"] = "Bad responce StatusCode "+ (int)response.StatusCode;
                         return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }
-
                 }
                 else
                 {
@@ -185,7 +187,11 @@ namespace BookingHotels.Web.Controllers
                     return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                 }
             }
-            return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
+            else
+            {
+                TempData["ErrorMessage"] = "Room model state is not valid";
+                return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
+            }
         }
 
         // GET: Room/Create

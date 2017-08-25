@@ -23,8 +23,10 @@ namespace BookingHotels.Web
             CreateMap<BookingDTO, BookingViewModel>(MemberList.None);
             CreateMap<BookingViewModel, BookingDTO>(MemberList.None);
 
-            CreateMap<RoomImageViewModel, RoomImageDTO>(MemberList.None);
-            CreateMap<RoomImageDTO, RoomImageViewModel>(MemberList.None);
+            CreateMap<RoomImageUploadModel, RoomImageDTO>(MemberList.None);
+            CreateMap<RoomImageDTO, RoomImageUploadModel>(MemberList.None);
+
+            CreateMap<RoomImageDTO, RoomImageGetModel>(MemberList.None);
 
         }
     }
