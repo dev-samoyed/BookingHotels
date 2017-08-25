@@ -64,10 +64,11 @@ namespace BookingHotels.Web.Controllers
         // Room/Details/{Guid}
         public ActionResult Details(Guid Id)
         {
-            if (Id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            // Get images paths by room id from Web Api
+            string[] paths = GetImagesPathsByRoomId(Id);
+            // Get images Srcs for this room and send to view
+            ViewBag.imgSrcs = GetImageSrc(paths);
+
             RoomDTO roomDto = roomService.GetRoomById(Id);
             RoomViewModel room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
 
@@ -80,30 +81,9 @@ namespace BookingHotels.Web.Controllers
             return View(room);
         }
 
-        // Get images src method
-        public string[] GetImageSrc(string[] filePaths)
+        // Get Images paths from Web Api by Room Id
+        public string[] GetImagesPathsByRoomId(Guid Id)
         {
-            //string[] result = new string[filePaths.Length];
-            // Download images
-            for (int i=0;i< filePaths.Length; i++)
-            {
-                byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
-                string imageBase64Data = Convert.ToBase64String(imageByteData);
-                string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-                filePaths[i] = imageDataURL;
-            }
-            return filePaths;
-        }
-
-        //List<RootObject> datalist = JsonConvert.DeserializeObject<List<RootObject>>(jsonstring);
-        //to something like this :
-
-        //RootObject datalist = JsonConvert.DeserializeObject<RootObject>(jsonstring);
-
-
-        //GET Room/Edit
-        public ActionResult Edit(Guid Id)
-        {    
             // Get images Ids for this room
             List<RoomImageDTO> roomImageDTOs = roomImageService.GetRoomImagesByRoomId(Id).ToList();
 
@@ -113,18 +93,42 @@ namespace BookingHotels.Web.Controllers
                 imageIdsList.Add(roomImage.Id.ToString());
             }
             // Image Ids that will be send as url parameters
-            string imageIDs="";
+            string imageIDs = "";
             foreach (var imageId in imageIdsList)
                 imageIDs += "imageIDs="+imageId + "&";
             string url = string.Format(Client.BaseAddress + "api/image/?roomId={0}&{1}", Id, imageIDs);
             // Get response from request to api/image
             var response = Client.GetAsync(url).Result;
-            if ((int)response.StatusCode==200) {
-                string[] paths = response.Content.ReadAsAsync<string[]>().Result;
-                // Get images Srcs for this room
-                ViewBag.imgSrcs = GetImageSrc(paths);
+            if ((int)response.StatusCode==200) 
+            {
+                return response.Content.ReadAsAsync<string[]>().Result;
             }
-            
+            return null;
+        }
+
+        // Get images srcs
+        public string[] GetImageSrc(string[] filePaths)
+        {
+            // Download images
+            if (filePaths!=null)
+            for (int i=0;i< filePaths.Length; i++)
+            {
+                byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
+                string imageBase64Data = Convert.ToBase64String(imageByteData);
+                string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                filePaths[i] = imageDataURL;
+            }
+            return filePaths;
+        }
+        
+        //GET Room/Edit
+        public ActionResult Edit(Guid Id)
+        {
+            // Get images paths by room id from Web Api
+            string[] paths = GetImagesPathsByRoomId(Id);
+            // Get images Srcs for this room and send to view
+            ViewBag.imgSrcs = GetImageSrc(paths);
+
             //check ErrorMessage value
             ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
 
@@ -317,33 +321,3 @@ namespace BookingHotels.Web.Controllers
         }
     }
 }
-        //// gists :)
-        //public Image GetImageSrc4(string filePath)
-        //{
-        //    // WebClient wc = new WebClient();
-        //    // byte[] bytes = wc.DownloadData(path);
-        //    byte[] bytes = System.IO.File.ReadAllBytes(filePath);
-        //    // Read image
-        //    using (var ms = new MemoryStream(bytes))
-        //    {
-        //        return Image.FromStream(ms);
-        //    }
-        //}
-
-        //public Image GetImageSrc3(string filePath)
-        //{
-        //    FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
-        //    Image image = Image.FromStream(fileStream);
-        //    MemoryStream memoryStream = new MemoryStream();
-        //    image.Save(memoryStream, ImageFormat.Jpeg);
-        //    return image;
-        //}
-        
-        //public ActionResult GetImageSrc2(string filePath)
-        //{
-        //    var watch2 = Stopwatch.StartNew();
-        //    byte[] imageByteData = System.IO.File.ReadAllBytes(filePath);
-        //    watch2.Stop();
-        //    Debug.WriteLine("GetImageSrc2: " + watch2.ElapsedMilliseconds);
-        //    return File(imageByteData, "image/jpeg");
-        //}
