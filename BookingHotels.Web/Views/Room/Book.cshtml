@@ -3,6 +3,8 @@
 @{
     ViewBag.Title = "Make new booking";
     <h2>@ViewBag.Title</h2>
+    //check ErrorMessage value
+    string ErrorMessage = ViewBag.ErrorMessage;
 }
 <hr />
 
@@ -43,6 +45,7 @@
             <input type="submit" value="Book" class="btn btn-success" />
         </div>
     </div>
+    <p>@ViewBag.ErrorMessage</p>
 }
 <div>
     @Html.ActionLink("Back to List", "Index")

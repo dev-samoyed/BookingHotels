@@ -129,7 +129,7 @@ namespace BookingHotels.Web.Controllers
             // Get images Srcs for this room and send to view
             ViewBag.imgSrcs = GetImageSrc(paths);
 
-            //check ErrorMessage value
+            // Check ErrorMessage value
             ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
 
             // Get edited room
@@ -176,7 +176,7 @@ namespace BookingHotels.Web.Controllers
                         // Send to Database
                         RoomImageDTO roomImageDTO = Mapper.Map<RoomImageUploadModel, RoomImageDTO>(roomImageUploadModel);
                         roomImageService.Create(roomImageDTO);
-                        TempData["ErrorMessage"] = "Image uploaded and creaded a record in Database";
+                        TempData["ErrorMessage"] = "Image uploaded and a record in Database creaded";
                         return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }
                     else
@@ -271,6 +271,8 @@ namespace BookingHotels.Web.Controllers
             BookingViewModel bookingViewModel = new BookingViewModel();
             bookingViewModel.RoomId = id;
             bookingViewModel.ApplicationUserId = Guid.Parse(User.Identity.GetUserId());
+            // Check ErrorMessage value
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
             return View(bookingViewModel);
         }
 
@@ -288,7 +290,10 @@ namespace BookingHotels.Web.Controllers
                     // Is occupied?
                     if ((bool)result[0])
                     {
-                        return Content("Sorry, the room is occupied from " + result[1] + " to "+ result[2] + "<a href='javascript: history.back()'>Go Back</a>");
+                        ModelState.AddModelError(string.Empty, "Region is mandatory");
+                        TempData["ErrorMessage"] = "Sorry, the room is occupied from " + result[1] + " to " + result[2];
+                        return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
+                        //return Content("Sorry, the room is occupied from " + result[1] + " to "+ result[2] + "<a href='javascript: history.back()'>Go Back</a>");
                     }
                     else
                     {
@@ -302,12 +307,15 @@ namespace BookingHotels.Web.Controllers
                 return Content("<h2>Start date must be less than end date</h2><a href='javascript: history.back()'>Go Back</a>");
             }
             // Repopulate room details
-            RoomDTO roomDto = roomService.GetRoomById(bookingViewModel.RoomId);
-            ViewBag.RoomType = roomDto.RoomType.ToString();
-            ViewBag.Price = roomDto.RoomPrice.ToString();
-            ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
-            ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
-            return View();
+            //TempData["ErrorMessage"] = "Sorry, the room is occupied from " + result[1] + " to " + result[2];
+            return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
+
+            //RoomDTO roomDto = roomService.GetRoomById(bookingViewModel.RoomId);
+            //ViewBag.RoomType = roomDto.RoomType.ToString();
+            //ViewBag.Price = roomDto.RoomPrice.ToString();
+            //ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
+            //ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
+            //return View();
         }
 
         // Dispose
