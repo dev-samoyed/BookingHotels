@@ -1,10 +1,16 @@
-﻿using Owin;
-using System.Net.Http.Formatting;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Owin;
+using Owin;
 using System.Web.Http;
+using System.Net.Http.Formatting;
 
-namespace OwinSelfhostSample
+[assembly: OwinStartup(typeof(BookingHotels.WebAPI.Startup))]
+
+namespace BookingHotels.WebAPI
 {
-    public class Startup
+    public partial class Startup
     {
         // This code configures Web API. The Startup class is specified as a type
         // parameter in the WebApp.Start method.
@@ -24,4 +30,3 @@ namespace OwinSelfhostSample
         }
     }
 }
-

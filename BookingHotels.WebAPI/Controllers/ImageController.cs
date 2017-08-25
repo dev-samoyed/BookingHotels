@@ -14,14 +14,14 @@ namespace BookingHotels.WebAPI
     [RoutePrefix("api/image")]
     public class ImageController : ApiController
     {
-        public string imagesRootPath = Path.GetFullPath(Path.Combine(
-            AppDomain.CurrentDomain.BaseDirectory, @"..\..\Images\"));
+
+        // Get Images folder path
+        public string imagesRootPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Images");
         // GET api/image
         public HttpResponseMessage Get(string roomId, [FromUri] List<string> imageIds)
         {
             if (!imageIds.Contains(null))
             {
-                // Get app path (console application)
                 string roomImagesPath = Path.GetFullPath(Path.Combine(imagesRootPath, roomId));
                 // Set response content as string array of files paths:
                 string[] filePaths = new string[imageIds.Count];

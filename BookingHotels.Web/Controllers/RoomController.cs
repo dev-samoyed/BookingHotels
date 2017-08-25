@@ -42,7 +42,7 @@ namespace BookingHotels.Web.Controllers
             {
                 var client = new HttpClient()
                 {
-                    BaseAddress = new Uri("http://localhost:9000/")
+                    BaseAddress = new Uri("http://imgwebapi.com/")
                 };
                 //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 return client;
