@@ -16,7 +16,7 @@ namespace BookingHotels.WebAPI
     {
 
         // Get Images folder path
-        public string imagesRootPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Images");
+        public string imagesRootPath = System.Web.Hosting.HostingEnvironment.MapPath("~/Images/");
         // GET api/image
         public HttpResponseMessage Get(string roomId, [FromUri] List<string> imageIds)
         {
