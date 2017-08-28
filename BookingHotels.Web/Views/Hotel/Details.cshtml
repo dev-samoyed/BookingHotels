@@ -36,9 +36,9 @@
     foreach (BookingHotels.Web.Models.FeedbackViewModel feedback in feedbacks)
     {
     <div class="card">
-        <b>Feedback stars:</b> @feedback.FeedbackStars
-        <br/>
         <b>Author:</b> @feedback.ApplicationUser.UserName
+        <br/>
+        <b>Feedback stars:</b> @feedback.FeedbackStars
         <br/>
         <span style="white-space: pre-line">@feedback.FeedbackText</span>
     </div>

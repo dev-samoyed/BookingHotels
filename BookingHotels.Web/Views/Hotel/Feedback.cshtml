@@ -3,12 +3,9 @@
     ViewBag.Title = "Feedback";
     string hotelName = ViewBag.HotelName;
     string hotelId = ViewBag.HotelId;
-    //var applicationUserId = User.Identity as ClaimsIdentity;
-    //var userID = User.Identity.GetUserId();
 }
-
 <h2>
-Write feedback for @Html.ActionLink(
+Write a feedback for @Html.ActionLink(
                     linkText: hotelName,
                     actionName: "Details",
                     controllerName: "Hotel",
