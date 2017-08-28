@@ -12,11 +12,8 @@ using System.Web;
 using System.IO;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using System.Linq;
-using System.Globalization;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -35,7 +32,6 @@ namespace BookingHotels.Web.Controllers
             userService = userServ;
             roomImageService = roomImageServ;
         }
-
         // Create HttpClient
         public HttpClient Client
         {
@@ -68,7 +64,7 @@ namespace BookingHotels.Web.Controllers
             // Get images paths by room id from Web Api
             string[] paths = GetImagesPathsByRoomId(Id);
             // Get images Srcs for this room and send to view
-            ViewBag.imgSrcs = GetImageSrc(paths);
+            ViewBag.imgSrcs = GetImageSrcs(paths);
 
             RoomDTO roomDto = roomService.GetRoomById(Id);
             RoomViewModel room = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);
@@ -82,25 +78,89 @@ namespace BookingHotels.Web.Controllers
             return View(room);
         }
 
+        [Authorize]
+        [HttpGet]
+        // GET: Room/Book/{Guid}
+        public ActionResult Book(Guid id)
+        {
+            // Get room which we want to book
+            RoomDTO roomDto = roomService.GetRoomById(id);
+            ViewBag.RoomType = roomDto.RoomType.ToString();
+            ViewBag.Price = roomDto.RoomPrice.ToString();
+            ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
+            ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
+            // Create bookingViewModel
+            BookingViewModel bookingViewModel = new BookingViewModel();
+            bookingViewModel.RoomId = id;
+            bookingViewModel.ApplicationUserId = Guid.Parse(User.Identity.GetUserId());
+            // Check ErrorMessage value
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
+            return View(bookingViewModel);
+        }
+        // POST Book   
+        [HttpPost, ActionName("Book")]
+        public ActionResult BookConfirmed(BookingViewModel bookingViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var startDateDesired = bookingViewModel.BookingStartDate;
+                var endDateDesired = bookingViewModel.BookingEndDate;
+                if (startDateDesired <= endDateDesired)
+                {
+                    List<object> result = bookingService.IsRoomOccupied(bookingViewModel.RoomId, startDateDesired, endDateDesired);
+                    // Is occupied?
+                    if ((bool)result[0])
+                    {
+                        DateTime date1 = DateTime.Parse(result[1].ToString());
+                        DateTime date2 = DateTime.Parse(result[2].ToString());
+                        //ModelState.AddModelError("BookingEndDate", "qqq");
+                        TempData["ErrorMessage"] = "Sorry, the room is occupied from " + date1.ToShortDateString() + " to " + date1.ToShortDateString();
+                        return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
+                    }
+                    else
+                    {
+                        BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
+                        // Generate Id for new booking
+                        bookingDto.Id = Guid.NewGuid();
+                        // Save to database
+                        bookingService.CreateBooking(bookingDto);
+                        TempData["ErrorMessage"] = "You have succesfully booked this room from " + startDateDesired.ToShortDateString() + " to " + endDateDesired.ToShortDateString();
+                        return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
+                    }
+                }
+                TempData["ErrorMessage"] = "Start date must be less than end date";
+                return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
+            }
+            // Repopulate room details
+            RoomDTO roomDto = roomService.GetRoomById(bookingViewModel.RoomId);
+            ViewBag.RoomType = roomDto.RoomType.ToString();
+            ViewBag.Price = roomDto.RoomPrice.ToString();
+            ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
+            ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
+            return View();
+        }
+
+        /* 
+        * Admin actions:
+        */
+
         // Get Images paths from Web Api by Room Id
         public string[] GetImagesPathsByRoomId(Guid Id)
         {
-            // Get images Ids for this room
             List<RoomImageDTO> roomImageDTOs = roomImageService.GetRoomImagesByRoomId(Id).ToList();
-
+            // Get desired images Ids to send as url parameters
             List<string> imageIdsList = new List<string>();
             foreach (var roomImage in roomImageDTOs)
             {
                 imageIdsList.Add(roomImage.Id.ToString());
             }
-            // Image Ids that will be send as url parameters
             string imageIDs = "";
             foreach (var imageId in imageIdsList)
-                imageIDs += "imageIDs="+imageId + "&";
+                imageIDs += "imageIDs=" + imageId + "&";
             string url = string.Format(Client.BaseAddress + "api/image/?roomId={0}&{1}", Id, imageIDs);
             // Get response from request to api/image
             var response = Client.GetAsync(url).Result;
-            if ((int)response.StatusCode==200) 
+            if ((int)response.StatusCode == 200)
             {
                 return response.Content.ReadAsAsync<string[]>().Result;
             }
@@ -108,27 +168,28 @@ namespace BookingHotels.Web.Controllers
         }
 
         // Get images srcs
-        public string[] GetImageSrc(string[] filePaths)
+        public string[] GetImageSrcs(string[] filePaths)
         {
             // Download images
-            if (filePaths!=null)
-            for (int i=0;i< filePaths.Length; i++)
-            {
-                byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
-                string imageBase64Data = Convert.ToBase64String(imageByteData);
-                string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-                filePaths[i] = imageDataURL;
-            }
+            if (filePaths != null)
+                for (int i = 0; i < filePaths.Length; i++)
+                {
+                    byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
+                    string imageBase64Data = Convert.ToBase64String(imageByteData);
+                    string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
+                    filePaths[i] = imageDataURL;
+                }
             return filePaths;
         }
-        
-        //GET Room/Edit
+
+        // GET Room/Edit
+        [Authorize(Roles = "admin")]
         public ActionResult Edit(Guid Id)
         {
             // Get images paths by room id from Web Api
             string[] paths = GetImagesPathsByRoomId(Id);
             // Get images Srcs for this room and send to view
-            ViewBag.imgSrcs = GetImageSrc(paths);
+            ViewBag.imgSrcs = GetImageSrcs(paths);
 
             // Check ErrorMessage value
             ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
@@ -148,10 +209,7 @@ namespace BookingHotels.Web.Controllers
             {
                 if (uploadedFile != null && uploadedFile.ContentLength > 0)
                 {
-                    var roomImageUploadModel = new RoomImageUploadModel
-                    {
-                        RoomId = roomViewModel.Id
-                    };
+                    var roomImageUploadModel = new RoomImageUploadModel {RoomId = roomViewModel.Id};
                     using (var reader = new BinaryReader(uploadedFile.InputStream))
                     {
                         roomImageUploadModel.Image = reader.ReadBytes(uploadedFile.ContentLength);
@@ -162,7 +220,6 @@ namespace BookingHotels.Web.Controllers
                     // POST using the BSON formatter.
                     MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
                     var response = await Client.PostAsync<RoomImageUploadModel>("api/Image/Upload/", roomImageUploadModel, bsonFormatter);
-                    Debug.WriteLine("Server responsed: " + response);
                     // If response is Ok
                     if ((int)response.StatusCode == 200)
                     {
@@ -171,7 +228,6 @@ namespace BookingHotels.Web.Controllers
                             new BsonMediaTypeFormatter()
                         };
                         ImageUploadResult imageUploadResult = await response.Content.ReadAsAsync<ImageUploadResult>(formatters);
-                        Debug.WriteLine("Send to db: " + imageUploadResult.Id);
                         // Get image name generated on server
                         roomImageUploadModel.Id = imageUploadResult.Id;
                         // Send to Database
@@ -182,7 +238,7 @@ namespace BookingHotels.Web.Controllers
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Bad responce, Status Code "+ (int)response.StatusCode;
+                        TempData["ErrorMessage"] = "Bad responce, Status Code " + (int)response.StatusCode;
                         return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }
                 }
@@ -210,7 +266,6 @@ namespace BookingHotels.Web.Controllers
             ViewBag.hotels = new SelectList(hotels, "Id", "HotelName");
             return View();
         }
-
         // POST Create
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -246,7 +301,6 @@ namespace BookingHotels.Web.Controllers
             }
             return View(roomViewModel);
         }
-
         // POST Delete
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -256,70 +310,6 @@ namespace BookingHotels.Web.Controllers
             roomService.DeleteRoom(roomDto);
             return RedirectToAction("Index");
         }
-
-        [Authorize]
-        [HttpGet]
-        // GET: Room/Book/{Guid}
-        public ActionResult Book(Guid id)
-        {
-            // Get room which we want to book
-            RoomDTO roomDto = roomService.GetRoomById(id);
-            ViewBag.RoomType = roomDto.RoomType.ToString();
-            ViewBag.Price = roomDto.RoomPrice.ToString();
-            ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
-            ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
-            // Create bookingViewModel
-            BookingViewModel bookingViewModel = new BookingViewModel();
-            bookingViewModel.RoomId = id;
-            bookingViewModel.ApplicationUserId = Guid.Parse(User.Identity.GetUserId());
-            // Check ErrorMessage value
-            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
-            return View(bookingViewModel);
-        }
-
-        // POST Book   
-        [HttpPost, ActionName("Book")]
-        public ActionResult BookConfirmed(BookingViewModel bookingViewModel)
-        {
-            if (ModelState.IsValid)
-            {
-                var startDateDesired = bookingViewModel.BookingStartDate;
-                var endDateDesired = bookingViewModel.BookingEndDate;
-                if (startDateDesired <= endDateDesired) 
-                {
-                    List<object> result = bookingService.IsRoomOccupied(bookingViewModel.RoomId, startDateDesired, endDateDesired);
-                    // Is occupied?
-                    if ((bool)result[0])
-                    {
-                        DateTime date1 = DateTime.Parse(result[1].ToString());
-                        DateTime date2 = DateTime.Parse(result[2].ToString());
-                        //ModelState.AddModelError("BookingEndDate", "qqq");
-                        TempData["ErrorMessage"] = "Sorry, the room is occupied from " + date1.ToShortDateString() + " to " + date1.ToShortDateString();
-                        return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
-                    }
-                    else
-                    {
-                        BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
-                        // Generate Id for new booking
-                        bookingDto.Id = Guid.NewGuid();
-                        // Save to database
-                        bookingService.CreateBooking(bookingDto);
-                        TempData["ErrorMessage"] = "You have succesfully booked this room from " + startDateDesired.ToShortDateString() + " to " + endDateDesired.ToShortDateString();
-                        return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
-                    }
-                }
-                TempData["ErrorMessage"] = "Start date must be less than end date";
-                return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
-            }
-            // Repopulate room details
-            RoomDTO roomDto = roomService.GetRoomById(bookingViewModel.RoomId);
-            ViewBag.RoomType = roomDto.RoomType.ToString();
-            ViewBag.Price = roomDto.RoomPrice.ToString();
-            ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
-            ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
-            return View();
-        }
-
         // Dispose
         protected override void Dispose(bool disposing)
         {
