@@ -39,13 +39,16 @@
             @Html.ValidationMessageFor(model => model.BookingEndDate, "", new { @class = "text-danger" })
         </div>
     </div>
+    <br/>
     <div class="form-group">
         @Html.AntiForgeryToken()
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Book" class="btn btn-success" />
         </div>
     </div>
-    <p>@ViewBag.ErrorMessage</p>
+    <hr/>
+    <p class="text-danger">@ViewBag.ErrorMessage</p>
+    @Html.ValidationMessage("BookingError")
 }
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -56,7 +59,9 @@
         // Datepicker
         $("#startDateInput").datepicker({
             minDate: 0,
-            setDate: new Date(),
+            //dateFormat: 'yy-mm-dd',
+            //defaultDate: '01/26/2014',
+            //setDate: new Date(),
             onClose: function (date) {
                 var date2 = $('#startDateInput').datepicker('getDate');
                 $('#endDateInput').datepicker('setDate', date2);
@@ -64,8 +69,10 @@
                 $(this).change(); // Forces re-validation
                 $('#endDateInput').change();
             }
-        });
+        }).datepicker("setDate", new Date());
+
         $('#endDateInput').datepicker({
+            minDate: $('#startDateInput').datepicker('getDate'),
             onClose: function () {
                 $("#endDateInput").datepicker("refresh");
                 var dt1 = $('#startDateInput').datepicker('getDate');
@@ -76,6 +83,6 @@
                     $(this).change();
                 }
             }
-        });
+        }).datepicker("setDate", new Date());
     });
 </script>

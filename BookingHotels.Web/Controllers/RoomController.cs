@@ -16,6 +16,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Linq;
+using System.Globalization;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -176,12 +177,12 @@ namespace BookingHotels.Web.Controllers
                         // Send to Database
                         RoomImageDTO roomImageDTO = Mapper.Map<RoomImageUploadModel, RoomImageDTO>(roomImageUploadModel);
                         roomImageService.Create(roomImageDTO);
-                        TempData["ErrorMessage"] = "Image uploaded and a record in Database creaded";
+                        TempData["ErrorMessage"] = "Image uploaded and a record has been creaded in database";
                         return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }
                     else
                     {
-                        TempData["ErrorMessage"] = "Bad responce StatusCode "+ (int)response.StatusCode;
+                        TempData["ErrorMessage"] = "Bad responce, Status Code "+ (int)response.StatusCode;
                         return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }
                 }
@@ -290,32 +291,33 @@ namespace BookingHotels.Web.Controllers
                     // Is occupied?
                     if ((bool)result[0])
                     {
-                        ModelState.AddModelError(string.Empty, "Region is mandatory");
-                        TempData["ErrorMessage"] = "Sorry, the room is occupied from " + result[1] + " to " + result[2];
+                        DateTime date1 = DateTime.Parse(result[1].ToString());
+                        DateTime date2 = DateTime.Parse(result[2].ToString());
+                        //ModelState.AddModelError("BookingEndDate", "qqq");
+                        TempData["ErrorMessage"] = "Sorry, the room is occupied from " + date1.ToShortDateString() + " to " + date1.ToShortDateString();
                         return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
-                        //return Content("Sorry, the room is occupied from " + result[1] + " to "+ result[2] + "<a href='javascript: history.back()'>Go Back</a>");
                     }
                     else
                     {
                         BookingDTO bookingDto = Mapper.Map<BookingViewModel, BookingDTO>(bookingViewModel);
                         // Generate Id for new booking
                         bookingDto.Id = Guid.NewGuid();
+                        // Save to database
                         bookingService.CreateBooking(bookingDto);
-                        return Content("<h2>You have succesfully booked this room</h2><a href='javascript: history.back()'>Go Back</a>");
+                        TempData["ErrorMessage"] = "You have succesfully booked this room from " + startDateDesired.ToShortDateString() + " to " + endDateDesired.ToShortDateString();
+                        return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
                     }
                 }
-                return Content("<h2>Start date must be less than end date</h2><a href='javascript: history.back()'>Go Back</a>");
+                TempData["ErrorMessage"] = "Start date must be less than end date";
+                return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
             }
             // Repopulate room details
-            //TempData["ErrorMessage"] = "Sorry, the room is occupied from " + result[1] + " to " + result[2];
-            return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
-
-            //RoomDTO roomDto = roomService.GetRoomById(bookingViewModel.RoomId);
-            //ViewBag.RoomType = roomDto.RoomType.ToString();
-            //ViewBag.Price = roomDto.RoomPrice.ToString();
-            //ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
-            //ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
-            //return View();
+            RoomDTO roomDto = roomService.GetRoomById(bookingViewModel.RoomId);
+            ViewBag.RoomType = roomDto.RoomType.ToString();
+            ViewBag.Price = roomDto.RoomPrice.ToString();
+            ViewBag.Hotel = roomDto.Hotel.HotelName.ToString();
+            ViewBag.HotelStars = roomDto.Hotel.HotelStars.ToString();
+            return View();
         }
 
         // Dispose
