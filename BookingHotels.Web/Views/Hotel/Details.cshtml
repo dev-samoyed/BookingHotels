@@ -1,41 +1,37 @@
 ﻿@model BookingHotels.Web.Models.HotelViewModel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Hotel details";
 }
 
 <h2>@Model.HotelName</h2>
-
-<div style="grid-cell">
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.HotelStars)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.HotelStars)
-        </dd>
-        <dt>
-            Available rooms:
-        </dt>
-        <dd>
-            @foreach (var room in Model.Rooms)
-            {
-                <div>Room price: @room.RoomPrice</div>
-                <div>Room type: @room.RoomType</div>
-                @Html.ActionLink("Book this room", "Details", "Room", new { id = room.Id }, htmlAttributes: null);
-                <hr>
-            }
-        </dd>
-
-    </dl>
+<div class="row">
+    <div class="col-md-2">
+        @Html.DisplayNameFor(model => model.HotelStars)
+    </div>
+    <div class="col-md-8">
+        @Html.DisplayFor(model => model.HotelStars)
+    </div>
 </div>
+<div class="row">
+    <div class="col-md-2">
+        Available rooms:
+    </div>
+    <div class="col-md-8">
+        @foreach (var room in Model.Rooms)
+        {
+        <div>Room price: @room.RoomPrice</div>
+        <div>Room type: @room.RoomType</div>
+        @Html.ActionLink("Room details", "Details", "Room", new { id = room.Id }, htmlAttributes: null);                                                                                               <hr>
+        }
+    </div>
+</div>
+<h2>Feedbacks:</h2>
+
+<p class="text-danger">@ViewBag.ErrorMessage</p>
+todo
+<hr/>
+<input type="button" class="btn btn-primary" value="Write feedback" onclick="location.href='@Url.Action("Feedback", new { id = Model.Id })'" />
 <p>
-@*
-
-
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-*@
     @Html.ActionLink("Back to List", "Index")
 </p>

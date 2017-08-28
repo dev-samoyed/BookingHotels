@@ -20,11 +20,12 @@ namespace BookingHotels.Web
 
             // e.g. container.RegisterType<ITestService, TestService>();
 
-            container.RegisterType<IBookingService, BookingService>();
             container.RegisterType<IHotelService, HotelService>();
             container.RegisterType<IRoomService, RoomService>();
             container.RegisterType<IUserService, UserService>();
+            container.RegisterType<IBookingService, BookingService>();
             container.RegisterType<IRoomImageService, RoomImageService>();
+            container.RegisterType<IFeedbackService, FeedbackService>();
             
             // from middle layer
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));

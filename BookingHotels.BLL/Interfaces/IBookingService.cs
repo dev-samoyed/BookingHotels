@@ -10,7 +10,7 @@ namespace BookingHotels.BLL.Interfaces
         IEnumerable<BookingDTO> GetBookings();
         // Get all bokings for particular room
         IEnumerable<BookingDTO> GetBookingsByRoomId(Guid Id);
-        // Retuns list of boolean and 2 Occupied dates
+        // Retuns list of boolean and 2 occupied dates
         List<object> IsRoomOccupied(Guid id, DateTime startDate, DateTime endDate);
         void CreateBooking(BookingDTO bookingDto);
         void Dispose();

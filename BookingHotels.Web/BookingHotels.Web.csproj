@@ -405,6 +405,7 @@
     <Content Include="Views\Room\Book.cshtml" />
     <Content Include="Views\Room\Edit.cshtml" />
     <Content Include="Views\RoomImage\Upload.cshtml" />
+    <Content Include="Views\Hotel\Feedback.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

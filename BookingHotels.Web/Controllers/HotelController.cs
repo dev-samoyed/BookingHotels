@@ -6,15 +6,18 @@ using BookingHotels.Web.Models;
 using BookingHotels.BLL.Interfaces;
 using AutoMapper;
 using BookingHotels.BLL.DTO;
+using Microsoft.AspNet.Identity;
 
 namespace BookingHotels.Web.Controllers
 {
     public class HotelController : Controller
     {
         IHotelService hotelService;
-        public HotelController(IHotelService serv)
+        IFeedbackService feedbackService;
+        public HotelController(IHotelService hotelServ, IFeedbackService feedbackServ)
         {
-            hotelService = serv;
+            hotelService = hotelServ;
+            feedbackService = feedbackServ;
         }
 
         // GET: Hotel/Index
@@ -40,15 +43,61 @@ namespace BookingHotels.Web.Controllers
             {
                 return HttpNotFound();
             }
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
             return View(hotel);
         }
 
+        // GET: Hotel/Feedback
+        [Authorize]
+        public ActionResult Feedback(Guid id)
+        {
+            Guid userId = Guid.Parse(User.Identity.GetUserId());
+            // Populate hotel details
+            var hotel = hotelService.GetHotelById(id);
+            ViewBag.HotelId = id.ToString();
+            ViewBag.HotelName = hotel.HotelName;
+            FeedbackViewModel feedbackViewModel = new FeedbackViewModel
+            {
+                HotelId = id,
+                ApplicationUserId = userId
+            };
+            ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
+            return View(feedbackViewModel);
+        }
+        // POST: Hotel/Feedback
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Feedback(FeedbackViewModel feedbackViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                FeedbackDTO feedbackDto = Mapper.Map<FeedbackViewModel, FeedbackDTO>(feedbackViewModel);
+                feedbackDto.Id = Guid.NewGuid();
+                feedbackService.AddFeedback(feedbackDto);
+
+                TempData["ErrorMessage"] = "Thanks for you feedback!";
+                return RedirectToAction("Details",new { id = feedbackViewModel.HotelId.ToString() });
+            }
+            // Repopulate hotel details
+            var hotel = hotelService.GetHotelById(feedbackViewModel.HotelId);
+            ViewBag.HotelId = hotel.Id.ToString();
+            ViewBag.HotelName = hotel.HotelName;
+            TempData["ErrorMessage"] = "Check all fields and try again";
+            return View();
+        }
+        
+        /****
+         * Admin Actions:
+         ***/
+         
         // GET: Hotel/Create
         [Authorize(Roles = "admin")]
         public ActionResult Create()
         {
             return View();
         }
+
+        // POST: Hotel/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(HotelViewModel hotelViewModel)

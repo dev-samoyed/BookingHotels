@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookingHotels.BLL.DTO;
+using BookingHotels.Domain.Identity;
 using BookingHotels.Web.Models;
 
 namespace BookingHotels.Web
@@ -26,6 +27,7 @@ namespace BookingHotels.Web
             CreateMap<RoomImageUploadModel, RoomImageDTO>(MemberList.None);
             CreateMap<RoomImageDTO, RoomImageUploadModel>(MemberList.None);
 
+            CreateMap<CustomUserRegister, UserDTO>(MemberList.None);
         }
     }
 

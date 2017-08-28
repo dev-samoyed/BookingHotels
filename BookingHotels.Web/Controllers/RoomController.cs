@@ -140,9 +140,9 @@ namespace BookingHotels.Web.Controllers
             return View();
         }
 
-        /* 
-        * Admin actions:
-        */
+        /****
+         * Admin Actions:
+         ***/
 
         // Get Images paths from Web Api by Room Id
         public string[] GetImagesPathsByRoomId(Guid Id)
@@ -190,10 +190,8 @@ namespace BookingHotels.Web.Controllers
             string[] paths = GetImagesPathsByRoomId(Id);
             // Get images Srcs for this room and send to view
             ViewBag.imgSrcs = GetImageSrcs(paths);
-
             // Check ErrorMessage value
             ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
-
             // Get edited room
             var roomDto = roomService.GetRoomById(Id);
             RoomViewModel roomViewModel = Mapper.Map<RoomDTO, RoomViewModel>(roomDto);

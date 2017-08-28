@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\RoomImage.cs" />
+    <Compile Include="Enums\FeedbackStars.cs" />
     <Compile Include="Identity\IdentityModels.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWorkIdentity.cs" />
