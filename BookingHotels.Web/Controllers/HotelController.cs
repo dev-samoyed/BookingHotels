@@ -7,6 +7,7 @@ using BookingHotels.BLL.Interfaces;
 using AutoMapper;
 using BookingHotels.BLL.DTO;
 using Microsoft.AspNet.Identity;
+using System.Linq;
 
 namespace BookingHotels.Web.Controllers
 {
@@ -30,13 +31,13 @@ namespace BookingHotels.Web.Controllers
         }
 
         // GET: Hotel/Details/{Guid}
-        public ActionResult Details(Guid Id)
+        public ActionResult Details(Guid id)
         {
-            if (Id == null)
+            if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            HotelDTO hotelDto = hotelService.GetHotelById(Id);
+            HotelDTO hotelDto = hotelService.GetHotelById(id);
             var hotel = Mapper.Map<HotelDTO, HotelViewModel>(hotelDto);
 
             if (hotel == null)
@@ -44,6 +45,10 @@ namespace BookingHotels.Web.Controllers
                 return HttpNotFound();
             }
             ViewBag.ErrorMessage = TempData["ErrorMessage"] as string;
+            var feedbackDtos = feedbackService.GetFeedbacksByHotelId(id);
+            var feedbackViewModels = Mapper.Map<IEnumerable<FeedbackDTO>, IEnumerable<FeedbackViewModel>>(feedbackDtos);
+            ViewBag.feedbacks = feedbackViewModels;
+
             return View(hotel);
         }
 

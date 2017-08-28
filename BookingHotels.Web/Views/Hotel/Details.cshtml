@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Hotel details";
+    var feedbacks = ViewBag.feedbacks;
 }
 
 <h2>@Model.HotelName</h2>
@@ -20,18 +21,32 @@
     <div class="col-md-8">
         @foreach (var room in Model.Rooms)
         {
-        <div>Room price: @room.RoomPrice</div>
-        <div>Room type: @room.RoomType</div>
-        @Html.ActionLink("Room details", "Details", "Room", new { id = room.Id }, htmlAttributes: null);                                                                                               <hr>
+        <div class="col-md-4">
+            <div>Room price: @room.RoomPrice</div>
+            <div>Room type: @room.RoomType</div>
+            @Html.ActionLink("Room details", "Details", "Room", new { id = room.Id }, htmlAttributes: null)
+        </div>
         }
     </div>
 </div>
-<h2>Feedbacks:</h2>
-
-<p class="text-danger">@ViewBag.ErrorMessage</p>
-todo
-<hr/>
+<h3>Feedbacks:</h3>
+<hr />
+@if (feedbacks != null)
+{
+    foreach (BookingHotels.Web.Models.FeedbackViewModel feedback in feedbacks)
+    {
+    <div class="card">
+        <b>Feedback stars:</b> @feedback.FeedbackStars
+        <br/>
+        <b>Author:</b> @feedback.ApplicationUser.UserName
+        <br/>
+        <span style="white-space: pre-line">@feedback.FeedbackText</span>
+    </div>
+    <hr />
+    }
+}
 <input type="button" class="btn btn-primary" value="Write feedback" onclick="location.href='@Url.Action("Feedback", new { id = Model.Id })'" />
+<p class="text-danger">@ViewBag.ErrorMessage</p>
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>

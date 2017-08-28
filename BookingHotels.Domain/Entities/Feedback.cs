@@ -1,5 +1,6 @@
 ﻿using BookingHotels.Domain.Enums;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingHotels.Domain.Entities
 {

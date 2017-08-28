@@ -1,6 +1,7 @@
 ﻿using System;
 using BookingHotels.Domain.Entities;
 using BookingHotels.Domain.Enums;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookingHotels.BLL.DTO
 {

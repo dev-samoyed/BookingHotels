@@ -8,12 +8,12 @@
 }
 
 <h2>
-    Write feedback for @Html.ActionLink(
-                        linkText: hotelName,
-                        actionName: "Details",
-                        controllerName: "Hotel",
-                        routeValues: new { id = hotelId },
-                        htmlAttributes: null)
+Write feedback for @Html.ActionLink(
+                    linkText: hotelName,
+                    actionName: "Details",
+                    controllerName: "Hotel",
+                    routeValues: new { id = hotelId },
+                    htmlAttributes: null)
 : </h2>
 <hr/>
 @using (Html.BeginForm())
@@ -25,7 +25,7 @@
         @* FeedbackStars *@
         <div class="form-group">
             @Html.LabelFor(model => model.FeedbackStars, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @Html.EnumDropDownListFor(model => model.FeedbackStars, "Rate this hotel", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.FeedbackStars, "", new { @class = "text-danger" })
             </div>
@@ -33,12 +33,11 @@
         @* Feedback  Text *@
         <div class="form-group">
             @Html.LabelFor(model => model.FeedbackText, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <div class="col-md-6">
                 @Html.EditorFor(model => model.FeedbackText, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.FeedbackText, "", new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Send feedback" class="btn btn-default" />
