@@ -26,6 +26,7 @@
     var factory = function (ko) {
 
         ko.bindingHandlers['file'] = {
+
             init: function (element, valueAccessor, allBindings) {
                 var fileContents, fileName, allowed, prohibited, reader;
 
@@ -54,6 +55,7 @@
                     // Opening the file picker then canceling will trigger a 'change'
                     // event without actually picking a file.
                     if (file === undefined) {
+
                         fileContents(null)
                         return;
                     }

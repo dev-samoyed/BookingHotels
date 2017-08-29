@@ -62,7 +62,7 @@
 <div class="row text-center">
 </div>
 <div class="row text-center">
-    @using (Html.BeginForm("UploadRoomImage", "Room", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
+    @using (Html.BeginForm("UploadRoomImage", "Room", null, FormMethod.Post, new { id= "uploadForm", enctype = "multipart/form-data" }))
     {
         @Html.HiddenFor(model => model.Id);
         @Html.AntiForgeryToken()
@@ -70,10 +70,10 @@
         <h3>Upload an image for this room:</h3>
         <div class="col-md-8">
             <div class="row-fluid">
-                <span class="btn btn-file">
-                    Select or drag and drop
+                <span>
+                    Select or drag and drop:
                     <input type="file"
-                           class="imageFileInput"
+                           class="btn btn-default imageFileInput"
                            data-bind="file: {data: fileInput, name: fileName, reader: someReader}"
                            id="RoomImage"
                            name="uploadedFile" />
@@ -92,7 +92,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <input type="submit" value="Upload" class="btn btn-default" />
+            <input type="submit" id="submitBtn" value="Upload" class="btn btn-default" />
         </div>
     }
 </div>
@@ -100,9 +100,16 @@
 <div class="row text-center">
     <p class="text-danger">@ErrorMessage</p>
 </div>
-
-@* Knocout ViewModel *@
 <script type="text/javascript">
+    $(document).ready(function () {
+    // Prevent multiple submits when clicking submit button twice
+        $("#uploadForm").submit(function () {
+            $("#submitBtn").attr("disabled", true);
+            return true;
+        });
+    });
+
+    @* Knocout ViewModel *@
     var viewModel = {
       fileInput: ko.observable(),
       fileName: ko.observable(),
@@ -110,7 +117,6 @@
       clearValue: function () {
           $('#RoomImage').val('');
           this.fileInput(null);
-          $("#prevImg").attr("src", "~/Content/Images/room.png");
           this.fileName(null);
       }
     }
