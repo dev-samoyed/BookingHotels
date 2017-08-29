@@ -17,7 +17,13 @@ namespace BookingHotels.Web.Controllers
         public IBookingService bookingService;
         public IUserService userService;
         public IRoomImageService roomImageService;
-        public BaseController(IRoomService roomServ, IHotelService hotelServ, IUserService userServ, IBookingService bookingServ, IRoomImageService roomImageServ)
+        public IFeedbackService feedbackService;
+        public BaseController(IRoomService roomServ = null,
+                            IHotelService hotelServ = null,
+                            IUserService userServ = null,
+                            IBookingService bookingServ = null,
+                            IRoomImageService roomImageServ = null,
+                            IFeedbackService feedbackServ = null)
         {
             roomService = roomServ;
             hotelService = hotelServ;
@@ -75,6 +81,24 @@ namespace BookingHotels.Web.Controllers
                     filePaths[i] = imageDataURL;
                 }
             return filePaths;
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                try
+                {
+                    hotelService.Dispose();
+                    roomService.Dispose();
+                    bookingService.Dispose();
+                    userService.Dispose();
+                    roomImageService.Dispose();
+                    feedbackService.Dispose();
+                }
+                catch { }
+            }
+            base.Dispose(disposing);
         }
 
     }

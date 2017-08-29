@@ -266,14 +266,5 @@ namespace BookingHotels.Web.Controllers
             roomService.DeleteRoom(roomDto);
             return RedirectToAction("Index");
         }
-        // Dispose
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                roomService.Dispose();
-            }
-            base.Dispose(disposing);
-        }
     }
 }

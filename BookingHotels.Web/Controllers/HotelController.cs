@@ -10,10 +10,8 @@ using Microsoft.AspNet.Identity;
 
 namespace BookingHotels.Web.Controllers
 {
-    public class HotelController : Controller
+    public class HotelController : BaseController
     {
-        IHotelService hotelService;
-        IFeedbackService feedbackService;
         public HotelController(IHotelService hotelServ, IFeedbackService feedbackServ)
         {
             hotelService = hotelServ;
@@ -141,15 +139,6 @@ namespace BookingHotels.Web.Controllers
             HotelDTO hotelDto = hotelService.GetHotelById(Id);
             hotelService.DeleteHotel(hotelDto);
             return RedirectToAction("Index");
-        }
-        
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                hotelService.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }
