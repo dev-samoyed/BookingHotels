@@ -85,12 +85,14 @@ ViewBag.Title = "Rooms";
         <div class="col-lg-6">
             <label for="startDateInput">Start date</label>
             <input type="text"
-                   data-bind="textInput: startDate"
+                   class="input-sm"
+                   data-bind="textInput: startDate "
                    id="startDateInput" />
         </div>
         <div class="col-lg-6">
             <label for="endDateInput">End date</label>
             <input type="text"
+                   class="input-sm"
                    data-bind="textInput: endDate"
                    id="endDateInput" />
         </div>
@@ -256,27 +258,6 @@ ViewBag.Title = "Rooms";
 
     $(document).ready(function () {
         // Datepicker
-        $("#startDateInput").datepicker({
-            minDate: 0,
-            onClose: function (date) {
-                var date2 = $('#startDateInput').datepicker('getDate');
-                $('#endDateInput').datepicker('setDate', date2);
-                $('#endDateInput').datepicker('option', 'minDate', date2);
-                $('#endDateInput').change();
-            }
-        }).datepicker("setDate", new Date());
-        $('#endDateInput').datepicker({
-            onClose: function () {
-                var dt1 = $('#startDateInput').datepicker('getDate');
-                var dt2 = $(this).datepicker('getDate');
-                if (dt2 < dt1) {
-                    var minDate = $(this).datepicker('option', 'minDate');
-                    $(this).datepicker('setDate', minDate);
-                    $(this).change();
-                }
-            }
-        }).datepicker("setDate", new Date());
-        $('#startDateInput').change(); // Forces re-validation
-        $('#endDateInput').change();
+        initDatepicker();
     });
 </script>

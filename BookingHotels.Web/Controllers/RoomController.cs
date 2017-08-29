@@ -17,34 +17,30 @@ using System.Linq;
 
 namespace BookingHotels.Web.Controllers
 {
-    public class RoomController : Controller
+    public class RoomController : BaseController
     {
-        IRoomService roomService;
-        IHotelService hotelService;
-        IBookingService bookingService;
-        IUserService userService;
-        IRoomImageService roomImageService;
-        public RoomController(IRoomService serv, IHotelService hotelServ, IUserService userServ, IBookingService bookingServ, IRoomImageService roomImageServ)
-        {
-            roomService = serv;
-            hotelService = hotelServ;
-            bookingService = bookingServ;
-            userService = userServ;
-            roomImageService = roomImageServ;
-        }
-        // Create HttpClient
-        public HttpClient Client
-        {
-            get
-            {
-                var client = new HttpClient()
-                {
-                    BaseAddress = new Uri("http://imgwebapi.com/")
-                };
-                //client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                return client;
-            }
-        }
+        //IRoomService roomService;
+        //IHotelService hotelService;
+        //IBookingService bookingService;
+        //IUserService userService;
+        //IRoomImageService roomImageService;
+        //public RoomController(IRoomService serv, IHotelService hotelServ, IUserService userServ, IBookingService bookingServ, IRoomImageService roomImageServ)
+        //{
+        //    roomService = serv;
+        //    hotelService = hotelServ;
+        //    bookingService = bookingServ;
+        //    userService = userServ;
+        //    roomImageService = roomImageServ;
+        //}
+
+            public RoomController(
+            IRoomService roomServ, 
+            IHotelService hotelServ, 
+            IUserService userServ,
+            IBookingService bookingServ,
+            IRoomImageService roomImageServ) 
+            : base(roomServ, hotelServ, userServ, bookingServ, roomImageServ)
+            { }
 
         // Room/Index
         public ActionResult Index()
@@ -143,44 +139,6 @@ namespace BookingHotels.Web.Controllers
         /****
          * Admin Actions:
          ***/
-
-        // Get Images paths from Web Api by Room Id
-        public string[] GetImagesPathsByRoomId(Guid Id)
-        {
-            List<RoomImageDTO> roomImageDTOs = roomImageService.GetRoomImagesByRoomId(Id).ToList();
-            // Get desired images Ids to send as url parameters
-            List<string> imageIdsList = new List<string>();
-            foreach (var roomImage in roomImageDTOs)
-            {
-                imageIdsList.Add(roomImage.Id.ToString());
-            }
-            string imageIDs = "";
-            foreach (var imageId in imageIdsList)
-                imageIDs += "imageIDs=" + imageId + "&";
-            string url = string.Format(Client.BaseAddress + "api/image/?roomId={0}&{1}", Id, imageIDs);
-            // Get response from request to api/image
-            var response = Client.GetAsync(url).Result;
-            if ((int)response.StatusCode == 200)
-            {
-                return response.Content.ReadAsAsync<string[]>().Result;
-            }
-            return null;
-        }
-
-        // Get images srcs
-        public string[] GetImageSrcs(string[] filePaths)
-        {
-            // Download images
-            if (filePaths != null)
-                for (int i = 0; i < filePaths.Length; i++)
-                {
-                    byte[] imageByteData = System.IO.File.ReadAllBytes(filePaths[i]);
-                    string imageBase64Data = Convert.ToBase64String(imageByteData);
-                    string imageDataURL = string.Format("data:image/png;base64,{0}", imageBase64Data);
-                    filePaths[i] = imageDataURL;
-                }
-            return filePaths;
-        }
 
         // GET Room/Edit
         [Authorize(Roles = "admin")]

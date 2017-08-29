@@ -25,16 +25,20 @@
         @Html.HiddenFor(model => model.RoomId)
         @Html.HiddenFor(model => model.Room)
         @Html.HiddenFor(model => model.ApplicationUserId)
-        @Html.LabelFor(model => model.BookingStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.BookingStartDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        </div>     
+        <div class="col-md-9">
             @Html.EditorFor(model => model.BookingStartDate, new { htmlAttributes = new { @class = "datefield, form-control", type = "text", id = "startDateInput" } })
             @Html.ValidationMessageFor(model => model.BookingStartDate, "", new { @class = "text-danger" })
         </div>
     </div>
 
     <div class="form-group">
-        @Html.LabelFor(model => model.BookingEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-3">
+            @Html.LabelFor(model => model.BookingEndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        </div>
+        <div class="col-md-9">
             @Html.EditorFor(model => model.BookingEndDate, new { htmlAttributes = new { @class = "datefield, form-control", type = "text", id = "endDateInput" } })
             @Html.ValidationMessageFor(model => model.BookingEndDate, "", new { @class = "text-danger" })
         </div>
@@ -56,32 +60,6 @@
 <script type="text/javascript">
     $(document).ready(function () {
         // Datepicker
-        $("#startDateInput").datepicker({
-            minDate: 0,
-            //dateFormat: 'yy-mm-dd',
-            //defaultDate: '01/26/2014',
-            //setDate: new Date(),
-            onClose: function (date) {
-                var date2 = $('#startDateInput').datepicker('getDate');
-                $('#endDateInput').datepicker('setDate', date2);
-                $('#endDateInput').datepicker('option', 'minDate', date2);
-                $(this).change(); // Forces re-validation
-                $('#endDateInput').change();
-            }
-        }).datepicker("setDate", new Date());
-
-        $('#endDateInput').datepicker({
-            minDate: $('#startDateInput').datepicker('getDate'),
-            onClose: function () {
-                $("#endDateInput").datepicker("refresh");
-                var dt1 = $('#startDateInput').datepicker('getDate');
-                var dt2 = $('#endDateInput').datepicker('getDate');
-                if (dt2 < dt1) {
-                    var minDate = $('#endDateInput').datepicker('option', 'minDate');
-                    $('#endDateInput').datepicker('setDate', minDate);
-                    $(this).change();
-                }
-            }
-        }).datepicker("setDate", new Date());
+        initDatepicker();
     });
 </script>

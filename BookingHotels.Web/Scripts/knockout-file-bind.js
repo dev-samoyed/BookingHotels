@@ -24,12 +24,9 @@
 
 (function () {
     var factory = function (ko) {
-
         ko.bindingHandlers['file'] = {
-
             init: function (element, valueAccessor, allBindings) {
                 var fileContents, fileName, allowed, prohibited, reader;
-
                 if ((typeof valueAccessor()) === "function") {
                     fileContents = valueAccessor();
                 } else {
