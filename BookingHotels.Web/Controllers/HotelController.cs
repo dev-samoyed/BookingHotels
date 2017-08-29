@@ -7,7 +7,6 @@ using BookingHotels.BLL.Interfaces;
 using AutoMapper;
 using BookingHotels.BLL.DTO;
 using Microsoft.AspNet.Identity;
-using System.Linq;
 
 namespace BookingHotels.Web.Controllers
 {

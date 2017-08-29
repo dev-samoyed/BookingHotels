@@ -20,15 +20,14 @@
                         <li data-target="#myCarousel"></li>
                         }
                     </ol>
-
-                    <div class="item active">
-                        <img src="@imgSrcs[0]" width="400" height="200" />
+                    <div class="item active imageCarouselImg">
+                        <img  src="@imgSrcs[0]" width="400" height="200" />
                     </div>
                     @*@foreach (string imgsrc in imgSrcs.Skip(2))*@
                     @for (int i = 1; i <= imgSrcs.Length - 1; i++)
                     {
-                    <div class="item">
-                        <img src="@imgSrcs[i]" width="400" height="200" />
+                    <div class="item imageCarouselImg">
+                        <img  src="@imgSrcs[i]" width="400" height="200" />
                     </div>
                     }
                 </div>

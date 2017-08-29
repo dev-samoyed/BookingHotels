@@ -118,7 +118,6 @@ ViewBag.Title = "Rooms";
         )))");
     console.log(JsonBookings);
 
-
     function filter(arr, criteria) {
         return arr.filter(function(obj) {
             return Object.keys(criteria).every(function(c) {
@@ -133,16 +132,9 @@ ViewBag.Title = "Rooms";
         )))");
     console.log(JsonRoomTypes);
 
-    /*
-    $.each(JsonBookings, function (index, value) {
-        console.log('My array has at position ' + index + ', this value: ' + value);
-    });
-    */
-
     @* Knockout View Model *@
     var koRoomViewModel =
     {
-        // All rooms in array of objects
         koRooms: ko.observableArray(JsonRooms),
         koRoomTypes: ko.observableArray(JsonRoomTypes),
         selectedRoomTypes: ko.observableArray(JsonRoomTypes),
@@ -187,12 +179,6 @@ ViewBag.Title = "Rooms";
 
     koRoomViewModel.koRoomsFiltered = ko.computed(function () {
         var result = koRoomViewModel.koRooms();
-        // console.log("maxRoomPrice changed to " + koRoomViewModel.maxRoomPrice());
-        // console.log("selectedRoomTypes  changed to " + koRoomViewModel.selectedRoomTypes());
-
-        // console.log("start date filter changed to " + startDateDesired);
-        // console.log("end date filter changed to " + endDateDesired);
-
         // Room Price Filter
         if (koRoomViewModel.maxRoomPrice()) {
             result = ko.utils.arrayFilter(result, function (room) {
@@ -258,18 +244,15 @@ ViewBag.Title = "Rooms";
         }
         else
         {
-            return false;
-            // Start date must be < end date
+            return false; // Start date must be < end date
         } // Date filter end
     //Return filtered array
-    console.log("==============\n Rooms are filtered");
     return result;
     }); // Filters end
 
     // Apply sort before binding
     koRoomViewModel.sortProcesssing();
     ko.applyBindings(koRoomViewModel);
-
 
     $(document).ready(function () {
         // Datepicker
@@ -282,7 +265,6 @@ ViewBag.Title = "Rooms";
                 $('#endDateInput').change();
             }
         }).datepicker("setDate", new Date());
-
         $('#endDateInput').datepicker({
             onClose: function () {
                 var dt1 = $('#startDateInput').datepicker('getDate');
