@@ -12,11 +12,19 @@ namespace BookingHotels.Web.Controllers
 {
     public class HotelController : BaseController
     {
-        public HotelController(IHotelService hotelServ, IFeedbackService feedbackServ)
-        {
-            hotelService = hotelServ;
-            feedbackService = feedbackServ;
-        }
+        public HotelController(IRoomService roomServ,
+            IHotelService hotelServ,
+            IUserService userServ,
+            IBookingService bookingServ,
+            IRoomImageService roomImageServ,
+            IFeedbackService feedbackServ)
+        : base(null, 
+        hotelServ, 
+        null, 
+        null, 
+        null, 
+        feedbackServ)
+        { }
 
         // GET: Hotel/Index
         public ActionResult Index()

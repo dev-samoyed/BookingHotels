@@ -18,11 +18,11 @@ namespace BookingHotels.Web.Controllers
         public IUserService userService;
         public IRoomImageService roomImageService;
         public IFeedbackService feedbackService;
-        public BaseController(IRoomService roomServ = null,
-                            IHotelService hotelServ = null,
-                            IUserService userServ = null,
-                            IBookingService bookingServ = null,
-                            IRoomImageService roomImageServ = null,
+        public BaseController(IRoomService roomServ,
+                            IHotelService hotelServ,
+                            IUserService userServ,
+                            IBookingService bookingServ,
+                            IRoomImageService roomImageServ,
                             IFeedbackService feedbackServ = null)
         {
             roomService = roomServ;
@@ -30,6 +30,7 @@ namespace BookingHotels.Web.Controllers
             bookingService = bookingServ;
             userService = userServ;
             roomImageService = roomImageServ;
+            feedbackService = feedbackServ;
         }
 
         // Create HttpClient

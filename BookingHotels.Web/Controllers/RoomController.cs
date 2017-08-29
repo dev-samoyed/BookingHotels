@@ -19,20 +19,6 @@ namespace BookingHotels.Web.Controllers
 {
     public class RoomController : BaseController
     {
-        //IRoomService roomService;
-        //IHotelService hotelService;
-        //IBookingService bookingService;
-        //IUserService userService;
-        //IRoomImageService roomImageService;
-        //public RoomController(IRoomService serv, IHotelService hotelServ, IUserService userServ, IBookingService bookingServ, IRoomImageService roomImageServ)
-        //{
-        //    roomService = serv;
-        //    hotelService = hotelServ;
-        //    bookingService = bookingServ;
-        //    userService = userServ;
-        //    roomImageService = roomImageServ;
-        //}
-
             public RoomController(
             IRoomService roomServ, 
             IHotelService hotelServ, 
