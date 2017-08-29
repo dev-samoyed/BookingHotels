@@ -18,19 +18,32 @@ namespace BookingHotels.Web.Controllers
         public IUserService userService;
         public IRoomImageService roomImageService;
         public IFeedbackService feedbackService;
+        // Room controller constructor
         public BaseController(IRoomService roomServ,
                             IHotelService hotelServ,
                             IUserService userServ,
                             IBookingService bookingServ,
-                            IRoomImageService roomImageServ,
-                            IFeedbackService feedbackServ = null)
+                            IRoomImageService roomImageServ)
         {
             roomService = roomServ;
             hotelService = hotelServ;
             bookingService = bookingServ;
             userService = userServ;
             roomImageService = roomImageServ;
+        }
+        // Hotel controller constructor
+        public BaseController(
+                    IHotelService hotelServ,
+                    IFeedbackService feedbackServ)
+        {
+            hotelService = hotelServ;
             feedbackService = feedbackServ;
+        }
+        // Account controller constructor
+        public BaseController(
+                    IUserService userServ)
+        {
+            userService = userServ;
         }
 
         // Create HttpClient
@@ -46,7 +59,7 @@ namespace BookingHotels.Web.Controllers
             }
         }
 
-        // Get Images paths from Web Api by Room Id
+        // Get images paths from Web Api by room Id
         public string[] GetImagesPathsByRoomId(Guid Id)
         {
             List<RoomImageDTO> roomImageDTOs = roomImageService.GetRoomImagesByRoomId(Id).ToList();

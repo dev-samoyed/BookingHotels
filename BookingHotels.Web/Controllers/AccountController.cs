@@ -9,17 +9,14 @@ using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.Infrastructure;
 using AutoMapper;
 using BookingHotels.Domain.Identity;
+using BookingHotels.Web.Controllers;
 
 namespace BookingHotels.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
-
-        IUserService userService;
-        public AccountController(IUserService serv)
-        {
-            userService = serv;
-        }
+        public AccountController(IUserService serv) : base(serv)
+        { }
         private IAuthenticationManager AuthenticationManager
         {
             get

@@ -34,8 +34,7 @@ namespace BookingHotels.Web
                       "~/Content/themes/base/jquery-ui.css",
                       "~/Content/site.css"));
             bundles.Add(new ScriptBundle("~/bundles/knockout.js").Include(
-                      "~/Scripts/knockout-3.4.2.js",
-                     "~/Scripts/knockout-file-bind.js"));
+                      "~/Scripts/knockout-3.4.2.js"));
         }
     }
 }
