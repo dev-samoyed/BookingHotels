@@ -31,19 +31,19 @@ htmlAttributes: null)
         </div>
         <div class="row">
             @Html.ActionLink(
-linkText: "Hotel: " + Model.HotelId.ToString(),
-actionName: "Details",
-controllerName: "Hotel",
-routeValues: new
-{
-    id = Model.HotelId,
-},
-htmlAttributes: null)
+                linkText: "Hotel: " + Model.HotelId.ToString(),
+                actionName: "Details",
+                controllerName: "Hotel",
+                routeValues: new
+                {
+                    id = Model.HotelId,
+                },
+                htmlAttributes: null)
         </div>
     </div>
     <div class="col-md-7">
         <div class="row">
-            <h2>Images for this room:</h2>
+            <h2>Existing images for this room:</h2>
         </div>
         <div class="row">
         @{ if (imgSrcs != null)
@@ -59,51 +59,39 @@ htmlAttributes: null)
 </div>
 <hr />
 
-<div >
-    Drop files here
-    @*<input type="file" id="browse" name="files[]" multiple />*@
-    @Html.TextBoxFor(m => m.Images, new { type = "file", multiple = "multiple", value = "", id = "browse", name = "files" })
-</div>
+<div class="row text-center"><h4>Upload an image for this room:</h4></div>
+@* Main files input (not included in the form): *@
+@Html.TextBoxFor(m => m.Images, new { type = "file", multiple = "multiple", value = "", id = "browse", name = "files" })
 @*Form*@
 @using (Html.BeginForm("UploadRoomImage", "Room", null, FormMethod.Post, new { id = "uploadForm", enctype = "multipart/form-data" }))
 {
-<div class="row text-center"><h4>Upload an image for this room:</h4></div>
 <div class="row">
         @Html.HiddenFor(model => model.Id)
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="col-md-7">
+        <div class="col-md-12">
             <div class="row">
-                @* Upload image *@
-
-                    <br>
-
-                <div id="container"></div>
-
-                    @*<input type="file" id="filesToSend" name="uploadedFiles[]"  multiple/>*@
-                    @*Select or drag and drop:
-                    <input type="file"
-                           class="btn btn-default imageFileInput"
-                           id="RoomImage"
-                           multiple
-                           name="uploadedFile" />*@
+                @* Preview images *@
+                <div id="container" class="row"></div>
             </div>
         </div>
-        <div class="col-md-5">
-            <div class="row">
-                Preview:
-            </div>
-            <div class="row">
-                <output id="listNames"></output>
-            </div>
-            <div class="row">
-                <output id="listImages"></output>
-            </div>
-            <div class="row">
-                <a href="#" id="remove">clear</a>
-
-            </div>
+</div>
+<br>
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            Upload preview (<span id="totalCount">0</span>&nbsp;files):
         </div>
+        <div class="row">
+            <output id="listNames"></output>
+        </div>
+        <div class="row">
+            <output id="listImages"></output>
+        </div>
+        <div class="row">
+            <a href="#" id="remove">clear</a>
+        </div>
+    </div>
 </div>
 <br>
 <div class="row">
@@ -112,6 +100,7 @@ htmlAttributes: null)
     </div>
 </div>
 }
+
 <div class="row text-center">
     <p class="text-danger">@ErrorMessage</p>
 </div>
@@ -124,9 +113,9 @@ htmlAttributes: null)
             return true;
         });
     });
+    // Array of files read from FileReader
     var queue = [];
-
-    //// Create hidden inputs
+    // Append hidden inputs in the form every time new file selected in the main input
     $(':file').change(function () {
         if (this.files.length > 0) {
             var real = $(this);
@@ -135,10 +124,9 @@ htmlAttributes: null)
             cloned.insertAfter(real);
             real.appendTo('form');
         }
-
         event.stopPropagation();
         event.preventDefault();
-        // files is a FileList of File objects
+        // Files is a FileList of File objects
         var dataTransfer = event.dataTransfer;
         var target = event.target;
         if (dataTransfer != null)
@@ -146,151 +134,35 @@ htmlAttributes: null)
         else
             var files = target.files;
         for (var i = 0, f; f = files[i]; i++) {
-
-            //// Create hidden inputs
-            //var container = document.getElementById('container');
-            //var input = document.createElement("input");
-            //input.type = "hidden";
-            //input.id = "input" + i;
-            //input.name = "uploadedFiles["+i+"]";
-            //input.value = f.name;
-            ////$('#input' + i).val(f);
-            //container.appendChild(input);
-            //console.log(input);
-
-
-
-            // Only process image files.
-
+            // Only process image files
             if (!f.type.match('image.*')) {
                 continue;
             }
             var reader = new FileReader();
-            // Closure to capture the file information.
+            // Capture file information
             reader.fileName = f.name;
             reader.fileSize = f.size;
             reader.addEventListener("load", function (event) {
                 var theFile = event.target;
-                var spanImage = document.createElement('span');
-                spanImage.innerHTML = ['<img class="thumb" src="', theFile.result,
-                                        '" title="', escape(theFile.name), '"/>'].join('');
-                document.getElementById('listImages').insertBefore(spanImage, null);
-                // Write image info
-                var spanInfo = document.createElement('span');
-                spanInfo.innerHTML = '<p>' + escape(theFile.fileName) + ' - ' + theFile.fileSize + ' bytes</p>';
-                document.getElementById('listImages').insertBefore(spanInfo, null);
-                console.log('read image# ' + i);
+                var imageInfo = document.createElement('span');
+                // Write image and info
+                imageInfo.innerHTML = ['<div class="col-md-2">',
+                                        '<img class="thumb" src="', theFile.result, '" title="', escape(theFile.name), '"/>',
+                                        '<p>' + escape(theFile.fileName) + ' - ' + theFile.fileSize + ' bytes</p>',
+                                        '</div>'].join('');
+                document.getElementById('listImages').insertBefore(imageInfo, null);
                 queue.push(theFile.result);
-                //console.log(theFile.result);
-                //var val = document.getElementsByName("uploadedFiles[]")[0].getAttribute("value");
-                //document.getElementsByName("uploadedFiles[]")[0].setAttribute("value", val+theFile.result);
-
-
-
                 console.log('pushed to queue ' + theFile.fileName);
-
             });
             reader.readAsDataURL(f);
         }
         console.log(queue);
-
-        //$('<input>').attr({
-        //    type: 'file',
-        //    id: 'filesToSend',
-        //    name: 'uploadedFiles[]',
-        //    value: queue[0]
-        //}).appendTo('uploadForm');
-        //$('#filesToSend').val(queue);
-
-
-
+        $('#totalCount').text(queue.length+1);
     });
 
     $('#remove').click(function () {
         clearValues()
     });
-    //function handleFileSelect(event) {
-    //    event.stopPropagation();
-    //    event.preventDefault();
-    //    // files is a FileList of File objects
-    //    var dataTransfer = event.dataTransfer;
-    //    var target = event.target;
-    //    if (dataTransfer != null)
-    //        var files = dataTransfer.files;
-    //    else
-    //        var files = target.files;
-    //    for (var i = 0, f; f = files[i]; i++) {
-            
-    //        //// Create hidden inputs
-    //        //var container = document.getElementById('container');
-    //        //var input = document.createElement("input");
-    //        //input.type = "hidden";
-    //        //input.id = "input" + i;
-    //        //input.name = "uploadedFiles["+i+"]";
-    //        //input.value = f.name;
-    //        ////$('#input' + i).val(f);
-    //        //container.appendChild(input);
-    //        //console.log(input);
-
-
-
-    //        // Only process image files.
-
-    //        if (!f.type.match('image.*')) {
-    //            continue;
-    //        }
-    //        var reader = new FileReader();
-    //        // Closure to capture the file information.
-    //        reader.fileName = f.name;
-    //        reader.fileSize = f.size;
-    //        reader.addEventListener("load", function (event) {
-    //            var theFile = event.target;
-    //            var spanImage = document.createElement('span');
-    //            spanImage.innerHTML = ['<img class="thumb" src="', theFile.result,
-    //                                    '" title="', escape(theFile.name), '"/>'].join('');
-    //            document.getElementById('listImages').insertBefore(spanImage, null);
-    //            // Write image info
-    //            var spanInfo = document.createElement('span');
-    //            spanInfo.innerHTML = '<p>' + escape(theFile.fileName) + ' - ' + theFile.fileSize + ' bytes</p>';
-    //            document.getElementById('listImages').insertBefore(spanInfo, null);
-    //            console.log('read image# '+i);
-    //            queue.push(theFile.result);
-    //            //console.log(theFile.result);
-    //            //var val = document.getElementsByName("uploadedFiles[]")[0].getAttribute("value");
-    //            //document.getElementsByName("uploadedFiles[]")[0].setAttribute("value", val+theFile.result);
-
-
-
-    //            console.log('pushed to queue ' + theFile.fileName);
-
-    //        });
-    //        reader.readAsDataURL(f);
-    //    }
-    //    console.log(queue);
-
-    //    //$('<input>').attr({
-    //    //    type: 'file',
-    //    //    id: 'filesToSend',
-    //    //    name: 'uploadedFiles[]',
-    //    //    value: queue[0]
-    //    //}).appendTo('uploadForm');
-    //    //$('#filesToSend').val(queue);
-    //}
-
-    //function handleDragOver(evt) {
-    //    evt.stopPropagation();
-    //    evt.preventDefault();
-    //    evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
-    //}
-    //document.getElementById('browse').addEventListener('dragover', handleFileSelect, false);
-    //document.getElementById('browse').addEventListener('change', handleFileSelect, false);
-    //document.getElementById('browse').addEventListener('drop', handleFileSelect, false);
-
-    //// Setup the dnd listeners.
-    //var dropZone = document.getElementById('drop_zone');
-    //dropZone.addEventListener('dragover', handleDragOver, false);
-    //dropZone.addEventListener('change', handleFileSelect, false);
-    //dropZone.addEventListener('drop', handleFileSelect, false);
 </script>
 
 
