@@ -44,20 +44,24 @@ namespace BookingHotels.WebAPI
         public IHttpActionResult UploadPicture([FromBody] RoomImageUploadModel model)
         {
             // Check if model.Image contains byte[]
-            if (model.Image!=null)
+            if (model.Images!=null)
             {
-                // Generate Guid as new image name in UploadResult constructor
-                ImageUploadResult imageUploadResult = new ImageUploadResult();
+                // Generate Guid as Id and new image name in UploadResult constructor
+                ImageUploadResult imageUploadResult = new ImageUploadResult(model.Images.Count);
                 // Create folder if not exists
                 System.IO.Directory.CreateDirectory(imagesRootPath + model.RoomId);
-                // Save image to filesystem
-                var fs = new BinaryWriter(new FileStream(
-                    imagesRootPath + model.RoomId + '\\' + imageUploadResult.Id.ToString() + ".jpg",
-                    FileMode.Append, FileAccess.Write));
-                fs.Write(model.Image);
-                fs.Close();
-                
+                int i = 0;
+                // Save images to filesystem
+                foreach (byte[] bytes in model.Images) {
+                    var fs = new BinaryWriter(new FileStream(
+                        imagesRootPath + model.RoomId + '\\' + imageUploadResult.Id[i].ToString() + ".jpg",
+                        FileMode.Append, FileAccess.Write));
+                    fs.Write(bytes);
+                    fs.Close();
+                    i++;
+                }
                 MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
+                imageUploadResult.HttpStatusCode = HttpStatusCode.Created;
                 return Ok(imageUploadResult);
             }
             else

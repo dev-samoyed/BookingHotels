@@ -145,23 +145,31 @@ namespace BookingHotels.Web.Controllers
         // POST: Upload room image to api/Image/Upload
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> UploadRoomImage(RoomViewModel roomViewModel, HttpPostedFileBase uploadedFile)
+        public async Task<ActionResult> UploadRoomImage(RoomViewModel roomViewModel)
         {
             if (ModelState.IsValid)
             {
-                if (uploadedFile != null && uploadedFile.ContentLength > 0)
+                // Check if uploadedFiles != null 
+                if (roomViewModel.Images != null && roomViewModel.Images.Count() > 0)
                 {
-                    var roomImageUploadModel = new RoomImageUploadModel {RoomId = roomViewModel.Id};
-                    using (var reader = new BinaryReader(uploadedFile.InputStream))
+                    var roomImagesUploadModel = new RoomImagesUploadModel()
                     {
-                        roomImageUploadModel.Image = reader.ReadBytes(uploadedFile.ContentLength);
+                        RoomId = roomViewModel.Id,
+                        Images = new List<byte[]>()
+                    };
+                    foreach (HttpPostedFileBase file in roomViewModel.Images) 
+                    {
+                        using (var reader = new BinaryReader(file.InputStream))
+                        {
+                            roomImagesUploadModel.Images.Add(reader.ReadBytes(file.ContentLength));
+                        }
                     }
                     // Set the Accept header for BSON.
                     Client.DefaultRequestHeaders.Accept.Clear();
                     Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/bson"));
                     // POST using the BSON formatter.
                     MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
-                    var response = await Client.PostAsync<RoomImageUploadModel>("api/Image/Upload/", roomImageUploadModel, bsonFormatter);
+                    var response = await Client.PostAsync<RoomImagesUploadModel>("api/Image/Upload/", roomImagesUploadModel, bsonFormatter);
                     // If response is Ok
                     if ((int)response.StatusCode == 200)
                     {
@@ -170,11 +178,20 @@ namespace BookingHotels.Web.Controllers
                             new BsonMediaTypeFormatter()
                         };
                         ImageUploadResult imageUploadResult = await response.Content.ReadAsAsync<ImageUploadResult>(formatters);
-                        // Get image name generated on server
-                        roomImageUploadModel.Id = imageUploadResult.Id;
-                        // Send to Database
-                        RoomImageDTO roomImageDTO = Mapper.Map<RoomImageUploadModel, RoomImageDTO>(roomImageUploadModel);
-                        roomImageService.Create(roomImageDTO);
+                        
+                        for (int i=0; i < roomViewModel.Images.Count(); i++)
+                        {
+                            // Set image name got from server
+                            //roomImagesUploadModel.Id.Add(imageUploadResult.Id[i]);
+                            // Create Dto and send to Database
+                            RoomImageDTO roomImageDTO = new RoomImageDTO()
+                            {
+                                Id = imageUploadResult.Id[i],
+                                RoomId = roomImagesUploadModel.RoomId
+                            };
+                            roomImageService.Create(roomImageDTO);
+                        }
+
                         TempData["ErrorMessage"] = "Image uploaded and a record has been creaded in database";
                         return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }

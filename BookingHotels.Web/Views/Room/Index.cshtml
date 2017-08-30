@@ -7,9 +7,11 @@ ViewBag.Title = "Rooms";
     <h2>@ViewBag.Title</h2>
     <hr />
     <h3> We have
-        <span data-bind="text: koRoomsFiltered().length"></span>/<span data-bind="text: koRooms().length"></span>
-        rooms for your filters:
-    </h3>
+        <b><span data-bind="text: koRoomsFiltered().length"></span></b>
+        of
+        <b><span data-bind="text: koRooms().length"></span></b>
+            rooms for your filters:
+</h3>
     @* Knockout template: *@
     <div data-bind="template: { name: 'koRoomDisplayTemplate', foreach: koRoomsFiltered }"></div>
 

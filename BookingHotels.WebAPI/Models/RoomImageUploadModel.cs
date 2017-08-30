@@ -9,7 +9,7 @@ namespace BookingHotels.WebAPI.Models
     public class RoomImageUploadModel
     {
         public Guid Id { get; set; }
-        public byte[] Image { get; set; }
+        public List<byte[]> Images { get; set; }
         public Guid RoomId { get; set; }
     }
 }

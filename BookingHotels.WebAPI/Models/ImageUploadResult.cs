@@ -10,11 +10,17 @@ namespace BookingHotels.WebAPI.Models
     // Object to sent as post result
     public class ImageUploadResult
     {
-        public Guid Id;
+        public Guid[] Id;
         public HttpStatusCode HttpStatusCode;
-        public ImageUploadResult()
+        public ImageUploadResult(int imagesCount)
         {
-            Id = Guid.NewGuid();
+            // Generate Ids for image names
+            Guid[] id = new Guid[imagesCount];
+            for (int i = 0; i < imagesCount; i++)
+                id[i] = Guid.NewGuid();
+            this.Id = id;
+
         }
     }
+
 }
