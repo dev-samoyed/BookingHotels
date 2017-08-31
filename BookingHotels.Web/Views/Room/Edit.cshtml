@@ -13,7 +13,7 @@
 <div class="row">
     <div class="col-md-5">
         <div class="row">
-            <h2>You are editing this room:</h2>
+            <h3>You are editing this room:</h3>
         </div>
         <div class="row">
             @Html.ActionLink(
@@ -43,18 +43,20 @@ htmlAttributes: null)
     </div>
     <div class="col-md-7">
         <div class="row">
-            <h2>Existing images for this room:</h2>
+            <div class="col-md-12">
+                <h3>Existing images for this room:</h3>
+            </div>
         </div>
-        <div class="row">
         @{ if (imgSrcs != null)
             {
                 foreach (string imgsrc in imgSrcs)
                 {
-                    <img src="@imgsrc" width="50" height="50" />
+                    <div class="col-md-3">
+                        <img src="@imgsrc" width="50" height="50" />
+                    </div>
                 }
             }
         }
-        </div>
     </div>
 </div>
 <hr />
@@ -159,11 +161,14 @@ htmlAttributes: null)
             reader.fileSize = f.size;
             reader.addEventListener("load", function (event) {
                 var theFile = event.target;
-                var imageInfo = document.createElement('span');
+                var t = $("<table cellspacing='0' class='text'></table>");
+                $.append(t);
+                //var imageInfo = document.createElement('span');
                 // Write image and info
                 var imageInfo = ['<div class="col-md-3 previewDiv">',
                                         '<img class="thumb" src="', theFile.result, '" title="', escape(theFile.name), '"/>',
-                                        '<p>' + escape(theFile.fileName) + '</p><p>' + theFile.fileSize + ' bytes</p>',
+                                        '<p>' + escape(theFile.fileName) + '</p>',
+                                        '<p>' + theFile.fileSize + ' bytes</p>',
                                         '</div>'].join('');
                 $(imageInfo).appendTo('#listImages');
                 queue.push(theFile.result);

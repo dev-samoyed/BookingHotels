@@ -76,12 +76,12 @@ namespace BookingHotels.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(CustomUserRegister model)
+        public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
                 // Map recieved data to Dto and send it to user service
-                var userDto = Mapper.Map<CustomUserRegister, UserDTO>(model);
+                var userDto = Mapper.Map<RegisterViewModel, UserDTO>(model);
                 userDto.Role = "user";
 
                 OperationDetails operationDetails = await userService.Create(userDto);

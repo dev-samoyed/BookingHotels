@@ -17,23 +17,6 @@ namespace BookingHotels.Domain.Identity
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
-    // Register model
-    public class CustomUserRegister
-    {
-        [Key]
-        public Guid Id { get; set; }
-        [Required]
-        public string Email { get; set; }
-        [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-        [Required]
-        [DataType(DataType.Password)]
-        [Compare("Password")]
-        public string ConfirmPassword { get; set; }
-        //[Required]
-        //public string Name { get; set; }
-    }
     // Extend Identity classes to specify a Guid for the key
     public class CustomUserRole : IdentityUserRole<Guid>
     {

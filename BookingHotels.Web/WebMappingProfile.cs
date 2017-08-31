@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using BookingHotels.BLL.DTO;
-using BookingHotels.Domain.Identity;
 using BookingHotels.Web.Models;
 
 namespace BookingHotels.Web
 {
-
     public class WebMappingProfile : Profile
     {
         public WebMappingProfile()
@@ -24,10 +22,7 @@ namespace BookingHotels.Web
             CreateMap<BookingDTO, BookingViewModel>(MemberList.None);
             CreateMap<BookingViewModel, BookingDTO>(MemberList.None);
 
-            //CreateMap<RoomImagesUploadModel, RoomImageDTO>(MemberList.None);
-            //CreateMap<RoomImageDTO, RoomImagesUploadModel>(MemberList.None);
-
-            CreateMap<CustomUserRegister, UserDTO>(MemberList.None);
+            CreateMap<RegisterViewModel, UserDTO>(MemberList.None);
         }
     }
 

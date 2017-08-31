@@ -4,9 +4,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using BookingHotels.WebAPI.Models;
-using System.Diagnostics;
 using System.Net.Http.Formatting;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 
 namespace BookingHotels.WebAPI
