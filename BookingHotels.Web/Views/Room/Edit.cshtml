@@ -61,7 +61,9 @@ htmlAttributes: null)
 
 <div class="row text-center"><h4>Upload an image for this room:</h4></div>
 @* Main files input (not included in the form): *@
-@Html.TextBoxFor(m => m.Images, new { type = "file", multiple = "multiple", value = "", id = "browse", name = "files" })
+<div id="mainInput">
+    @Html.TextBoxFor(m => m.Images, new { type = "file", multiple = "multiple", value = "", id = "browse", name = "files" })
+</div>
 @*Form*@
 @using (Html.BeginForm("UploadRoomImage", "Room", null, FormMethod.Post, new { id = "uploadForm", enctype = "multipart/form-data" }))
 {
@@ -89,7 +91,7 @@ htmlAttributes: null)
             <output id="listImages"></output>
         </div>
         <div class="row">
-            <a href="#" id="remove">clear</a>
+            <a href="#" id="clear">clear</a>
         </div>
     </div>
 </div>
@@ -113,6 +115,18 @@ htmlAttributes: null)
             return true;
         });
     });
+    // Clear form
+    $("#clear").click(function () {
+        // Remove all inputs in the form
+        $(this).closest('form').find("input[type=file]").remove();
+        // Remove preview images
+        $('.previewDiv').remove();
+        // Reset preview images count
+        queue = [];
+        $('#totalCount').text('0');
+        // Clear main input
+        $('#browse').val("");
+    });
     // Array of files read from FileReader
     var queue = [];
     // Append hidden inputs in the form every time new file selected in the main input
@@ -122,6 +136,7 @@ htmlAttributes: null)
             var cloned = real.clone(true);
             real.hide();
             cloned.insertAfter(real);
+            real.attr("id", "clone");
             real.appendTo('form');
         }
         event.stopPropagation();
@@ -146,23 +161,21 @@ htmlAttributes: null)
                 var theFile = event.target;
                 var imageInfo = document.createElement('span');
                 // Write image and info
-                imageInfo.innerHTML = ['<div class="col-md-2">',
+                var imageInfo = ['<div class="col-md-3 previewDiv">',
                                         '<img class="thumb" src="', theFile.result, '" title="', escape(theFile.name), '"/>',
-                                        '<p>' + escape(theFile.fileName) + ' - ' + theFile.fileSize + ' bytes</p>',
+                                        '<p>' + escape(theFile.fileName) + '</p><p>' + theFile.fileSize + ' bytes</p>',
                                         '</div>'].join('');
-                document.getElementById('listImages').insertBefore(imageInfo, null);
+                $(imageInfo).appendTo('#listImages');
                 queue.push(theFile.result);
                 console.log('pushed to queue ' + theFile.fileName);
+                $('#totalCount').text(queue.length);
             });
             reader.readAsDataURL(f);
         }
         console.log(queue);
-        $('#totalCount').text(queue.length+1);
     });
 
-    $('#remove').click(function () {
-        clearValues()
-    });
+
 </script>
 
 

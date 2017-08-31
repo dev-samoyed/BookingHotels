@@ -26,10 +26,6 @@ div .col-md-4
    padding: 27px;
    margin: 0px;
 }
-div .col-md-3
-{
-   border: 1px solid #eee;
-}
 .container {
   max-width: 750px;
   padding: 15px;
@@ -65,4 +61,7 @@ background-color: #84b7b7;
     height: 75px;
     border: 1px solid #000;
     margin: 10px 5px 0 0;
+}
+#listImages {
+width:100%;
 }

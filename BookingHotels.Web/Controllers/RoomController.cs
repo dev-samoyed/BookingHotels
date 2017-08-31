@@ -181,8 +181,6 @@ namespace BookingHotels.Web.Controllers
                         
                         for (int i=0; i < roomViewModel.Images.Count(); i++)
                         {
-                            // Set image name got from server
-                            //roomImagesUploadModel.Id.Add(imageUploadResult.Id[i]);
                             // Create Dto and send to Database
                             RoomImageDTO roomImageDTO = new RoomImageDTO()
                             {
@@ -192,7 +190,7 @@ namespace BookingHotels.Web.Controllers
                             roomImageService.Create(roomImageDTO);
                         }
 
-                        TempData["ErrorMessage"] = "Image uploaded and a record has been creaded in database";
+                        TempData["ErrorMessage"] = "Images uploaded and a record has been creaded in database";
                         return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }
                     else
