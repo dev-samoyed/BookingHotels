@@ -14,8 +14,7 @@ namespace BookingHotels.WebAPI.Models
             Guid[] id = new Guid[imagesCount];
             for (int i = 0; i < imagesCount; i++)
                 id[i] = Guid.NewGuid();
-            this.Id = id;
-
+            Id = id;
         }
     }
 

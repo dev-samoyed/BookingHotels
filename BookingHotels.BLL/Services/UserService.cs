@@ -5,11 +5,9 @@ using Microsoft.AspNet.Identity;
 using System.Security.Claims;
 using BookingHotels.BLL.Interfaces;
 using BookingHotels.Domain.Interfaces;
-using System.Collections.Generic;
 using System.Linq;
 using System;
 using BookingHotels.Domain.Entities;
-using BookingHotels.Domain.Identity;
 
 namespace BookingHotels.BLL.Services
 {

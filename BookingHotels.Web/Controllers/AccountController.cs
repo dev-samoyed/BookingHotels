@@ -1,7 +1,6 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using Microsoft.Owin.Security;
-using Microsoft.AspNet.Identity.Owin;
 using System.Threading.Tasks;
 using BookingHotels.BLL.DTO;
 using System.Security.Claims;
@@ -10,6 +9,7 @@ using BookingHotels.BLL.Infrastructure;
 using AutoMapper;
 using BookingHotels.Domain.Identity;
 using BookingHotels.Web.Controllers;
+using BookingHotels.Web.Models;
 
 namespace BookingHotels.Controllers
 {

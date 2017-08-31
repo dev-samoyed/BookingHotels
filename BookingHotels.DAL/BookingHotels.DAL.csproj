@@ -64,7 +64,6 @@
     <Compile Include="Configurations\BookingConfig.cs" />
     <Compile Include="Configurations\CustomRoleConfig.cs" />
     <Compile Include="Configurations\ApplicationUserConfig.cs" />
-    <Compile Include="Configurations\HotelConfig.cs" />
     <Compile Include="Identity\CustomRoleStore.cs" />
     <Compile Include="Identity\CustomUserStore.cs" />
     <Compile Include="EF\MyDbContext.cs" />

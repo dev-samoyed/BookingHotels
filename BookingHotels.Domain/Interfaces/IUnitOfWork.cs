@@ -10,7 +10,6 @@ namespace BookingHotels.Domain.Interfaces
         IRepository<Feedback> Feedbacks { get; }
         IRepository<Booking> Bookings { get; }
         IRepository<RoomImage> RoomImages { get; }
-        
         void Save();
     }
 }

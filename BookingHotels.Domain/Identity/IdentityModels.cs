@@ -36,15 +36,14 @@ namespace BookingHotels.Domain.Identity
                 Name = name; 
             }
     }
-    // Responsible to manage instances of the roles
+    // Responsible for managing instances of the roles
     public class ApplicationRoleManager : RoleManager<CustomRole, Guid>
     {
         public ApplicationRoleManager(IRoleStore<CustomRole, Guid> roleStore)
             : base(roleStore)
         { }
     }
-
-    //  Responsible to manage instances of the user class
+    // Responsible for managing instances of the user class
     public class ApplicationUserManager : UserManager<ApplicationUser, Guid>
     {
         public ApplicationUserManager(IUserStore<ApplicationUser, Guid> store)

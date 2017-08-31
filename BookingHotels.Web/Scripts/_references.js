@@ -2,6 +2,7 @@
 /// <reference path="bootstrap.js" />
 /// <reference path="bootstrap-select.min.js" />
 /// <reference path="initdatepicker.js" />
+/// <reference path="jquery.rateyo.min.js" />
 /// <reference path="jquery.validate.js" />
 /// <reference path="jquery.validate.unobtrusive.js" />
 /// <reference path="jquery-1.12.4.js" />

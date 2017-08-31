@@ -1,6 +1,6 @@
 ﻿namespace BookingHotels.BLL.Infrastructure
 {
-    // Хранит информацию об успешности операции.
+    // Stores information about operation successfulness
     public class OperationDetails
     {
         public OperationDetails(bool succedeed, string message, string prop)

@@ -33,9 +33,6 @@ namespace BookingHotels.DAL.EF
             // modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
             base.OnModelCreating(modelBuilder);
 
-            // Hotel Configuarations
-            modelBuilder.Configurations.Add(new HotelConfig());
-
             // Booking Configuarations
             modelBuilder.Configurations.Add(new BookingConfig());
 
