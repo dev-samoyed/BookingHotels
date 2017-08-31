@@ -22,8 +22,10 @@ Write a feedback for @Html.ActionLink(
         @* FeedbackStars *@
         <div class="form-group">
             @Html.LabelFor(model => model.FeedbackStars, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-6">
-                @Html.EnumDropDownListFor(model => model.FeedbackStars, "Rate this hotel", htmlAttributes: new { @class = "form-control" })
+            <div class="col-md-6" style="text-align: center">
+                <div id="rateYo"></div>
+                <div class="counter" style="display:inline-block"></div>
+                @Html.EnumDropDownListFor(model => model.FeedbackStars, "Rate this hotel", htmlAttributes: new { @class = "form-control", @style = "display:none" })
                 @Html.ValidationMessageFor(model => model.FeedbackStars, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -43,7 +45,22 @@ Write a feedback for @Html.ActionLink(
         <p class="text-danger">@ViewBag.ErrorMessage</p>
     </div>
 }
-
-
+<script type="text/javascript">
+    $(document).ready(
+        $(function () {
+          $("#rateYo").rateYo({
+            starWidth: "40px",
+            numStars: 10,
+            maxValue: 10,
+            rating: 0,
+            fullStar: true,
+            onChange: function (rating, rateYoInstance) {
+                $(this).next().text(rating);
+                $('select').val(rating);
+            }
+          });
+        })
+    );
+</script>
 
 

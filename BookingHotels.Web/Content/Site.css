@@ -18,6 +18,11 @@
    padding: 10px;
    width: 30%;
 }
+.feedbackCard {
+    background: #f1f1f1;
+    margin: 6px;
+    padding: 10px;
+}
 div .col-md-2,
 div .col-md-9,
 div .col-md-6,
@@ -63,5 +68,8 @@ background-color: #84b7b7;
     margin: 10px 5px 0 0;
 }
 #listImages {
-width:100%;
+    width:100%;
+}
+.jq-ry-container {
+    display: inline-block;
 }

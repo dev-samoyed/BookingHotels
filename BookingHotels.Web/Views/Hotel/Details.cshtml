@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Hotel details";
     var feedbacks = ViewBag.feedbacks;
+    int feedbackRating = 0;
 }
 
 <h2>@Model.HotelName</h2>
@@ -33,16 +34,31 @@
 <hr />
 @if (feedbacks != null)
 {
+    int i = 0;
     foreach (BookingHotels.Web.Models.FeedbackViewModel feedback in feedbacks)
     {
-    <div class="card">
-        <b>Author:</b> @feedback.ApplicationUser.UserName
-        <br/>
-        <b>Feedback stars:</b> @feedback.FeedbackStars
-        <br/>
-        <span style="white-space: pre-line">@feedback.FeedbackText</span>
-    </div>
-    <hr />
+        // Get rating value in int, then create StarRating
+        feedbackRating = (int)Enum.Parse(typeof(BookingHotels.Domain.Enums.FeedbackStars), feedback.FeedbackStars.ToString());
+        <div class="feedbackCard">
+            <b>Author:</b> @feedback.ApplicationUser.UserName
+            <br/>
+            <b>Feedback stars:</b> 
+            <div id="rateYo-@i"></div>
+            <br/>
+            <span style="white-space: pre-line">@feedback.FeedbackText</span>
+            <script type="text/javascript">
+                $("#rateYo-@i").rateYo({
+                    starWidth: "40px",
+                    numStars: 10,
+                    maxValue: 10,
+                    starWidth: "20px",
+                    rating: @feedbackRating,
+                    readOnly: true
+                });
+            </script>
+        </div>
+        <hr />
+        i++;
     }
 }
 <input type="button" class="btn btn-primary" value="Write feedback" onclick="location.href='@Url.Action("Feedback", new { id = Model.Id })'" />
@@ -50,3 +66,16 @@
 <p>
     @Html.ActionLink("Back to List", "Index")
 </p>
+<script type="text/javascript">
+    //$(document).ready(
+    //    $(function () {
+    //      $("#rateYo").rateYo({
+    //        starWidth: "40px",
+    //        numStars: 10,
+    //        maxValue: 10,
+    //        //rating: feedback.FeedbackStars,
+    //        readOnly: true
+    //      });
+    //    })
+    //);
+            </script>
