@@ -169,35 +169,44 @@ namespace BookingHotels.Web.Controllers
                     Client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/bson"));
                     // POST using the BSON formatter.
                     MediaTypeFormatter bsonFormatter = new BsonMediaTypeFormatter();
-                    var response = await Client.PostAsync<RoomImagesUploadModel>("api/Image/Upload/", roomImagesUploadModel, bsonFormatter);
-                    // If response is Ok
-                    if ((int)response.StatusCode == 200)
+                    try
                     {
-                        // Use BSON formatter to deserialize the response content
-                        MediaTypeFormatter[] formatters = new MediaTypeFormatter[] {
+                        var response = await Client.PostAsync<RoomImagesUploadModel>("api/Image/Upload/", roomImagesUploadModel, bsonFormatter);
+                        if ((int)response.StatusCode == 200)
+                        {
+                            // Use BSON formatter to deserialize the response content
+                            MediaTypeFormatter[] formatters = new MediaTypeFormatter[] {
                             new BsonMediaTypeFormatter()
                         };
-                        ImageUploadResult imageUploadResult = await response.Content.ReadAsAsync<ImageUploadResult>(formatters);
-                        
-                        for (int i=0; i < roomViewModel.Images.Count(); i++)
-                        {
-                            // Create Dto and send to Database
-                            RoomImageDTO roomImageDTO = new RoomImageDTO()
-                            {
-                                Id = imageUploadResult.Id[i],
-                                RoomId = roomImagesUploadModel.RoomId
-                            };
-                            roomImageService.Create(roomImageDTO);
-                        }
+                            ImageUploadResult imageUploadResult = await response.Content.ReadAsAsync<ImageUploadResult>(formatters);
 
-                        TempData["ErrorMessage"] = "Images uploaded and a record has been creaded in database";
-                        return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
+                            for (int i = 0; i < roomViewModel.Images.Count(); i++)
+                            {
+                                // Create Dto and send to Database
+                                RoomImageDTO roomImageDTO = new RoomImageDTO()
+                                {
+                                    Id = imageUploadResult.Id[i],
+                                    RoomId = roomImagesUploadModel.RoomId
+                                };
+                                roomImageService.Create(roomImageDTO);
+                            }
+
+                            TempData["ErrorMessage"] = "Images uploaded and a record has been creaded in database";
+                            return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
+                        }
+                        else
+                        {
+                            TempData["ErrorMessage"] = "Bad responce, Status Code " + (int)response.StatusCode;
+                            return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
+                        }
                     }
-                    else
+                    catch
                     {
-                        TempData["ErrorMessage"] = "Bad responce, Status Code " + (int)response.StatusCode;
+                        TempData["ErrorMessage"] = "Can't connect to API";
                         return RedirectToAction("Edit", new { id = roomViewModel.Id.ToString() });
                     }
+                    // If response is Ok
+                    
                 }
                 else
                 {

@@ -3,6 +3,7 @@
     // Datepicker
     $("#startDateInput").datepicker({
         minDate: 0,
+        format: 'dd/MM/yyyy',
         onClose: function (date) {
             var date2 = $('#startDateInput').datepicker('getDate');
             $('#endDateInput').datepicker('setDate', date2);
@@ -14,6 +15,7 @@
     $('#startDateInput').change();
 
     $('#endDateInput').datepicker({
+        format: 'dd/MM/yyyy',
         minDate: $('#startDateInput').datepicker('getDate'),
         onClose: function () {
             $("#endDateInput").datepicker("refresh");

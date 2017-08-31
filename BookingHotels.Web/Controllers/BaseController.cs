@@ -74,10 +74,16 @@ namespace BookingHotels.Web.Controllers
                 imageIDs += "imageIDs=" + imageId + "&";
             string url = string.Format(Client.BaseAddress + "api/image/?roomId={0}&{1}", Id, imageIDs);
             // Get response from request to api/image
-            var response = Client.GetAsync(url).Result;
-            if ((int)response.StatusCode == 200)
+            try { 
+                var response = Client.GetAsync(url).Result;
+                if ((int)response.StatusCode == 200)
+                {
+                    return response.Content.ReadAsAsync<string[]>().Result;
+                }
+            }
+            catch
             {
-                return response.Content.ReadAsAsync<string[]>().Result;
+                return null;
             }
             return null;
         }
