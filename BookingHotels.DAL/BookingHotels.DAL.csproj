@@ -71,41 +71,13 @@
     <Compile Include="Migrations\201708140640564_init.Designer.cs">
       <DependentUpon>201708140640564_init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708140709012_book_config.cs" />
-    <Compile Include="Migrations\201708140709012_book_config.Designer.cs">
-      <DependentUpon>201708140709012_book_config.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201708140930127_RoomPrice.cs" />
     <Compile Include="Migrations\201708140930127_RoomPrice.Designer.cs">
       <DependentUpon>201708140930127_RoomPrice.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708230421193_RoomImage_entity.cs" />
-    <Compile Include="Migrations\201708230421193_RoomImage_entity.Designer.cs">
-      <DependentUpon>201708230421193_RoomImage_entity.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708230426209_RoomImage_entity1.cs" />
-    <Compile Include="Migrations\201708230426209_RoomImage_entity1.Designer.cs">
-      <DependentUpon>201708230426209_RoomImage_entity1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708230426455_RoomImage_entity2.cs" />
-    <Compile Include="Migrations\201708230426455_RoomImage_entity2.Designer.cs">
-      <DependentUpon>201708230426455_RoomImage_entity2.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708230428382_RoomImage_entity3.cs" />
-    <Compile Include="Migrations\201708230428382_RoomImage_entity3.Designer.cs">
-      <DependentUpon>201708230428382_RoomImage_entity3.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708230430480_RoomImage_entity4.cs" />
-    <Compile Include="Migrations\201708230430480_RoomImage_entity4.Designer.cs">
-      <DependentUpon>201708230430480_RoomImage_entity4.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\201708230433075_RoomImage_entity5.cs" />
     <Compile Include="Migrations\201708230433075_RoomImage_entity5.Designer.cs">
       <DependentUpon>201708230433075_RoomImage_entity5.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708230527018_bookings_fix.cs" />
-    <Compile Include="Migrations\201708230527018_bookings_fix.Designer.cs">
-      <DependentUpon>201708230527018_bookings_fix.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201708280747424_feedback_stars.cs" />
     <Compile Include="Migrations\201708280747424_feedback_stars.Designer.cs">
@@ -131,32 +103,11 @@
     <EmbeddedResource Include="Migrations\201708140640564_init.resx">
       <DependentUpon>201708140640564_init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708140709012_book_config.resx">
-      <DependentUpon>201708140709012_book_config.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708140930127_RoomPrice.resx">
       <DependentUpon>201708140930127_RoomPrice.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708230421193_RoomImage_entity.resx">
-      <DependentUpon>201708230421193_RoomImage_entity.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708230426209_RoomImage_entity1.resx">
-      <DependentUpon>201708230426209_RoomImage_entity1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708230426455_RoomImage_entity2.resx">
-      <DependentUpon>201708230426455_RoomImage_entity2.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708230428382_RoomImage_entity3.resx">
-      <DependentUpon>201708230428382_RoomImage_entity3.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708230430480_RoomImage_entity4.resx">
-      <DependentUpon>201708230430480_RoomImage_entity4.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708230433075_RoomImage_entity5.resx">
       <DependentUpon>201708230433075_RoomImage_entity5.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708230527018_bookings_fix.resx">
-      <DependentUpon>201708230527018_bookings_fix.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201708280747424_feedback_stars.resx">
       <DependentUpon>201708280747424_feedback_stars.cs</DependentUpon>
