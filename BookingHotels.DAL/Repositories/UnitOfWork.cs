@@ -2,20 +2,27 @@
 using BookingHotels.DAL.EF;
 using BookingHotels.Domain.Interfaces;
 using BookingHotels.Domain.Entities;
+using BookingHotels.Domain.Identity;
+using BookingHotels.DAL.Identity;
+using System.Threading.Tasks;
 
 namespace BookingHotels.DAL.Repositories
 {
-    public class EFUnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private BaseRepository<Hotel> hotelRepository;
         private BaseRepository<Room> roomRepository;
         private BaseRepository<Feedback> feedbackRepository;
         private BaseRepository<Booking> bookingRepository;
         private BaseRepository<RoomImage> roomImageRepository;
+        private ApplicationUserManager applicationUserManager;
+        private ApplicationRoleManager applicationRoleManager;
         private MyDbContext context;
-        public EFUnitOfWork(string connectionString)
+        public UnitOfWork(string connectionString)
         {
             context = new MyDbContext(connectionString);
+            applicationUserManager = new ApplicationUserManager(new CustomUserStore(context));
+            applicationRoleManager = new ApplicationRoleManager(new CustomRoleStore(context));
         }
         public IRepository<Hotel> Hotels
         {
@@ -62,10 +69,25 @@ namespace BookingHotels.DAL.Repositories
                 return roomImageRepository;
             }
         }
+        public ApplicationUserManager ApplicationUserManager
+        {
+            get { return applicationUserManager; }
+        }
+
+
+        public ApplicationRoleManager ApplicationRoleManager
+        {
+            get { return applicationRoleManager; }
+        }
+
         // Save
         public void Save()
         {
             context.SaveChanges();
+        }
+        public async Task SaveAsync()
+        {
+            await context.SaveChangesAsync();
         }
         // Dispose
         private bool disposed = false;

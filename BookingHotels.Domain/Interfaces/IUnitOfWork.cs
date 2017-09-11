@@ -1,5 +1,7 @@
 ﻿using System;
 using BookingHotels.Domain.Entities;
+using BookingHotels.Domain.Identity;
+using System.Threading.Tasks;
 
 namespace BookingHotels.Domain.Interfaces
 {
@@ -10,6 +12,9 @@ namespace BookingHotels.Domain.Interfaces
         IRepository<Feedback> Feedbacks { get; }
         IRepository<Booking> Bookings { get; }
         IRepository<RoomImage> RoomImages { get; }
+        ApplicationUserManager ApplicationUserManager { get; }
+        ApplicationRoleManager ApplicationRoleManager { get; }
+        Task SaveAsync();
         void Save();
     }
 }

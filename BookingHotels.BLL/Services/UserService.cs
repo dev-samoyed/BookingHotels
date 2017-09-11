@@ -13,10 +13,10 @@ namespace BookingHotels.BLL.Services
 {
     public class UserService : IUserService
     {
-        // IUnitOfWorkIdentity object communicates with DAL 
-        IUnitOfWorkIdentity _unitOfWork { get; set; }
-        // Use DI to pass implementation of IUnitOfWorkIdentity
-        public UserService(IUnitOfWorkIdentity uow)
+        // IUnitOfWork object communicates with DAL 
+        IUnitOfWork _unitOfWork { get; set; }
+        // Use DI to pass implementation of IUnitOfWork
+        public UserService(IUnitOfWork uow)
         {
             _unitOfWork = uow;
         }

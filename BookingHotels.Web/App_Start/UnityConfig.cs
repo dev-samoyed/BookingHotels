@@ -25,8 +25,7 @@ namespace BookingHotels.Web
             container.RegisterType<IBookingService, BookingService>();
             container.RegisterType<IRoomImageService, RoomImageService>();
             container.RegisterType<IFeedbackService, FeedbackService>();
-            container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("DefaultConnection"));
-            container.RegisterType<IUnitOfWorkIdentity, IdentityUnitOfWork>(new InjectionConstructor("DefaultConnection"));
+            container.RegisterType<IUnitOfWork, UnitOfWork>(new InjectionConstructor("DefaultConnection"));
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
