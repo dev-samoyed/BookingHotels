@@ -22,8 +22,10 @@ namespace BookingHotels.Web
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 LoginPath = new PathString("/Account/Login"),
             });
-            // Dry run (прогон) all configured type maps
+            // Dry run all configured type maps
             Mapper.AssertConfigurationIsValid();
+            // Add Unity MVC 5 Register Componets 
+            UnityConfig.RegisterComponents();
         }
     }
 }

@@ -18,8 +18,8 @@ namespace BookingHotels.DAL.EF
  
         public MyDbContext() : base("DefaultConnection")
         {
-            Configuration.ProxyCreationEnabled = false;
-            Configuration.LazyLoadingEnabled = false;
+            // Configuration.ProxyCreationEnabled = false;
+            // Configuration.LazyLoadingEnabled = false;
         }
         public MyDbContext(string connectionString) : base(connectionString) { }
         static MyDbContext()

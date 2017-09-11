@@ -16,8 +16,7 @@ namespace BookingHotels.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            // Add Unity MVC 5 Register Componets 
-            UnityConfig.RegisterComponents();
+
         }
     }
 }
