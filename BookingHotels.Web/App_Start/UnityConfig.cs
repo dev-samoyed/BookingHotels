@@ -4,7 +4,6 @@ using Unity.Mvc5;
 using BookingHotels.BLL.Interfaces;
 using BookingHotels.BLL.Services;
 using BookingHotels.Domain.Interfaces;
-using BookingHotels.BLL.Infrastructure;
 using BookingHotels.DAL.Repositories;
 
 namespace BookingHotels.Web
@@ -26,12 +25,10 @@ namespace BookingHotels.Web
             container.RegisterType<IBookingService, BookingService>();
             container.RegisterType<IRoomImageService, RoomImageService>();
             container.RegisterType<IFeedbackService, FeedbackService>();
-
-            // from middle layer
-            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
-            
             container.RegisterType<IUnitOfWork, EFUnitOfWork>(new InjectionConstructor("DefaultConnection"));
-            container.RegisterType<IUnitOfWorkIdentity, IdentityUnitOfWork>(new InjectionConstructor("DefaultConnection"));   
+            container.RegisterType<IUnitOfWorkIdentity, IdentityUnitOfWork>(new InjectionConstructor("DefaultConnection"));
+
+            DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }
 }

@@ -12,7 +12,6 @@ namespace BookingHotels.DAL.Repositories
         private BaseRepository<Feedback> feedbackRepository;
         private BaseRepository<Booking> bookingRepository;
         private BaseRepository<RoomImage> roomImageRepository;
-
         private MyDbContext context;
         public EFUnitOfWork(string connectionString)
         {

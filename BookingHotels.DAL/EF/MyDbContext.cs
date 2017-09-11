@@ -16,17 +16,7 @@ namespace BookingHotels.DAL.EF
         public DbSet<Feedback> Feedbacks { get; set; }
         public DbSet<RoomImage> RoomImages { get; set; }
  
-        public MyDbContext() : base("DefaultConnection")
-        {
-            // Configuration.ProxyCreationEnabled = false;
-            // Configuration.LazyLoadingEnabled = false;
-        }
         public MyDbContext(string connectionString) : base(connectionString) { }
-        static MyDbContext()
-        {
-            Database.SetInitializer<MyDbContext>(new MyContextInitializer());
-        }
-        public sealed class MyContextInitializer : MigrateDatabaseToLatestVersion<MyDbContext, MyDbContextConfiguration> { }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
