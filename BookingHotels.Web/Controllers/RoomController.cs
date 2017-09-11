@@ -95,7 +95,6 @@ namespace BookingHotels.Web.Controllers
                     {
                         DateTime date1 = DateTime.Parse(result[1].ToString());
                         DateTime date2 = DateTime.Parse(result[2].ToString());
-                        //ModelState.AddModelError("BookingEndDate", "qqq");
                         TempData["ErrorMessage"] = "Sorry, the room is occupied from " + date1.ToShortDateString() + " to " + date1.ToShortDateString();
                         return RedirectToAction("Book", new { id = bookingViewModel.RoomId.ToString() });
                     }
