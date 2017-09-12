@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using BookingHotels.BLL.DTO;
+using BookingHotels.Domain.Enums;
 using BookingHotels.Web.Models;
+using System;
+using System.Diagnostics;
 
 namespace BookingHotels.Web
 {
@@ -9,18 +12,15 @@ namespace BookingHotels.Web
         public WebMappingProfile()
         {
             CreateMap<RoomViewModel, RoomDTO>(MemberList.None);
-            // Add config for RoomType enum => string
-            CreateMap<RoomDTO, RoomViewModel>(MemberList.None)
-            .ForMember(o => o.RoomType, b => b.MapFrom(z => z.RoomType));
 
-            CreateMap<HotelDTO, HotelViewModel>(MemberList.None);
-            CreateMap<HotelViewModel, HotelDTO>(MemberList.None);
+            CreateMap<RoomType, string>().ConvertUsing(s => Convert.ToString(s));
+            CreateMap<RoomDTO, RoomViewModel>(MemberList.None);
 
-            CreateMap<FeedbackDTO, FeedbackViewModel>(MemberList.None);
-            CreateMap<FeedbackViewModel, FeedbackDTO>(MemberList.None);
+            CreateMap<HotelDTO, HotelViewModel>(MemberList.None).ReverseMap();
 
-            CreateMap<BookingDTO, BookingViewModel>(MemberList.None);
-            CreateMap<BookingViewModel, BookingDTO>(MemberList.None);
+            CreateMap<FeedbackDTO, FeedbackViewModel>(MemberList.None).ReverseMap();
+
+            CreateMap<BookingDTO, BookingViewModel>(MemberList.None).ReverseMap();
 
             CreateMap<RegisterViewModel, UserDTO>(MemberList.None);
         }
