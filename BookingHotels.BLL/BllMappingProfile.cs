@@ -9,20 +9,15 @@ namespace BookingHotels.BLL
     {
         public BLLMappingProfile()
         {
-            CreateMap<Hotel, HotelDTO>(MemberList.None);
-            CreateMap<HotelDTO, Hotel>(MemberList.None);
+            CreateMap<Hotel, HotelDTO>(MemberList.None).ReverseMap(); 
 
-            CreateMap<Room, RoomDTO>(MemberList.None);
-            CreateMap<RoomDTO, Room>(MemberList.None);
+            CreateMap<Room, RoomDTO>(MemberList.None).ReverseMap();
 
-            CreateMap<Feedback, FeedbackDTO>(MemberList.None);
-            CreateMap<FeedbackDTO, Feedback>(MemberList.None);
+            CreateMap<Feedback, FeedbackDTO>(MemberList.None).ReverseMap();
 
-            CreateMap<Booking, BookingDTO>(MemberList.None);
-            CreateMap<BookingDTO, Booking>(MemberList.None);
+            CreateMap<Booking, BookingDTO>(MemberList.None).ReverseMap();
 
-            CreateMap<RoomImage, RoomImageDTO>(MemberList.None);
-            CreateMap<RoomImageDTO, RoomImage>(MemberList.None);
+            CreateMap<RoomImage, RoomImageDTO>(MemberList.None).ReverseMap();
         }
     }
 }
